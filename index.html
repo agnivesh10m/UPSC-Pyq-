@@ -4,19 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="SACHIN SHARMA">
-<title>SACHIN SHARMA - UPSC MASTER PORTAL</title>
+<meta name="copyright" content="© 2026 SACHIN SHARMA. All rights reserved.">
+<title>SACHIN SHARMA - UPSC MASTER PRACTICE HUB</title>
 
-<!-- PWA Manifest & Icons (मोबाइल पर ऐप की तरह सेव होने और नाम दिखाने के लिए) -->
+<!-- PWA Manifest & Icons -->
 <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/84df9j.jpg">
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#101d32">
 
 <style>
-  :root { --bg: #f3f0e8; --card: #ffffff; --text: #18263a; --primary: #1b3552; --gold: #c5a15b; --border: #e6dfd1; --accent: #f7f3e9; }
-  body.dark-mode { --bg: #090e17; --card: #111926; --text: #f8fafc; --primary: #3b82f6; --gold: #fbbf24; --border: #1e293b; --accent: #1e3a8a33; }
+  :root { --bg: #f3f0e8; --card: #ffffff; --text: #18263a; --primary: #1b3552; --gold: #c5a15b; --border: #e6dfd1; }
+  body.dark-mode { --bg: #090e17; --card: #111926; --text: #f8fafc; --primary: #3b82f6; --gold: #fbbf24; --border: #1e293b; }
   
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-  body { background: var(--bg); color: var(--text); padding-bottom: 40px; transition: background 0.3s, color 0.3s; }
+  body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); }
   
   /* Splash Screen / Loading Animation */
   #splashScreen {
@@ -34,40 +35,81 @@
   .loader-bar::after { content: ''; display: block; width: 40%; height: 100%; background: var(--gold); animation: loadAnim 1s infinite alternate; }
   @keyframes loadAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
 
-  header { background: radial-gradient(ellipse at 88% 15%, #ffffff18 0, transparent 34%), linear-gradient(120deg, #0d192b 0%, #172d47 58%, #29415c 100%); color: white; padding: 30px 16px; text-align: center; border-bottom: 5px solid var(--gold); position: relative; }
-  
-  /* पूरी और साफ़ दिखने वाली इमेज (बिना कटे हुए) */
-  .logo-img-full { 
-    width: 100px; max-width: 120px; height: auto; object-fit: contain; 
-    border-radius: 10px; border: 2px solid var(--gold); margin-bottom: 12px; 
-    box-shadow: 0 4px 14px rgba(0,0,0,0.4); display: inline-block; background: #fff; padding: 3px;
+  /* Full Screen Host Frame Container */
+  .fullscreen-container {
+    width: 100vw; height: 100vh; display: flex; flex-direction: column;
   }
   
-  header h1 { font-size: 21px; margin-bottom: 6px; font-family: Georgia, serif; letter-spacing: 0.5px; }
-  header p { font-size: 13px; opacity: 0.9; }
-  
-  .top-bar { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; }
-  .top-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-  
-  .container { max-width: 1000px; margin: 20px auto; padding: 0 14px; }
-  .section-title { font-size: 18px; margin: 24px 0 12px; border-left: 4px solid var(--gold); padding-left: 10px; color: var(--text); font-weight: 700; font-family: Georgia, serif; }
-  
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: 0 4px 14px rgba(23,38,58,0.06); transition: transform 0.2s, border-color 0.2s; cursor: pointer; border-top: 3px solid var(--gold); }
-  .card:hover { transform: translateY(-2px); border-color: var(--gold); }
-  .card h3 { font-size: 16px; margin-bottom: 6px; color: var(--primary); }
-  body.dark-mode .card h3 { color: #60a5fa; }
-  .card p { font-size: 12px; color: #667386; margin-bottom: 12px; line-height: 1.4; }
-  body.dark-mode .card p { color: #94a3b8; }
-  
-  .btn { display: inline-block; background: linear-gradient(120deg, #8a682b, #b08a43); color: white; padding: 7px 14px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; }
-  
-  footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 12px; border-top: 1px solid var(--border); color: #667386; line-height: 1.6; }
-  footer a { color: var(--gold); text-decoration: none; font-weight: bold; }
+  /* Top Minimal Brand Bar */
+  .top-brand-bar {
+    background: #0d192b; color: white; padding: 8px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--gold); font-size: 13px; z-index: 10;
+  }
+  .top-brand-bar a { color: #f7e6bd; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; }
+  .top-brand-bar button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 10px; border-radius: 15px; cursor: pointer; font-size: 11px; font-weight: bold; }
+
+  .fullscreen-iframe-box {
+    flex: 1; width: 100%; background: #fff;
+  }
+  .fullscreen-iframe-box iframe {
+    width: 100%; height: 100%; border: none;
+  }
+
+  /* 30-Second Multi-Color Fading SACHIN SHARMA Watermark Overlay */
+  @keyframes sachin30sCycle {
+    0%    { color: rgba(236, 72, 153, 0.32); opacity: 1; }
+    13%   { color: rgba(239, 68, 68, 0.32);  opacity: 1; }
+    26%   { color: rgba(15, 23, 42, 0.35);   opacity: 1; }
+    40%   { color: rgba(37, 99, 235, 0.32);  opacity: 1; }
+    53%   { color: rgba(249, 115, 22, 0.32); opacity: 1; }
+    68%   { color: rgba(190, 200, 215, 0.38);opacity: 1; }
+    80%   { opacity: 0; }
+    93%   { opacity: 0; }
+    100%  { color: rgba(236, 72, 153, 0.32); opacity: 1; }
+  }
+
+  .sachin-grid-watermark {
+    position: fixed; inset: 0; width: 100vw; height: 100vh;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(170px, 1fr));
+    pointer-events: none; z-index: 99999; overflow: hidden; user-select: none;
+  }
+  .sachin-grid-cell {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', system-ui, sans-serif; font-size: 15px; font-weight: 900;
+    letter-spacing: 4px; transform: rotate(-24deg); white-space: nowrap;
+    animation: sachin30sCycle 30s infinite ease-in-out; text-transform: uppercase;
+  }
+  body.dark-mode .sachin-grid-cell {
+    animation: none !important; color: rgba(255, 255, 255, 0.36) !important; opacity: 1 !important;
+  }
+
+  .sachin-bottom-tag {
+    position: fixed; bottom: 6px; left: 10px; z-index: 100000;
+    background: rgba(16, 29, 49, 0.92); backdrop-filter: blur(8px);
+    border: 1px solid rgba(197, 161, 91, 0.5); padding: 4px 10px;
+    border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; pointer-events: auto;
+  }
+  .sachin-bottom-tag a { color: #f7e6bd; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
+
+<!-- Watermark Overlay -->
+<div class="sachin-grid-watermark" aria-hidden="true">
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+  <div class="sachin-grid-cell">SACHIN SHARMA</div>
+</div>
+
+<div class="sachin-bottom-tag">
+  <a href="https://t.me/Avigat1210" target="_blank" rel="noopener">
+    <span>🥀</span> <b>SACHIN SHARMA · @Avigat1210</b>
+  </a>
+</div>
 
 <!-- स्प्लैश स्क्रीन लोडिंग एनिमेशन -->
 <div id="splashScreen">
@@ -76,95 +118,25 @@
   <div class="loader-bar"></div>
 </div>
 
-<header>
-  <div class="top-bar">
-    <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
-    <button class="top-btn" onclick="toggleDark()">🌙</button>
-  </div>
-  
-  <!-- पूरी फोटो दिखने के लिए नया क्लास -->
-  <img src="https://files.catbox.moe/84df9j.jpg" alt="Logo" class="logo-img-full">
-  
-  <h1>𝚾 𝚫 𝚬 𝚸 · ༎🥀 — UPSC MASTER PORTAL</h1>
-  <p>संचालित एवं प्रबंधितकर्ता: <strong>SACHIN SHARMA</strong> (2013 - 2026 PYQ Hub)</p>
-</header>
-
-<div class="container">
-  
-  <!-- Prelims Section -->
-  <div class="section-title">🎯 प्रीलिम्स परीक्षा (Prelims GS & CSAT - 2013 से 2026)</div>
-  <div class="grid">
-    <div class="card" onclick="location.href='prelims/gs1.html'">
-      <h3>GS Paper 1 (Prelims)</h3>
-      <p>इतिहास, राजव्यवस्था, भूगोल, अर्थव्यवस्था, पर्यावरण और विज्ञान के सभी पिछले वर्षों के प्रश्न सेट।</p>
-      <span class="btn">फोल्डर खोलें →</span>
-    </div>
-    <div class="card" onclick="location.href='prelims/csat.html'">
-      <h3>CSAT Paper 2 (Prelims)</h3>
-      <p>कम्प्रिहेंशन, रीज़निंग और क्वांटिटेटिव एप्टीट्यूड के प्रैक्टिस सेट्स।</p>
-      <span class="btn">फोल्डर खोलें →</span>
+<!-- Full Screen Layout -->
+<div class="fullscreen-container">
+  <!-- Minimal Top Bar with Owner Info & Dark Mode -->
+  <div class="top-brand-bar">
+    <div style="font-weight: bold; letter-spacing: 0.5px;">𝚾 𝚫 𝚬 𝚸 · <b>SACHIN SHARMA</b> UPSC HUB</div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <a href="https://t.me/Avigat1210" target="_blank"><span>🥀</span> @Avigat1210</a>
+      <button onclick="toggleDark()">🌙 मोड</button>
     </div>
   </div>
 
-  <!-- Mains GS Section -->
-  <div class="section-title">✍️ मुख्य परीक्षा (Mains Descriptive - GS 1 to GS 4)</div>
-  <div class="grid">
-    <div class="card" onclick="location.href='mains/gs1.html'">
-      <h3>GS Paper 1</h3>
-      <p>भारतीय विरासत, संस्कृति, विश्व इतिहास एवं समाज, भूगोल।</p>
-      <span class="btn">प्रश्न सेट देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='mains/gs2.html'">
-      <h3>GS Paper 2</h3>
-      <p>शासन व्यवस्था, संविधान, राजव्यवस्था, सामाजिक न्याय और अंतर्राष्ट्रीय संबंध।</p>
-      <span class="btn">प्रश्न सेट देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='mains/gs3.html'">
-      <h3>GS Paper 3</h3>
-      <p>अर्थव्यवस्था, विज्ञान एवं प्रौद्योगिकी, पर्यावरण, सुरक्षा और आपदा प्रबंधन।</p>
-      <span class="btn">प्रश्न सेट देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='mains/gs4.html'">
-      <h3>GS Paper 4</h3>
-      <p>नीतिशास्त्र, सत्यनिष्ठा और अभिरुचि (Ethics, Integrity & Aptitude)।</p>
-      <span class="btn">प्रश्न सेट देखें →</span>
-    </div>
+  <!-- Fullscreen Host Frame -->
+  <div class="fullscreen-iframe-box">
+    <iframe src="https://alert-pink-rmqj4pzl.edgeone.dev/" title="Live Practice Hub Fullscreen"></iframe>
   </div>
-
-  <!-- Optional Subjects Section -->
-  <div class="section-title">📚 वैकल्पिक विषय (Optional Subjects 2013-2026)</div>
-  <div class="grid">
-    <div class="card" onclick="location.href='optional/geography.html'">
-      <h3>भूगोल (Geography Optional)</h3>
-      <p>भौतिक और मानव भूगोल के पिछले वर्षों के वर्णनात्मक प्रश्न।</p>
-      <span class="btn">प्रश्न देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='optional/history.html'">
-      <h3>इतिहास (History Optional)</h3>
-      <p>प्राचीन, मध्यकालीन, आधुनिक और विश्व इतिहास वैकल्पिक विषय।</p>
-      <span class="btn">प्रश्न देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='optional/hindiliterature.html'">
-      <h3>हिंदी साहित्य (Hindi Literature)</h3>
-      <p>भाषा का इतिहास, गद्य, पद्य और विशेष साहित्‍यकार आधारित प्रश्न।</p>
-      <span class="btn">प्रश्न देखें →</span>
-    </div>
-    <div class="card" onclick="location.href='optional/publicadministration.html'">
-      <h3>लोक प्रशासन (Public Admin)</h3>
-      <p>प्रशासनिक सिद्धांत, भारतीय प्रशासन और लोक नीति।</p>
-      <span class="btn">प्रश्न देखें →</span>
-    </div>
-  </div>
-
 </div>
 
-<footer>
-  <p>© 2026 <strong>SACHIN SHARMA - UPSC HUB</strong> · All Rights Reserved.</p>
-  <p style="margin-top: 5px;">ऑफिशियल ओनर आईडी: <a href="https://t.me/Avigat1210" target="_blank">@Avigat1210 (Telegram)</a></p>
-</footer>
-
 <script>
-  // 1. स्प्लैश स्क्रीन 1.5 सेकंड बाद गायब होगी
+  // 1. स्प्लैश स्क्रीन 1.2 सेकंड बाद गायब होगी और फुल स्क्रीन साइट लोड हो जाएगी
   window.addEventListener('load', () => {
     setTimeout(() => {
       const splash = document.getElementById('splashScreen');
