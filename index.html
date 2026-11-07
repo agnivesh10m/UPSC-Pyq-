@@ -5,106 +5,143 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="SACHIN SHARMA">
 <meta name="copyright" content="© 2026 SACHIN SHARMA. All rights reserved.">
-<title>SACHIN SHARMA - UPSC MASTER PRACTICE HUB</title>
+<title>UPSC PYQ SOLVER & MASTER PORTAL | SACHIN SHARMA</title>
 
 <!-- PWA Manifest & Icons -->
 <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/84df9j.jpg">
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
-<meta name="theme-color" content="#101d32">
+<meta name="theme-color" content="#0d192b">
 
 <style>
-  :root { --bg: #f3f0e8; --card: #ffffff; --text: #18263a; --primary: #1b3552; --gold: #c5a15b; --border: #e6dfd1; }
-  body.dark-mode { --bg: #090e17; --card: #111926; --text: #f8fafc; --primary: #3b82f6; --gold: #fbbf24; --border: #1e293b; }
+  :root { 
+    --bg: #f8fafc; 
+    --card: #ffffff; 
+    --text: #0f172a; 
+    --primary: #1e3a8a; 
+    --gold: #d97706; 
+    --border: #e2e8f0; 
+    --accent: #fef3c7; 
+  }
+  body.dark-mode { 
+    --bg: #030712; 
+    --card: #111827; 
+    --text: #f9fafb; 
+    --primary: #60a5fa; 
+    --gold: #f59e0b; 
+    --border: #1f2937; 
+    --accent: #1e293b; 
+  }
   
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-  body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); }
+  body { background: var(--bg); color: var(--text); padding-bottom: 60px; transition: background 0.3s, color 0.3s; position: relative; }
   
   /* Splash Screen / Loading Animation */
   #splashScreen {
-    position: fixed; inset: 0; background: #0d192b; z-index: 999999;
+    position: fixed; inset: 0; background: #030712; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     color: white; transition: opacity 0.5s ease;
   }
   #splashScreen img {
-    width: 130px; height: auto; max-height: 140px; object-fit: contain;
-    border-radius: 12px; border: 2px solid var(--gold); box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    width: 120px; height: auto; object-fit: contain;
+    border-radius: 14px; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     margin-bottom: 20px; animation: pulseLogo 1.5s infinite alternate;
   }
   @keyframes pulseLogo { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
-  .loader-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-top: 15px; }
+  .loader-bar { width: 130px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-top: 15px; }
   .loader-bar::after { content: ''; display: block; width: 40%; height: 100%; background: var(--gold); animation: loadAnim 1s infinite alternate; }
   @keyframes loadAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
 
-  /* Full Screen Host Frame Container */
-  .fullscreen-container {
-    width: 100vw; height: 100vh; display: flex; flex-direction: column;
+  header { 
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
+    color: white; padding: 30px 16px 25px 16px; text-align: center; 
+    border-bottom: 4px solid var(--gold); position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   }
   
-  /* Top Minimal Brand Bar */
-  .top-brand-bar {
-    background: #0d192b; color: white; padding: 8px 15px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid var(--gold); font-size: 13px; z-index: 10;
+  .top-bar { 
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 15px; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto;
   }
-  .top-brand-bar a { color: #f7e6bd; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; }
-  .top-brand-bar button { background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 10px; border-radius: 15px; cursor: pointer; font-size: 11px; font-weight: bold; }
+  .top-btn { 
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
+    color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; 
+    font-size: 12px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; 
+    transition: 0.2s;
+  }
+  .top-btn:hover { background: rgba(255,255,255,0.2); }
 
-  .fullscreen-iframe-box {
-    flex: 1; width: 100%; background: #fff;
+  .logo-img-full { 
+    width: 90px; height: auto; object-fit: contain; 
+    border-radius: 12px; border: 2px solid var(--gold); margin-bottom: 10px; 
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4); display: inline-block; background: #fff; padding: 3px;
   }
-  .fullscreen-iframe-box iframe {
-    width: 100%; height: 100%; border: none;
+  
+  header h1 { font-size: 19px; margin-bottom: 6px; font-family: Georgia, serif; letter-spacing: 0.5px; }
+  header p { font-size: 12px; opacity: 0.85; }
+  
+  .container { max-width: 850px; margin: 22px auto; padding: 0 16px; position: relative; z-index: 5; }
+  
+  .info-box { 
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; 
+    padding: 20px; margin-bottom: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+    line-height: 1.6; font-size: 13.5px; position: relative; overflow: hidden; 
+  }
+  .info-box h3 { color: var(--primary); font-size: 16px; margin-bottom: 8px; font-family: Georgia, serif; }
+  body.dark-mode .info-box h3 { color: #60a5fa; }
+
+  .section-title { font-size: 17px; margin: 26px 0 14px; border-left: 4px solid var(--gold); padding-left: 10px; color: var(--text); font-weight: 700; font-family: Georgia, serif; }
+  
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { 
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px; 
+    padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+    transition: transform 0.2s, border-color 0.2s; border-top: 4px solid var(--gold); 
+    position: relative; overflow: hidden; 
+  }
+  .card:hover { transform: translateY(-2px); border-color: var(--gold); }
+  .card h3 { font-size: 16.5px; margin-bottom: 8px; color: var(--primary); font-family: Georgia, serif; }
+  body.dark-mode .card h3 { color: #60a5fa; }
+  .card p { font-size: 12.5px; color: #64748b; margin-bottom: 15px; line-height: 1.5; }
+  body.dark-mode .card p { color: #94a3b8; }
+  
+  .btn { display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; text-align: center; }
+  
+  .year-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .year-item { display: flex; justify-content: space-between; align-items: center; background: var(--accent); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 12.5px; font-weight: bold; }
+  .year-item span { font-size: 11px; color: #64748b; font-weight: normal; }
+
+  /* ================= CLEAN SECURE ORANGE WATERMARK BADGES (NO TEXT OVERLAP) ================= */
+  .clean-watermark-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ea580c, #c2410c);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3);
+    text-transform: uppercase;
   }
 
-  /* 30-Second Multi-Color Fading SACHIN SHARMA Watermark Overlay */
-  @keyframes sachin30sCycle {
-    0%    { color: rgba(236, 72, 153, 0.32); opacity: 1; }
-    13%   { color: rgba(239, 68, 68, 0.32);  opacity: 1; }
-    26%   { color: rgba(15, 23, 42, 0.35);   opacity: 1; }
-    40%   { color: rgba(37, 99, 235, 0.32);  opacity: 1; }
-    53%   { color: rgba(249, 115, 22, 0.32); opacity: 1; }
-    68%   { color: rgba(190, 200, 215, 0.38);opacity: 1; }
-    80%   { opacity: 0; }
-    93%   { opacity: 0; }
-    100%  { color: rgba(236, 72, 153, 0.32); opacity: 1; }
-  }
-
-  .sachin-grid-watermark {
-    position: fixed; inset: 0; width: 100vw; height: 100vh;
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(170px, 1fr));
-    pointer-events: none; z-index: 99999; overflow: hidden; user-select: none;
-  }
-  .sachin-grid-cell {
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Inter', system-ui, sans-serif; font-size: 15px; font-weight: 900;
-    letter-spacing: 4px; transform: rotate(-24deg); white-space: nowrap;
-    animation: sachin30sCycle 30s infinite ease-in-out; text-transform: uppercase;
-  }
-  body.dark-mode .sachin-grid-cell {
-    animation: none !important; color: rgba(255, 255, 255, 0.36) !important; opacity: 1 !important;
-  }
-
+  /* Clean Floating Bottom Tag */
   .sachin-bottom-tag {
-    position: fixed; bottom: 6px; left: 10px; z-index: 100000;
-    background: rgba(16, 29, 49, 0.92); backdrop-filter: blur(8px);
-    border: 1px solid rgba(197, 161, 91, 0.5); padding: 4px 10px;
-    border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px; pointer-events: auto;
+    position: fixed; bottom: 8px; left: 10px; z-index: 100000;
+    background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px);
+    border: 1px solid rgba(217, 119, 6, 0.6); padding: 5px 12px;
+    border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
-  .sachin-bottom-tag a { color: #f7e6bd; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+  .sachin-bottom-tag a { color: #fef3c7; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+
+  footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 12px; border-top: 1px solid var(--border); color: #64748b; line-height: 1.6; position: relative; z-index: 5; }
+  footer a { color: var(--gold); text-decoration: none; font-weight: bold; }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
-<!-- Watermark Overlay -->
-<div class="sachin-grid-watermark" aria-hidden="true">
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-  <div class="sachin-grid-cell">SACHIN SHARMA</div>
-</div>
-
+<!-- Clean Floating Owner Tag -->
 <div class="sachin-bottom-tag">
   <a href="https://t.me/Avigat1210" target="_blank" rel="noopener">
     <span>🥀</span> <b>SACHIN SHARMA · @Avigat1210</b>
@@ -114,29 +151,81 @@
 <!-- स्प्लैश स्क्रीन लोडिंग एनिमेशन -->
 <div id="splashScreen">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
-  <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#f7e6bd;">SACHIN SHARMA PORTAL</h2>
+  <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#fef3c7;">SACHIN SHARMA PORTAL</h2>
   <div class="loader-bar"></div>
 </div>
 
-<!-- Full Screen Layout -->
-<div class="fullscreen-container">
-  <!-- Minimal Top Bar with Owner Info & Dark Mode -->
-  <div class="top-brand-bar">
-    <div style="font-weight: bold; letter-spacing: 0.5px;">𝚾 𝚫 𝚬 𝚸 · <b>SACHIN SHARMA</b> UPSC HUB</div>
-    <div style="display: flex; gap: 10px; align-items: center;">
-      <a href="https://t.me/Avigat1210" target="_blank"><span>🥀</span> @Avigat1210</a>
-      <button onclick="toggleDark()">🌙 मोड</button>
+<header>
+  <!-- Watermark Badge 1 -->
+  <div style="margin-bottom: 6px;"><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
+
+  <!-- Non-Overlapping Top Bar -->
+  <div class="top-bar">
+    <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
+    <button class="top-btn" onclick="toggleDark()">🌙</button>
+  </div>
+  
+  <img src="https://files.catbox.moe/84df9j.jpg" alt="Logo" class="logo-img-full">
+  
+  <h1>𝚾 𝚫 𝚬 𝚸 · ༎🥀 — UPSC PYQ SOLVER & MASTER PORTAL</h1>
+  <p>संचालित एवं प्रबंधितकर्ता: <strong>SACHIN SHARMA</strong> (Official Prelims Test Series 2013-2026)</p>
+</header>
+
+<div class="container">
+
+  <!-- Clean Hinglish Karyapranali Box with Watermark Badge 2 -->
+  <div class="info-box">
+    <div><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
+    <h3>🎯 UPSC PYQ & Test Portal Ki Karyapranali:</h3>
+    <p>
+      Is portal ke madhyam se aap Sangh Lok Seva Ayog (UPSC) ki प्रारंभिक परीक्षा ke pichle varshon ke prashnon ka abhyas kar sakte hain. Yahan sabhi paper official answer key ke sath shuddh Hindi madhyam mein uplabdh karaye gaye hain. Exam rules ke anusar sahi uttar par <b>+2.0 marks</b> aur galat uttar par <b>-0.66</b> negative marking ka real engine active hai.
+    </p>
+  </div>
+
+  <div class="section-title">📂 Prelims Previous Years Question Papers (2013 - 2026)</div>
+  
+  <div class="grid">
+    <!-- Prelims GS Card -->
+    <div class="card">
+      <div><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
+      <h3>Prelims GS Paper 1</h3>
+      <p>General Studies Paper-1 ke year-wise original question sets, booklet series aur official answer key ke sath.</p>
+      
+      <div class="year-list">
+        <div class="year-item">
+          <div><b>UPSC Prelims 2026</b> <br><span>Booklet Series A (TDMN-A-ASO)</span></div>
+          <a href="prelims/gs1_2026.html" class="btn">टेस्ट दें ↗</a>
+        </div>
+        <div class="year-item">
+          <div><b>UPSC Prelims 2025</b> <br><span>Standard Official Set</span></div>
+          <a href="prelims/gs1_2025.html" class="btn" style="background: #64748b;">शीघ्र उपलब्ध</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prelims CSAT Card -->
+    <div class="card">
+      <h3>Prelims CSAT Paper 2</h3>
+      <p>Civil Services Aptitude Test (CSAT) ke year-wise practice sets, comprehension aur reasoning ke sath.</p>
+      
+      <div class="year-list">
+        <div class="year-item">
+          <div><b>UPSC CSAT 2026</b> <br><span>Official Pattern Set</span></div>
+          <a href="prelims/csat_2026.html" class="btn">टेस्ट दें ↗</a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Fullscreen Host Frame -->
-  <div class="fullscreen-iframe-box">
-    <iframe src="https://alert-pink-rmqj4pzl.edgeone.dev/" title="Live Practice Hub Fullscreen"></iframe>
-  </div>
 </div>
 
+<footer>
+  <p>© 2026 <strong>SACHIN SHARMA - UPSC MASTER PORTAL</strong> · All Rights Reserved.</p>
+  <p style="margin-top: 5px;">Official Owner ID: <a href="https://t.me/Avigat1210" target="_blank">@Avigat1210 (Telegram)</a></p>
+</footer>
+
 <script>
-  // 1. स्प्लैश स्क्रीन 1.2 सेकंड बाद गायब होगी और फुल स्क्रीन साइट लोड हो जाएगी
+  // 1. स्प्लैश स्क्रीन 1.2 सेकंड बाद गायब होगी
   window.addEventListener('load', () => {
     setTimeout(() => {
       const splash = document.getElementById('splashScreen');
