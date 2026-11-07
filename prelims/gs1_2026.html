@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UPSC CSE Prelims 2026 - GS Paper 1 (Series A) | SACHIN SHARMA</title>
+    <style>
+        :root {
+            --home-bg-top: #0f172a;   
+            --home-bg-bot: #020617;   
+            --home-card: #1e293b;     
+            --home-box: #334155;      
+            --home-text-accent: #f59e0b; 
+            --home-btn: #f59e0b;      
+            
+            --bg-dark: #0b0f19;       
+            --card-dark: #151b2b;     
+            --primary: #f59e0b;       
+            --secondary: #3b82f6;     
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;  
+            --option-bg: #0b0f19;     
+            
+            --correct: #10b981;       
+            --wrong: #ef4444;         
+            --skipped: #3b82f6;       
+            --current: #f59e0b;       
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent;}
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; justify-content: center; height: 100vh; height: 100dvh; overflow: hidden; }
+
+        .app-container { width: 100%; max-width: 540px; background-color: var(--bg-dark); display: flex; flex-direction: column; position: relative; height: 100%; border: none;}
+        .hidden { display: none !important; }
+        #print-container { display: none; }
+
+        #home-screen { background: linear-gradient(180deg, var(--home-bg-top) 0%, var(--home-bg-bot) 100%); padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; overflow-y: auto; }
+        
+        .brand-header { text-align: center; margin-bottom: 12px; width: 100%; }
+        .brand-header h1 { color: var(--home-text-accent); font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); }
+        .brand-header p { color: #e2e8f0; font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase;}
+        
+        .test-info-card { background: var(--home-card); padding: 18px 16px; border-radius: 16px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(245, 158, 11, 0.25); }
+        .test-title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 4px; color: white; }
+        .test-subtitle { font-size: 11.5px; color: #cbd5e1; text-align: center; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.25); }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+        .info-box { background: var(--home-box); padding: 8px 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05);}
+        .info-val { font-size: 16px; font-weight: 800; color: var(--home-text-accent); margin-bottom: 2px; }
+        .info-lbl { font-size: 9.5px; color: white; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        
+        .name-input-container { margin-bottom: 14px; }
+        .name-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--home-text-accent); background: #0b0f19; color: white; font-size: 14px; font-weight: bold; text-align: center; outline: none; }
+        .name-input::placeholder { color: #94a3b8; font-weight: normal; }
+
+        .start-btn { width: 100%; padding: 13px; border-radius: 10px; background: var(--home-btn); color: #0f172a; font-size: 15px; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        .start-btn:active { transform: scale(0.97); }
+
+        .topic-btn { width: 100%; padding: 10px; border-radius: 8px; background: transparent; color: var(--home-text-accent); font-size: 12.5px; font-weight: 800; border: 1.5px solid var(--home-text-accent); cursor: pointer; margin-top: 9px; }
+
+        .channel-links-box { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; width: 100%; }
+        .social-link-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; }
+        .telegram-btn { background: #0088cc; color: white; }
+
+        .topic-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .topic-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .topic-modal-content { background: var(--card-dark); padding: 18px; border-radius: 14px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--primary); }
+        .topic-modal-title { color: var(--primary); font-size: 16px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .topic-list { text-align: left; background: var(--bg-dark); padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed var(--primary); font-size: 12px; line-height: 1.5; color: #cbd5e1; }
+        .close-topic-btn { background: var(--primary); color: #0f172a; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; }
+
+        #test-screen { display: flex; flex-direction: column; height: 100%; background: var(--bg-dark); }
+        .test-header { flex-shrink: 0; background: var(--card-dark); border-bottom: 1px solid var(--border-color); padding: 10px 14px; }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .head-left h2 { font-size: 12.5px; color: var(--primary); font-weight: 800; margin-bottom: 2px; text-transform: uppercase; }
+        .head-left p { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .head-right { text-align: right; }
+        .head-right p { font-size: 11px; color: var(--text-main); font-weight: bold; margin-bottom: 2px; }
+        .timer-box { font-size: 12.5px; font-weight: bold; color: #0b0f19; background: var(--primary); padding: 2px 7px; border-radius: 4px; display: inline-block; }
+        
+        .progress-bar-container { height: 3px; background: var(--border-color); width: 100%; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .sub-header { display: flex; justify-content: space-between; padding: 7px 14px; font-size: 11.5px; font-weight: 600; background: var(--bg-dark); color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+
+        .question-area { flex: 1; padding: 12px 14px; overflow-y: auto; background: var(--bg-dark); }
+        .q-card { background: var(--card-dark); padding: 14px 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .q-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .q-tag { background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .q-topic-tag { background: var(--primary); color: #000; padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 800; }
+        
+        .q-text { font-size: 14px; line-height: 1.55; font-weight: 500; margin-bottom: 14px; color: #fff; white-space: pre-line; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option { display: flex; align-items: center; padding: 10px 12px; background: var(--option-bg); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .option.selected { border-color: var(--primary); background: rgba(245, 158, 11, 0.12); }
+        .opt-letter { width: 22px; height: 22px; border-radius: 4px; background: var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: bold; margin-right: 10px; color: var(--text-muted); flex-shrink: 0;}
+        .option.selected .opt-letter { background: var(--primary); color: #000; border: none; }
+        .opt-text { font-size: 13px; line-height: 1.35; color: #f1f5f9; }
+
+        .bottom-actions-container { flex-shrink: 0; background: var(--card-dark); padding: 8px 12px; border-top: 1px solid var(--border-color); }
+        .nav-buttons-row { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
+        .nav-btn { flex: 1; height: 36px; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; background: var(--bg-dark); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-btn.icon-btn { flex: 0.35; font-size: 15px; }
+        
+        .big-green-btn { 
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 38px; background: #10b981; color: white; 
+            border-radius: 6px; font-weight: bold; font-size: 13.5px; border: none; 
+            cursor: pointer; text-transform: uppercase; 
+        }
+
+        .palette-modal { position: absolute; bottom: 0; left: 0; width: 100%; max-height: 75vh; background: var(--card-dark); border-top-left-radius: 18px; border-top-right-radius: 18px; padding: 16px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 100; display: flex; flex-direction: column; border-top: 1px solid var(--primary); }
+        .palette-modal.open { transform: translateY(0); }
+        .palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .palette-header h3 { font-size: 15px; color: #fff; }
+        .close-palette { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+        .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; padding-bottom: 10px; flex: 1; }
+        .q-grid-btn { width: 100%; aspect-ratio: 1; border-radius: 6px; border: none; background: var(--bg-dark); color: var(--text-main); font-weight: bold; font-size: 12px; cursor: pointer; }
+        .status-answered { background: var(--correct) !important; color: white !important; }
+        .status-current { background: var(--current) !important; color: #000 !important; }
+
+        #result-screen { background: var(--bg-dark); color: var(--text-main); height: 100%; overflow-y: auto; padding: 16px 14px; flex: 1; }
+        .res-header { text-align: center; margin-bottom: 12px; }
+        .res-header h2 { font-size: 18px; color: var(--primary); margin-bottom: 2px; }
+        .res-header p { font-size: 11.5px; color: var(--text-muted); }
+        
+        .score-card-compact { background: var(--card-dark); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px; }
+        .score-card-compact h1 { font-size: 34px; color: #fff; margin-bottom: 2px; }
+        .score-card-compact p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;}
+
+        .res-grid-compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+        .res-box-compact { background: var(--card-dark); padding: 8px 4px; border-radius: 6px; text-align: center; border: 1px solid var(--border-color); }
+        .res-box-compact .val { font-size: 15px; font-weight: 900; margin-bottom: 1px; color: #fff; }
+        .res-box-compact .lbl { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;}
+        
+        .btn-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+        .r-btn-small { flex: 1; min-width: 120px; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; border: none; text-align: center; }
+        .r-btn-small.primary { background: var(--card-dark); color: #fff; border: 1px solid var(--border-color); }
+        .r-btn-small.print-btn { background: var(--secondary); color: #fff; }
+        .r-btn-small.retake-btn { background: #d97706; color: white; }
+
+        .review-box { background: var(--card-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .review-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; line-height: 1.45; white-space: pre-line; }
+        .ans-row { display: flex; gap: 6px; font-size: 12px; margin-bottom: 3px; }
+        .ans-lbl { color: var(--text-muted); width: 80px; flex-shrink: 0; font-weight: bold;}
+        .ans-val { font-weight: 600; }
+        .solution-box { background: rgba(245, 158, 11, 0.05); border-left: 3px solid var(--primary); border-radius: 4px; padding: 8px; margin-top: 10px; font-size: 12px; color: #e2e8f0; line-height: 1.45; }
+        .solution-title { font-weight: bold; margin-bottom: 3px; color: var(--primary); font-size: 10.5px; text-transform: uppercase; }
+
+        .copyright-tag { text-align: center; font-size: 10.5px; color: var(--text-muted); padding: 14px 0; border-top: 1px solid var(--border-color); margin-top: 20px; font-weight: 600;}
+
+        @media print {
+            @page { size: A4 portrait; margin: 12mm; }
+            body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; font-family: Arial, sans-serif !important;}
+            .app-container { display: none !important; } 
+            #print-container { display: block !important; width: 100%; max-width: 950px; margin: 0 auto; position: relative;}
+            
+            .watermark-print {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+                font-size: 72px; font-weight: 900; color: #000000 !important; opacity: 0.12 !important; 
+                z-index: 9999 !important; white-space: nowrap; pointer-events: none;
+            }
+
+            .print-header-box { border: 2px solid #000; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; text-align: center; background: #f8fafc !important; }
+            .print-header-box h2 { font-size: 19px; color: #000; margin-bottom: 3px; text-transform: uppercase; font-weight: 900;}
+            .print-header-box h3 { font-size: 14px; color: #333; margin-bottom: 6px; }
+            .print-header-box p { font-size: 11px; color: #555; margin-bottom: 8px; font-weight: bold;}
+            .print-score-row { display: flex; justify-content: space-around; border-top: 1px dashed #000; padding-top: 6px; font-size: 12px; font-weight: bold;}
+            
+            .print-q-box { margin-bottom: 14px !important; padding-bottom: 8px; border-bottom: 1px solid #cbd5e1; page-break-inside: avoid !important; }
+            .print-q-head { display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: bold;}
+            .print-q-topic { background: #f59e0b !important; color: #000 !important; padding: 2px 6px; font-size: 9.5px; border: 1px solid #000 !important; border-radius: 10px; font-weight: 800 !important;}
+            .print-q-text { font-size: 12px; margin-bottom: 5px; font-weight: 600; color: #000 !important; white-space: pre-line;}
+            .print-options-grid { display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 5px; font-size: 11.5px; padding-left: 6px;}
+            .print-ans-row { font-size: 11px; margin-bottom: 2px;}
+            .print-sol-box { background: #f8fafc !important; border-left: 3px solid #f59e0b !important; padding: 6px !important; margin-top: 5px; font-size: 11px; color: #1e293b !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="print-container">
+        <div class="watermark-print">SACHIN SHARMA</div>
+        <div id="print-content"></div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        
+        <div id="home-screen">
+            <div class="brand-header">
+                <h1>UPSC CSE PRELIMS 2026</h1>
+                <p>GENERAL STUDIES PAPER - 1</p>
+            </div>
+            
+            <div class="test-info-card">
+                <div class="test-title">Booklet Series A (T.B.C.: TDMN-A-ASO)</div>
+                <div class="test-subtitle">आधिकारिक उत्तर कुंजी (Official Answer Key Marked)</div>
+                
+                <div class="grid-2">
+                    <div class="info-box"><div class="info-val" id="home-q-count">100</div><div class="info-lbl">Questions</div></div>
+                    <div class="info-box"><div class="info-val" id="home-time-count">120 Min</div><div class="info-lbl">Duration</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--correct);">+2.00</div><div class="info-lbl">Marks/Qn</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--wrong);">-0.66</div><div class="info-lbl">Negative</div></div>
+                </div>
+                
+                <div class="name-input-container">
+                    <input type="text" id="candidate-name" class="name-input" placeholder="यहाँ अपना नाम लिखें..." autocomplete="off">
+                </div>
+                
+                <button class="start-btn" id="start-btn" onclick="startTest()">▶|| परीक्षा शुरू करें (Start Test)</button>
+                <button class="topic-btn" onclick="toggleTopicModal()">📋 परीक्षा निर्देश एवं नियम देखें</button>
+
+                <div class="channel-links-box">
+                    <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                        ✈️ Telegram: @Avigat1210
+                    </a>
+                </div>
+            </div>
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
+
+        <div class="topic-modal-overlay" id="topic-modal-overlay" onclick="closeTopicModal(event)">
+            <div class="topic-modal-content" onclick="event.stopPropagation()">
+                <div class="topic-modal-title">📖 परीक्षा निर्देश एवं अंकन योजना</div>
+                <div class="topic-list">
+                    <div>1. इस प्रश्न-पत्र में कुल 100 वस्तुनिष्ठ प्रश्न हैं[span_0](start_span)[span_0](end_span)।</div>
+                    <div>2. कुल समय अवधि 2 घंटे (120 मिनट) है[span_1](start_span)[span_1](end_span)।</div>
+                    <div>3. प्रत्येक सही उत्तर के लिए +2.0 अंक मिलेंगे।</div>
+                    <div>4. प्रत्येक गलत उत्तर के लिए -0.66 अंक (एक-तिहाई दंड) काटा जाएगा[span_2](start_span)[span_2](end_span)।</div>
+                    <div>5. सबमिट करने के बाद परिणाम और आधिकारिक उत्तर कुंजी के साथ समीक्षा उपलब्ध होगी।</div>
+                </div>
+                <button class="close-topic-btn" onclick="toggleTopicModal()">✕ बंद करें</button>
+            </div>
+        </div>
+
+        <div id="test-screen" class="hidden">
+            <div class="test-header">
+                <div class="header-row">
+                    <div class="head-left">
+                        <h2>UPSC PRELIMS 2026 GS-1</h2>
+                        <p>+2.00 / -0.66 Neg</p>
+                    </div>
+                    <div class="head-right">
+                        <p id="display-name-header">NAME</p>
+                        <div class="timer-box" id="timer-display">120:00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progress-bar"></div></div>
+            <div class="sub-header">
+                <span id="q-counter">प्रश्न 1 / 100</span>
+                <span id="answered-counter">उत्तर दिए: 0</span>
+            </div>
+
+            <div class="question-area">
+                <div class="q-card">
+                    <div class="q-header-row">
+                        <div class="q-tag" id="q-num-display">Q. 1 / 100</div>
+                        <div class="q-topic-tag" id="q-topic-display">UPSC GS Paper 1</div>
+                    </div>
+                    <div class="q-text" id="q-text">लोड हो रहा है...</div>
+                    <div class="options-list" id="options-container"></div>
+                </div>
+            </div>
+
+            <div class="bottom-actions-container">
+                <div class="nav-buttons-row">
+                    <button class="nav-btn" onclick="prevQuestion()">◀ पिछला</button>
+                    <button class="nav-btn" onclick="markSkipped()">छोड़ें</button>
+                    <button class="nav-btn icon-btn" onclick="togglePalette()">▦</button>
+                    <button class="nav-btn" id="next-btn" onclick="nextQuestion()" style="background: var(--primary); color: #000;">अगला ▶</button>
+                </div>
+                <button class="big-green-btn" onclick="submitTest()">✅ परीक्षा सबमिट करें</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="togglePalette()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; z-index:50;"></div>
+        <div class="palette-modal" id="palette-modal">
+            <div class="palette-header">
+                <h3>Question Palette</h3>
+                <button class="close-palette" onclick="togglePalette()">✕</button>
+            </div>
+            <div class="q-grid" id="palette-grid"></div>
+            <div class="palette-footer" style="margin-top:10px;">
+                <button class="big-green-btn" onclick="submitTest()">✅ परिणाम देखें</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="res-header">
+                <h2>EXAM RESULT SUMMARY</h2>
+                <p><span id="res-display-name"></span> | UPSC PRELIMS 2026 GS-1 (SERIES A)</p>
+            </div>
+            
+            <div class="score-card-compact">
+                <h1 id="final-score">0.00</h1>
+                <p>कुल प्राप्तांक (Total Marks)</p>
+            </div>
+
+            <div class="res-grid-compact">
+                <div class="res-box-compact"><div class="val" id="stat-correct" style="color: var(--correct);">0</div><div class="lbl">सही</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-wrong" style="color: var(--wrong);">0</div><div class="lbl">गलत</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-skipped" style="color: var(--skipped);">0</div><div class="lbl">छूटे</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-accuracy" style="color: var(--primary);">0%</div><div class="lbl">सटीकता</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-time" style="color: var(--primary);">0m 0s</div><div class="lbl">समय</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-avg-time" style="color: var(--primary);">0s</div><div class="lbl">औसत/प्रश्न</div></div>
+            </div>
+
+            <div class="btn-row">
+                <button class="r-btn-small print-btn" onclick="window.print()">🖨️ Print PDF Result</button>
+                <button class="r-btn-small retake-btn" onclick="retakeTest()">🔄 पुनः टेस्ट दें</button>
+                <button class="r-btn-small primary" onclick="document.getElementById('result-screen').scrollTo({top: document.getElementById('review-container').offsetTop - 20, behavior: 'smooth'})">🔍 समीक्षा देखें</button>
+            </div>
+
+            <div class="channel-links-box" style="margin-bottom: 16px;">
+                <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                    ✈️ Telegram @Avigat1210 से जुड़ें
+                </a>
+            </div>
+
+            <h3 style="font-size: 13.5px; margin-top: 14px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; color: var(--primary);">📝 आधिकारिक उत्तर कुंजी एवं समाधान</h3>
+            <div id="review-container"></div>
+            
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
+
+    </div>
+
+    <script>
+        const questions = [
+            {
+                topic: "कला एवं संस्कृति / संगीत",
+                text: "1. निम्नलिखित में से कर्नाटक संगीत के किस राग का हिन्दुस्तानी संगीत के राग बिलावल से मेल है ?",
+                options: ["नट भैरवी", "कामवर्धिनी", "हनुमतोड़ी", "धीर शंकराभरणम्"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) धीर शंकराभरणम्। कर्नाटक संगीत का 'धीर शंकराभरणम्' राग हिन्दुस्तानी संगीत के बिलावल थाट/राग के समतुल्य है।"
+            },
+            {
+                topic: "आधुनिक इतिहास / अर्थव्यवस्था",
+                text: "2. हिल्टन-यंग कमीशन (1926) द्वारा कृत्रिम रूप से निर्धारित की गई रुपए-स्टर्लिंग विनिमय दर को ब्रिटिश सरकार द्वारा निम्नलिखित में से किस कारण से अंगीकार किया गया था ?\n(a) भारत से प्रेषित धन के प्रवाह में सहायता देने और भारत की ऋणपात्रता (creditworthiness) को बनाए रखने के लिए\n(b) भारतीय आयातकों को समर्थन देने के लिए\n(c) भारत से कपास उपज के निर्यात को बढ़ावा देने के लिए\n(d) स्वर्ण के सापेक्ष रुपए के मूल्यह्रास को रोकने के लिए",
+                options: [
+                    "भारत से प्रेषित धन के प्रवाह में सहायता देने और भारत की ऋणपात्रता (creditworthiness) को बनाए रखने के लिए",
+                    "भारतीय आयातकों को समर्थन देने के लिए",
+                    "भारत से कपास उपज के निर्यात को बढ़ावा देने के लिए",
+                    "स्वर्ण के सापेक्ष रुपए के मूल्यह्रास को रोकने के लिए"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) हिल्टन-यंग कमीशन ने 1s 6d की उच्च विनिमय दर भारत से 'होम चार्जेज' और प्रेषित धन के प्रवाह को सुगम बनाने तथा भारत की क्रेडिट योग्यता बनाए रखने के लिए निर्धारित की थी।"
+            },
+            {
+                topic: "प्राचीन इतिहास / मुद्रा प्रणाली",
+                text: "3. निम्नलिखित कथनों पर विचार कीजिए :\nI. पाली ग्रंथों में, कहापण, निक्खा, कन्स और काकणिका जैसे सिक्कों के प्रथम स्पष्ट संदर्भ समाविष्ट हैं।\nII. पाली ग्रंथों से प्राप्त साहित्यिक साक्ष्य की पुष्टि, अनेक स्थलों से प्राप्त आहत सिक्कों (punch-marked coins) के पुरातात्विक प्रमाण द्वारा होती है, इन सिक्कों में से अधिकांश चाँदी से बने हैं।\nउपर्युक्त कथन निम्नलिखित में से किनसे संबद्ध हैं ?\n1. शहरी जीवन के उद्भव से\n2. मुद्रा अर्थव्यवस्था की ओर संक्रमण से",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। यह द्वितीय नगरीकरण में शहरी जीवन के उद्भव और वस्तु-विनिमय से मुद्रा अर्थव्यवस्था की ओर संक्रमण दोनों को प्रमाणित करता है।"
+            },
+            {
+                topic: "प्राचीन वास्तुशिल्प / मंदिर निर्माण",
+                text: "4. निम्नलिखित में से किस मंदिर/किन मंदिरों में नागर-शैली के शिखर हैं?\n1. मालेगिट्टी शिवालय, बादामी\n2. हुचिमल्लिगुड़ी मंदिर, ऐहोल\n3. दशावतार मंदिर, देवगढ़\n4. विरुपाक्ष मंदिर, पट्टदकल",
+                options: ["1 और 2", "2 और 3", "केवल 3", "3 और 4"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 2 और 3। हुचिमल्लिगुड़ी (ऐहोल) में प्रारंभिक नागर रेखा-प्रसाद शिखर है तथा देवगढ़ का गुप्तकालीन दशावतार मंदिर नागर शैली के शिखर का प्रसिद्ध उदाहरण है।"
+            },
+            {
+                topic: "प्राचीन भारतीय दर्शन / जैन धर्म",
+                text: "5. जैन धर्म में मान्यता-प्राप्त जीवन के अस्तित्व के चार मुख्य रूपों में, निम्नलिखित में से कौन-सा सम्मिलित नहीं है ?\n(a) देव (ईश्वर)\n(b) यक्ष (अर्धदेव)\n(c) मनुष्य (मानव)\n(d) तिर्यंच (पशु और पादप)",
+                options: ["देव (ईश्वर)", "यक्ष (अर्धदेव)", "मनुष्य (मानव)", "तिर्यंच (पशु और पादप)"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) यक्ष (अर्धदेव)। जैन दर्शन में 'चार गतियाँ' मानी गई हैं: देव, मनुष्य, तिर्यंच और नारकी। 'यक्ष' अलग वर्ग के रूप में इन चार मूल गतियों में शामिल नहीं है।"
+            },
+            {
+                topic: "प्राचीन कला / गुफा चित्रकला",
+                text: "6. बाघ गुफाओं में विद्यमान हल्लिसालस्य चित्र क्या प्रदर्शित करता है?\n(a) एक आनंदमय लोकनृत्य\n(b) चिंतनशील मुद्रा में बुद्ध\n(c) कैलाश पर शिव और पार्वती का चित्रण\n(d) समुद्रमंथन (समुद्र का मंथन)",
+                options: [
+                    "एक आनंदमय लोकनृत्य",
+                    "चिंतनशील मुद्रा में बुद्ध",
+                    "कैलाश पर शिव और पार्वती का चित्रण",
+                    "समुद्रमंथन (समुद्र का मंथन)"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) एक आनंदमय लोकनृत्य। हल्लिसालस्य एक वृत्ताकार समूह नृत्य (लोकनृत्य) शैली है जो बाघ गुफा संख्या 4 के रंगमहल में चित्रित है।"
+            },
+            {
+                topic: "प्राचीन भारतीय विज्ञान एवं गणित",
+                text: "7. भारत में स्थानीय-मान पद्धति (place-value system) के उपयोग से संबंधित निम्नलिखित कथनों पर विचार कीजिए :\n1. भारत में स्थानीय-मान पद्धति का सर्वप्रथम उत्कीर्ण-अभिलेखीय उपयोग गुजरात की मनकणी पट्टिकाओं (595 - 596 AD) में मिलता है।\n2. नवीं शताब्दी में, संपूर्ण भारत में उत्कीर्ण लेखों में स्थानीय-मान सामान्य हो जाते हैं।\n3. दक्षिण-पूर्व एशिया में संस्कृत के उत्कीर्ण लेखों में स्थानीय-मान सातवीं शताब्दी के प्रारंभ से ही मिलते हैं।",
+                options: ["केवल 1 और 2", "केवल 1 और 3", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 1, 2 और 3। तीनों कथन ऐतिहासिक व अभिलेखीय दृष्टि से सही हैं।"
+            },
+            {
+                topic: "सिंधु घाटी सभ्यता / पुरातात्विक साक्ष्य",
+                text: "8. हड़प्पा नगरों में पुरातात्विक खोजों के बारे में निम्नलिखित कथनों पर विचार कीजिए :\nI. घरों में तकली की प्रचुर उपलब्धता है किंतु चरखे अनुपलब्ध हैं।\nII. अंशांकित बाट और मापन पैमानों की खोज हुई है।\nIII. अपेक्षाकृत रूप से विस्तृत प्रांगण के चारों ओर, अधिकतर पकी हुई ईंटों से निर्मित घर मिले हैं, जिनके अपने कुएँ हैं, स्नान करने के चबूतरे हैं, और बड़े कमरे हैं।\nउपर्युक्त कथनों से निम्नलिखित में से कौन-से निष्कर्ष निकाले जा सकते हैं ?\n1. कथन I संकेत करता है कि कताई घर पर किया जाने वाला एक श्रम-साध्य कार्य था।\n2. कथन II हड़प्पा के लोगों में वैज्ञानिक ज्ञान के प्रसार की ओर संकेत करता है।\n3. कथन III साझी संपत्ति व्यवस्था के उद्भव की ओर संकेत करता है।",
+                options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1 और 2। कथन III निजी घरों और व्यक्तिगत स्वच्छता/सुविधाओं को दर्शाता है, साझी संपत्ति व्यवस्था को नहीं।"
+            },
+            {
+                topic: "आधुनिक भारत का इतिहास / किसान आंदोलन",
+                text: "9. एका आंदोलन और बारदोली सत्याग्रह के बारे में निम्नलिखित में से कौन-सा कथन सही है ?\n(a) एका आंदोलन आद्योपांत कांग्रेस द्वारा समर्थित एवं संगठित था, जबकि बारदोली सत्याग्रह आरंभ में कांग्रेस के प्रभाव से मुक्त था...\n(b) एका आंदोलन का नेतृत्व अवध के तालुकदारों द्वारा किया गया था...\n(c) बारदोली सत्याग्रह भू-राजस्व की वृद्धि के विरुद्ध एक अभियान था, जबकि एका आंदोलन लगान (rent) की अत्यधिक वसूली के विरोध में था।\n(d) एका आंदोलन वर्तमान उत्तर प्रदेश के वाराणसी और मिर्जापुर ज़िलों में केंद्रित था...",
+                options: [
+                    "एका आंदोलन आद्योपांत कांग्रेस द्वारा समर्थित एवं संगठित था, जबकि बारदोली सत्याग्रह आरंभ में कांग्रेस के प्रभाव से मुक्त था और केवल अंतिम चरण में कांग्रेस द्वारा समर्थित था।",
+                    "एका आंदोलन का नेतृत्व अवध के तालुकदारों द्वारा किया गया था, जबकि बारदोली सत्याग्रह भूमिहीन श्रमिकों का आंदोलन था।",
+                    "बारदोली सत्याग्रह भू-राजस्व की वृद्धि के विरुद्ध एक अभियान था, जबकि एका आंदोलन लगान (rent) की अत्यधिक वसूली के विरोध में था।",
+                    "एका आंदोलन वर्तमान उत्तर प्रदेश के वाराणसी और मिर्जापुर ज़िलों में केंद्रित था, जबकि बारदोली सत्याग्रह सौराष्ट्र में हुआ था।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) बारदोली सत्याग्रह 22% बढ़े हुए भू-राजस्व के विरोध में था, जबकि एका आंदोलन जमींदारों/तालुकदारों द्वारा लगान की अत्यधिक व मनमानी वसूली के खिलाफ था।"
+            },
+            {
+                topic: "वैदिक काल / कृषि एवं सिंचाई",
+                text: "10. ऋग्वेदिक काल के बारे में निम्नलिखित कथनों पर विचार कीजिए :\nI. कूपों से की जाने वाली सिंचाई ने कृषि को प्लावनीय मैदानों और नदी किनारों की पट्टियों से दूर वर्तमान पंजाब और हरियाणा के मैदानों में विस्तृत होने का अवसर दिया जहाँ भूमिगत जल स्तर सतह के पर्याप्त समीप था।\nII. कूपों से पानी निकालने के लिए भारवाही-पशु शक्ति का प्रयोग किया गया।\nनिम्नलिखित में से कौन-सी सूचना, उपर्युक्त कथनों का समर्थन करती है/हैं ?\n1. ऋग्वेद में, पानी निकालने के लिए अश्म चक्र (पत्थर की घिरनी) और आहाव (पट्टी से कसा हुआ लकड़ी का डोल) के उपयोग के साक्ष्य हैं।\n2. ऋग्वेद में पशु/कुलीश (कुल्हाड़ी) और दात्र/सृणी (हँसिया) जैसे उपकरणों के उपयोग का उल्लेख मिलता है।\n3. ऋग्वेद से पहले भी, भूमि को जोतने और गाड़ियों को खींचने के लिए बैल के उपयोग का इतिहास मिलता है।",
+                options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "केवल 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 1 और 3। अश्म चक्र व आहाव कूप सिंचाई और बैलों का उपयोग भारवाही पशु-शक्ति से जल निष्कर्षण का प्रत्यक्ष प्रमाण प्रस्तुत करते हैं।"
+            },
+            {
+                topic: "भूगोल / भू-आकृति विज्ञान व अपवाह तंत्र",
+                text: "11. निम्नलिखित अभिकथन पर विचार कीजिए :\nअत्यंत नूतन (प्लीस्टोसीन) काल में या तो यमुना, कभी सिन्धु में प्रवाहित होती थी, या फिर सतलुज, यमुना में प्रवाहित होती थी तथा इनमें से किसी एक की प्रमुख सहायक नदी या तो गंगा से सिंधु में अथवा इसके विपरीत, स्थानांतरित हुई थी।\nनिम्नलिखित में से कौन-सा/कौन-से, उपर्युक्त अभिकथन का/के आधार है/हैं ?\n1. ऋग्वेद का नदी-सूक्त\n2. रॉबर्ट ब्रूस फुट द्वारा किए गए सतलुज और यमुना के अन्वेषण\n3. सिन्धु और गंगा, दोनों नदी प्रणालियों में डॉलफ़िनों की समान प्रजातियों की उपस्थिति",
+                options: ["केवल 1", "केवल 2", "1 और 2", "3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 3। सिंधु और गंगा नदी डॉल्फिन (Platanista gangetica की उप-प्रजातियां) का आनुवंशिक व जैविक साम्य इस ऐतिहासिक भूगर्भीय नदी-विस्थापन का प्रमुख वैज्ञानिक आधार है।"
+            },
+            {
+                topic: "बौद्ध कला एवं मूर्तिविद्या",
+                text: "12. प्रारंभिक बौद्ध मूर्तिविद्या में रिक्त स्थान (empty seat) क्या दर्शाता है ?\n(a) बुद्ध का ध्यान\n(b) बुद्ध का प्रथम धर्मोपदेश\n(c) बुद्ध का महापरिनिब्बान\n(d) बुद्ध का महाभिनिष्क्रमण",
+                options: ["बुद्ध का ध्यान", "बुद्ध का प्रथम धर्मोपदेश", "बुद्ध का महापरिनिब्बान", "बुद्ध का महाभिनिष्क्रमण"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) बुद्ध का ध्यान। प्रतीकात्मक बौद्ध कला में बोधिवृक्ष के नीचे खाली आसन बुद्ध के प्रबोधन/ध्यान की अवस्था का प्रतीक माना गया है।"
+            },
+            {
+                topic: "वैदिक भूगोल / प्राचीन नदियाँ",
+                text: "13. निम्नलिखित नदियों के प्राचीन और आधुनिक नामों के युग्मों में से कौन-सा/कौन-से सही सुमेलित है/हैं ?\n1. वितस्ता : चिनाब\n2. असिक्नी : झेलम\n3. परुष्णी : रावी\n4. यव्यावती : ब्यास",
+                options: ["1 और 2", "3 और 4", "केवल 3", "केवल 4"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 3। परुष्णी = रावी (सही)। वितस्ता = झेलम, असिक्नी = चिनाब, विपाशा = ब्यास।"
+            },
+            {
+                topic: "प्राचीन भारतीय कला / अमरावती स्तूप",
+                text: "14. अमरावती स्तूप और उसकी उद्धृत मूर्तिकला (relief sculpture) के बारे में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह निचली कृष्णा घाटी में स्थित था।\n2. भारत में, आकार की दृष्टि से, साँची स्तूप के बाद इसका ही स्थान था।\n3. अमरावती मूर्तिकला शैली का परवर्ती दक्षिण भारतीय मूर्तिकला पर गहरा प्रभाव पड़ा, और उसकी रचनाओं (products) को श्रीलंका और दक्षिण-पूर्व एशिया ले जाया गया था।",
+                options: ["केवल 1", "केवल 1 और 3", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 1 और 3। अमरावती महाचैत्य अपने विशालतम रूप में साँची के मुख्य स्तूप से भी बड़ा था, अतः कथन 2 सही नहीं है।"
+            },
+            {
+                topic: "संगम काल / तमिलकम राजवंश",
+                text: "15. प्रारंभिक ऐतिहासिक तमिलकम में राजा और उसकी वंशावली के निम्नलिखित में से कौन-सा/कौन-से युग्म सही सुमेलित नहीं है/हैं ?\n1. सेनगुड्डुवन : चेर\n2. उदियनजेरल : चोल\n3. नेदुन्जेलियन : पांड्य",
+                options: ["1 और 2", "केवल 2", "1 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2। उदियनजेरल भी चेर वंश का प्रथम ऐतिहासिक शासक था (चोल नहीं)। अतः युग्म 2 गलत सुमेलित है।"
+            },
+            {
+                topic: "भारतीय राष्ट्रीय आंदोलन / फॉरवर्ड ब्लॉक",
+                text: "16. 1939 में, सुभाष चन्द्र बोस द्वारा फॉरवर्ड ब्लॉक के गठन के लिए निम्नलिखित में से कौन-से कारकों का योगदान रहा ?\n1. बोस, महात्मा गाँधी का विश्वास जीतने में विफल रहे।\n2. कांग्रेसी वामपंथियों में एकता नहीं थी और वे बोस को समर्थन देने में विफल रहे।\n3. साम्यवादियों ने बोस के प्रयासों का समर्थन नहीं किया।\n4. एम.एन. रॉय के समर्थक और जयप्रकाश नारायण जैसे समाजवादी नेताओं ने बोस को समर्थन देने की अपेक्षा कांग्रेस की एकता को वरीयता दी।",
+                options: ["1, 2 और 3", "1, 2 और 4", "1, 3 और 4", "केवल 2 और 4"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1, 2 और 4। त्रिपुरी संकट के बाद वामपंथियों की आंतरिक फूट तथा CSP व रॉयवादियों द्वारा कांग्रेस की संगठनात्मक एकता को प्राथमिकता देना प्रमुख कारण था।"
+            },
+            {
+                topic: "आधुनिक इतिहास / 1857 विद्रोह की पृष्ठभूमि",
+                text: "17. 1856 में अवध के समामेलन (annexation) के तत्काल बाद अवध में ब्रिटिश नीति के संबंध में निम्नलिखित कथनों पर विचार कीजिए :\n1. तालुकदारों की भूसंपत्ति जब्त कर ली गई, किंतु उन्हें अपने अस्त्र-शस्त्र और किले अधिकार में रखने दिए गए।\n2. तालुकदारों को बाहरी व्यक्ति मानते हुए 1856 में संक्षिप्त राजस्व बंदोबस्त किया गया था।\n3. ब्रिटिश, तालुकदारों को हटाकर, कृषकों से सीधे राजस्व लेने में विश्वास करते थे।",
+                options: ["केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3", "केवल 2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 2 और 3। तालुकदारों के किले ढहा दिए गए थे और हथियार जब्त कर लिए गए थे, अतः कथन 1 गलत है।"
+            },
+            {
+                topic: "संवैधानिक विकास / 1919 का अधिनियम",
+                text: "18. निम्नलिखित अभिकथन पर विचार कीजिए :\nसमुदाय पर आधारित राजनैतिक गठबंधनों की उत्पत्ति, 1919 के मोंटेग्यू-चेम्सफोर्ड सुधारों के मूल स्वरूप में निहित थी।\nनिम्नलिखित में से कौन-सा/कौन-से कथन, उपर्युक्त अभिकथन का समर्थन करता है/करते हैं ?\n1. इन सुधारों ने पृथक निर्वाचक मंडलों के सिद्धांत को बनाए रखा और विस्तृत किया।\n2. पृथक निर्वाचक मंडलों का उद्देश्य सशक्त होते भारतीय राष्ट्रवाद का प्रतिरोध करना था।\n3. वंचित वर्ग पृथक निर्वाचक मंडलों में अंतर्निहित हितों के लिए एकजुट हुए।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 1, 2 और 3। 1919 सुधारों ने सिखों, ईसाइयों, एंग्लो-इंडियनों तक पृथक निर्वाचन का विस्तार कर सांप्रदायिक राजनीति को संस्थागत रूप दिया।"
+            },
+            {
+                topic: "कला एवं संस्कृति / शास्त्रीय संगीत घराने",
+                text: "19. कर्नाटक के विख्यात शास्त्रीय गायक पंडित मल्लिकार्जुन मंसूर किस घराने का प्रतिनिधित्व करते थे ?\n(a) आगरा घराना\n(b) ग्वालियर घराना\n(c) पटियाला घराना\n(d) जयपुर-अतरौली घराना",
+                options: ["आगरा घराना", "ग्वालियर घराना", "पटियाला घराना", "जयपुर-अतरौली घराना"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) जयपुर-अतरौली घराना। पंडित मल्लिकार्जुन मंसूर उस्ताद अल्लादिया खां के शिष्यों से प्रशिक्षित जयपुर-अतरौली घराने के मूर्धन्य गायक थे।"
+            },
+            {
+                topic: "प्राचीन भारतीय साहित्य / शब्दावली",
+                text: "20. क्षेत्र-पत्नी ('mistress of the field') शब्द निम्नलिखित में से किस ग्रंथ में उद्भूत है ?\n(a) ऋग्वेद\n(b) अथर्ववेद\n(c) अष्टाध्यायी\n(d) अर्थशास्त्र",
+                options: ["ऋग्वेद", "अथर्ववेद", "अष्टाध्यायी", "अर्थशास्त्र"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) अथर्ववेद। अथर्ववेद में कृषि समृद्धि और भूमि की उर्वरा शक्ति के संदर्भ में 'क्षेत्र-पत्नी' शब्द का उल्लेख मिलता है।"
+            },
+            {
+                topic: "पर्यावरण / जलवायु परिवर्तन नीतियां",
+                text: "21. जलवायु परिवर्तन पर भारत की अनुक्रिया के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए :\nI. भारत की दीर्घकालिक निम्न उत्सर्जन विकास रणनीति (LT-LEDS), वर्ष 2070 तक नेट-जीरो उत्सर्जन को प्राप्त करने के लिए एक निर्णायक साधन है।\nII. दिसंबर, 2024 में प्रस्तुत की गई भारत की चौथी द्विवार्षिक अद्यतन रिपोर्ट (BUR-4) में 2019 की तुलना में 2020 में ग्रीनहाउस गैस उत्सर्जनों में लगभग 8% कमी दर्ज की गई।\nIII. जलवायु-अनुकूल (क्लाइमेट-रेज़िलिएन्ट) विकास अनिवार्य रूप से उत्सर्जन न्यूनीकरण लक्ष्यों की त्वरित और अल्प-कालिक उपलब्धि पर निर्भर है।\nउपर्युक्त कथनों के बीच के संबंधों में से निम्नलिखित में से कौन-सा/कौन-से सही है/हैं?",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। कथन III गलत है क्योंकि दीर्घकालिक संधारणीयता केवल अल्पकालिक लक्ष्यों पर निर्भर नहीं हो सकती।"
+            },
+            {
+                topic: "जैव विविधता / वन्यजीव संरक्षण",
+                text: "22. वेस्टर्न हूलॉक गिबनों के संबंध में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. पूर्वोत्तर भारत में एक अभयारण्य इस वानर जाति (species) का घर है जिसे अंतर्राष्ट्रीय प्रकृति संरक्षण संघ (आई.यू.सी.एन.) की लाल सूची में लुप्तप्राय (Endangered) के रूप में सूचीबद्ध किया गया है।\n2. उनके पास विशिष्ट बाहुगमन (ब्रैकिएशन) की क्षमता है और वे आसानी से पेड़ों के बीच झूल सकते हैं।\n3. गोरिला की भाँति, वे मज़बूत और स्थूलकाय होते हैं, तथापि वे असाधारण रूप से फुर्तीले वृक्षारोही हैं।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। गिबन 'लेसर एप्स' (लघु वानर) होते हैं और पतले-फुर्तीले होते हैं, गोरिल्ला की तरह भारी और स्थूलकाय नहीं होते।"
+            },
+            {
+                topic: "पारिस्थितिकी / मैंग्रोव संरक्षण",
+                text: "23. निम्नलिखित में से कौन-सा/कौन-से, जलवायु अनुकूलन (climate resilience) के संदर्भ में गरान (मैंग्रोव) पारिस्थितिकी तंत्रों के संरक्षण हेतु तर्काधार की सर्वोत्तम व्याख्या करता है/करते हैं ?\n1. गरान ज्वारीय ऊर्जा को कम करते हैं और अलवणजल का संचयन करते हैं, जो उन्हें लवणीय ज्वारनदमुखी कटिबंधों में धान की खेती के लिए आदर्श स्थल बनाते हैं।\n2. उनकी लवण-संवेदी जड़ें समुद्रीजल को छानती हैं, इस प्रकार तटीय भूमि को अलवण जलीय कृषि (एक्वाकल्चर) क्षेत्रों में परिवर्तित करने में गरानों की मुख्य भूमिका होती है।\n3. ज्वारीय लहरों (टाइडल सर्जेस) को सहन करने तथा जैवमात्रा (बायोमास) संसाधनों को उपलब्ध करवाने के माध्यम से, गरान प्राकृतिक जैव-ढाल (बायोशील्ड) और ग्रामीण समुदायों के लिए जीविका के आधार, दोनों रूपों में कार्य करते हैं।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 3। मैंग्रोव प्राकृतिक जैव-ढाल (Bio-shield) हैं जो तटीय अपरदन और तूफानी लहरों से रक्षा करते हैं।"
+            },
+            {
+                topic: "अवसंरचना / बंदरगाह व संभार तंत्र",
+                text: "24. विझिनजाम अंतर्राष्ट्रीय समुद्री पत्तन, भारत के समुद्री व्यापार और संभार तंत्र (लॉजिस्टिक्स) नीति में संरचनात्मक परिवर्तन को किस रूप/किन रूपों में निरूपित करता है ?\n1. तटीय पोत परिवहन पर निर्भरता को कम करने और विदेशी सहयोग की आवश्यकता को समाप्त करने के लिए केवल एक घरेलू कार्गो केंद्र के रूप में कार्य करना।\n2. मुख्यतः यात्री क्रूज पर्यटन और विरासत पोत परिवहन पर केंद्रित करते हुए एक समुद्री विरासत गंतव्य के रूप में केरल की पहचान (प्रोफाइल) को बढ़ाना।\n3. अपनी प्राकृतिक गहराई (डीप ड्राफ्ट) और रणनीतिक अवस्थान का लाभ उठाते हुए विदेशी यानांतरण (ट्रांस-शिपमेंट) पत्तनों पर निर्भरता को कम करना, राजस्व बनाए रखने को बढ़ाना, और क्षेत्रीय समुद्री व्यापार में भारत को पुनः स्थापित करना।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 3। विझिनजाम भारत का पहला डीप-वाटर ट्रांस-शिपमेंट हब है जो कोलंबो और सिंगापुर जैसे विदेशी पत्तनों पर निर्भरता घटाएगा।"
+            },
+            {
+                topic: "भारतीय भूगोल / अपवाह तंत्र",
+                text: "25. निम्नलिखित सूचना के आधार पर भारतीय उप-महाद्वीप की नदी को पहचानिए :\n1. इसका एक पूर्ववर्ती अपवाह तंत्र है।\n2. यह तीन देशों में से होकर बहती है।\n3. इसका उद्गम तिब्बत के पठार में होता है और यह सिंचाई के लिए महत्त्वपूर्ण नदी है।\n4. इसकी कोई वितरिका नहीं है।",
+                options: ["ब्रह्मपुत्र", "सिंधु", "सतलुज", "तीस्ता"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) सतलुज। सतलुज तिब्बत (राक्षस ताल) से निकलकर भारत व पाकिस्तान में प्रवाहित होती है और इसकी कोई वितरिका (distributary) नहीं है।"
+            },
+            {
+                topic: "भारतीय भूगोल / राज्य सीमाएं",
+                text: "26. भारतीय राज्यों के संदर्भ में निम्नलिखित में से कौन-सा/कौन-से सही नहीं है/हैं?\n1. उत्तर प्रदेश सबसे अधिक संख्या में अन्य भारतीय राज्यों के साथ अपनी सीमा साझा करता है।\n2. सभी भारतीय राज्यों में से राजस्थान सबसे लंबी अंतर्राष्ट्रीय सीमा साझा करता है।\n3. सिक्किम एकमात्र राज्य है जो केवल एक अन्य भारतीय राज्य के साथ अपनी सीमा साझा करता है।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 2 और 3। सबसे लंबी अंतरराष्ट्रीय सीमा पश्चिम बंगाल (बांग्लादेश के साथ) साझा करता है। मेघालय भी केवल एक राज्य (असम) से सीमा बनाता है।"
+            },
+            {
+                topic: "पर्यावरण / प्रवासी पक्षी संरक्षण",
+                text: "27. मंगोलिया से प्रत्येक वर्ष नागालैंड के दोयंग झील में अमूर बाज़ों (Amur Falcons) के आगमन के संबंध में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह दर्शाता है कि कैसे निरंतर स्थानीय संरक्षण प्रयास अंतर्राष्ट्रीय प्रवासी पक्षियों के आगमन और संरक्षण में योगदान दे सकते हैं।\n2. यह उन उन्नत ट्रैकिंग प्रौद्योगिकियों की वैश्विक सफलता को दर्शाता है जो प्रवासी पक्षियों को अपने प्रवास स्थल (स्टॉपओवर साइट) पर वापस जाने का मार्ग दिखाती हैं।\n3. यह पुष्टि करता है कि अमूर बाज़ों ने अनुकूल आवास संबंधी परिवर्तनों के कारण भारत को स्थायी निवास स्थल (रेजिडेन्सी) के रूप में अपना लिया है।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1। दोयांग जलाशय में नागालैंड समुदाय के प्रयासों से अमूर बाज़ों का शिकार बंद हुआ; बाज़ प्रवासी हैं, स्थायी निवासी नहीं बने हैं।"
+            },
+            {
+                topic: "कृषि / संधारणीय विकास मिशन",
+                text: "28. राष्ट्रीय सतत कृषि मिशन (NMSA) के अंतर्गत वर्षा सिंचित क्षेत्र विकास (RAD) पहल का/के उद्देश्य निम्नलिखित में से कौन-सा/कौन-से है/हैं?\n1. वर्षा सिंचित क्षेत्रों में एकधान्य कृषि (मोनोकल्चर) को प्रोत्साहित करना\n2. सिंचित क्षेत्रों में धान की खेती को बढ़ाना\n3. एकीकृत कृषि प्रणालियों (IFS) के माध्यम से उत्पादकता को बढ़ाना और जलवायु संबंधी जोखिमों का न्यूनीकरण करना",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 3। RAD का मुख्य उद्देश्य वर्षा सिंचित क्षेत्रों में एकीकृत कृषि प्रणाली (IFS) को बढ़ावा देकर जलवायु सहनीयता बढ़ाना है।"
+            },
+            {
+                topic: "वस्त्र उद्योग / पर्यावरण मानक",
+                text: "29. वैश्विक वस्त्र उद्योग में एरी रेशम (सिल्क) के लिए ओको-टेक्स प्रमाणन (Oeko-Tex certification) प्राप्त करने का सर्वाधिक महत्त्वपूर्ण तात्पर्य निम्नलिखित में से कौन-सा/कौन-से है/हैं?\n1. यह भारतीय निर्यातकों को रसायनमुक्त उत्पादों को अधिक महत्त्व देने वाले उच्चस्तरीय बाज़ारों में प्रतिस्पर्धा करने की अनुमति देता है।\n2. यह पुष्टि करता है कि एरी रेशम अंतर्राष्ट्रीय सुरक्षा, पर्यावरणीय, और गुणवत्ता मानकों को पूरा करता है, जिससे प्रीमियम पर्यावरण-सचेतन बाज़ारों में इसे प्रवेश का अधिकार मिलता है।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। ओको-टेक्स मानक पारिस्थितिक व रासायनिक सुरक्षा की पुष्टि करता है जिससे वैश्विक प्रीमियम बाज़ारों में मान्यता मिलती है।"
+            },
+            {
+                topic: "विश्व भूगोल / समुद्री जलडमरूमध्य",
+                text: "30. निम्नलिखित में से किन देशों से आने वाले जहाजों को हिंद महासागर तक पहुँचने के लिए होर्मुज जलडमरूमध्य (स्ट्रेट ऑफ़ होर्मुज) को पार करना होता है ?\n1. बहरीन\n2. सीरिया\n3. क़तर\n4. मिस्र",
+                options: ["1 और 2", "1 और 3", "2 और 3", "3 और 4"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 3। बहरीन और कतर फारस की खाड़ी में स्थित हैं, अतः उन्हें हिंद महासागर आने के लिए होर्मुज जलडमरूमध्य से गुजरना अनिवार्य है।"
+            },
+            {
+                topic: "भौगोलिक परिघटनाएं / ज्वालामुखी व भू-उद्यान",
+                text: "31. तुंगुराहुआ ज्वालामुखी, जिसे वर्ष 2025 में यूनेस्को (UNESCO) द्वारा एक वैश्विक भू-उद्यान (ग्लोबल जियोपार्क) घोषित किया गया था, निम्नलिखित में से किस देश में स्थित है ?\n(a) इक्वाडोर\n(b) पेरू\n(c) बोलीविया\n(d) कोलंबिया",
+                options: ["इक्वाडोर", "पेरू", "बोलीविया", "कोलंबिया"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) इक्वाडोर। तुंगुराहुआ एक सक्रिय स्ट्रैटोज्वालामुखी है जो इक्वाडोर के एंडीज पर्वतमाला में स्थित है।"
+            },
+            {
+                topic: "पर्यावरण / राष्ट्रीय उद्यान व टाइगर रिजर्व",
+                text: "32. माधव राष्ट्रीय उद्यान के संदर्भ में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. इसे वर्ष 2025 में भारत का बाघ अभयारण्य (टाइगर रिज़र्व) घोषित किया गया था।\n2. साख्य सागर, जिसे रामसर स्थल के रूप में नामित किया गया है, इस राष्ट्रीय उद्यान के भीतर स्थित है।\n3. इसका क्षेत्रफल मध्य प्रदेश और राजस्थान के बीच में साझा होता है।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। माधव राष्ट्रीय उद्यान मध्य प्रदेश के शिवपुरी जिले में पूर्णतः स्थित है (राजस्थान के साथ साझा नहीं है)।"
+            },
+            {
+                topic: "भारतीय भूगोल / द्वीपसमूह जलवायु",
+                text: "33. अंडमान और निकोबार द्वीपसमूह की जलवायु के संदर्भ में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं?\n1. इस जलवायु को आर्द्र, उष्णकटिबंधीय तटीय जलवायु के रूप में परिभाषित किया जा सकता है।\n2. यहाँ दक्षिण-पश्चिम मानसून और उत्तर-पूर्वी मानसून, दोनों से वर्षा होती है।\n3. दिसंबर और मई के बीच में अधिकतम वर्षण होता है।",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। अधिकतम वर्षा मई से नवंबर के दौरान दक्षिण-पश्चिम मानसून से होती है, न कि दिसंबर-मई के बीच।"
+            },
+            {
+                topic: "भू-आकृति विज्ञान / प्रायद्वीपीय भारत",
+                text: "34. निम्नलिखित में से कौन-सा/कौन-से भौगोलिक लक्षण अथवा परिघटना भारतीय प्रायद्वीपीय खंड से संबद्ध है/हैं ?\n1. विवर्तनिक क्रियाओं के कारण पश्चिमी तट के भागों का जलमग्न होना\n2. अवशिष्ट पर्वत श्रृंखलाएँ, जैसे, वेलीकोण्डा पहाड़ियों और महेंद्रगिरी पहाड़ियों की उपस्थिति\n3. तेज़ बहाव वाली नदियों द्वारा गहरी, V-आकार की नदी-घाटियों का निर्माण",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। V-आकार की गहरी घाटियां नवीन मोड़दार हिमालय की युवावस्था की नदियां बनाती हैं, प्रौढ़ प्रायद्वीपीय नदियां उथली घाटियां बनाती हैं।"
+            },
+            {
+                topic: "सरकारी योजनाएं / सागरमाला कार्यक्रम",
+                text: "35. भारत सरकार के सागरमाला कार्यक्रम के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए :\nI. सागरमाला कार्यक्रम का उद्देश्य लागत-प्रभावी और संधारणीय तटीय अवसंरचना के माध्यम से पत्तन-आधारित आर्थिक विकास को प्राप्त करना है।\nII. सागरमाला कार्यक्रम की सफलता वैश्विक पत्तन रैंकिंग में सुधार के साथ ही तटीय और अंतर्देशीय जलमार्गीय पोत परिवहन में हुई महत्त्वपूर्ण वृद्धि में परिलक्षित होती है।\nIII. सागरमाला 2.0 का लक्ष्य भारत को आत्मनिर्भर भारत और विकसित भारत 2047 की भविष्य-दृष्टि (विज़न) के अनुरूप एक वैश्विक समुद्री नवाचार केंद्र के रूप में स्थापित करना है।\nउपर्युक्त कथनों के बीच में निम्नलिखित में से कौन-सा/कौन-से संबंध सही है/हैं ?",
+                options: ["केवल 1", "1 और 2", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। कथन 1 और 2 सागरमाला कार्यक्रम के लक्ष्यों और उपलब्धियों के पारस्परिक संबंध की सही पुष्टि करते हैं।"
+            },
+            {
+                topic: "जैव विविधता / पादप प्रजातियां",
+                text: "36. रिन्कोस्टाइलिस रेटूसा (फॉक्सटेल ऑर्किड) के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. यह एक अधिपादपीय ऑर्किड है।\n2. यह पूर्वोत्तर भारत की स्थानिक जाति (स्पीशीज़) है।\n3. यह अरुणाचल प्रदेश और असम का राज्य पुष्प है।\nउपर्युक्त में से कौन-सा/कौन-से कथन सही है/हैं ?",
+                options: ["केवल 1", "1 और 3", "2 और 3", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 3। यह संपूर्ण भारतीय उपमहाद्वीप और दक्षिण-पूर्व एशिया में पाया जाता है (केवल पूर्वोत्तर भारत का स्थानिक नहीं है)।"
+            },
+            {
+                topic: "इतिहास एवं संस्कृति / यूनेस्को विश्व धरोहर",
+                text: "37. ताई-अहोम राज्य द्वारा निर्मित और यूनेस्को (UNESCO) द्वारा विश्व धरोहर स्थल के रूप में सम्मिलित, मोइदामों के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं?\n1. वे सैन्य दुर्ग के रूप में कार्य करते थे।\n2. वे राजवंशियों (रॉयल) और अभिजातों (नोबल) के मनोरंजन केंद्र (recreation centre) थे।\n3. वे राजवंशियों (रॉयल) और अभिजातों (नोबल) के समाधी स्थल (burial ground) थे।\n4. वे राजवंशियों (रॉयल) और अभिजातों (नोबल) के युद्धाभ्यास केंद्र (battle drill centres) थे।",
+                options: ["केवल 1", "1 और 3", "केवल 3", "2 और 4"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 3। चराईदेव के मोइदाम अहोम राजवंश के पारम्परिक टीलेदार समाधि स्थल (Burial Mounds) हैं।"
+            },
+            {
+                topic: "वैश्विक पर्यावरण पहल / FAO",
+                text: "38. फ्रांस में जून, 2025 में आयोजित संयुक्त राष्ट्र महासागर सम्मेलन (UNOC) में संयुक्त राष्ट्र के खाद्य और कृषि संगठन (FAO) ने 'ब्लू ट्रांसफॉर्मेशन' के लिए प्रस्तावित 'बेहतर चार (Four Betters)' के बारे में निम्नलिखित संयोजनों में से कौन-सा सही है ?\n(a) बेहतर उत्पादन, बेहतर पोषण, बेहतर पर्यावरण और बेहतर महासागर\n(b) बेहतर उत्पादन, बेहतर पोषण, बेहतर पर्यावरण और बेहतर जीवन\n(c) बेहतर प्रवाल भित्ति, बेहतर पोषण, बेहतर पर्यावरण और बेहतर जीवन\n(d) बेहतर ज्वारनदमुख, बेहतर पोषण, बेहतर पर्यावरण और बेहतर गरान (मैंग्रोव) वनस्पति",
+                options: [
+                    "बेहतर उत्पादन, बेहतर पोषण, बेहतर पर्यावरण और बेहतर महासागर",
+                    "बेहतर उत्पादन, बेहतर पोषण, बेहतर पर्यावरण और बेहतर जीवन",
+                    "बेहतर प्रवाल भित्ति, बेहतर पोषण, बेहतर पर्यावरण और बेहतर जीवन",
+                    "बेहतर ज्वारनदमुख, बेहतर पोषण, बेहतर पर्यावरण और बेहतर गरान (मैंग्रोव) वनस्पति"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) Better production, better nutrition, better environment, and a better life (बेहतर उत्पादन, बेहतर पोषण, बेहतर पर्यावरण और बेहतर जीवन)।"
+            },
+            {
+                topic: "विश्व भूगोल / झीलें",
+                text: "39. तुर्काना झील के संदर्भ में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह विश्व की सबसे बड़ी मरुस्थलीय झील है।\n2. यह झील दक्षिण सूडान में सहारा मरुस्थल के पूर्वी सीमांत के साथ-साथ स्थित है।\n3. यह झील यूनेस्को (UNESCO) के विश्व धरोहर स्थल के रूप में सूचीबद्ध है और इसे 'जेड सागर (Jade Sea)' के रूप में भी जाना जाता है।",
+                options: ["केवल 1", "केवल 1 और 3", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 1 और 3। तुर्काना झील केन्या (ग्रेट रिफ्ट वैली) में स्थित है, न कि दक्षिण सूडान में।"
+            },
+            {
+                topic: "पर्यावरण / कार्बन क्रेडिट व REDD+",
+                text: "40. निम्नलिखित में से कौन-सी, भारत में प्रथम प्लान वीवो (Plan Vivo) प्रमाणित वनोन्मूलन और वन निम्नीकरण से होने वाले उत्सर्जन का न्यूनीकरण (REDD+) परियोजना है ?\n(a) उत्तराखंड REDD+ परियोजना\n(b) उत्तर-पूर्वी हिमालय में ICFRE-ICIMOD सीमापारीय REDD+ परियोजना\n(c) खासी पहाड़ी समुदाय REDD+ परियोजना\n(d) सिक्किम मामले कामरंग समुदाय REDD+ परियोजना",
+                options: [
+                    "उत्तराखंड REDD+ परियोजना",
+                    "उत्तर-पूर्वी हिमालय में ICFRE-ICIMOD सीमापारीय (ट्रांसबाउंड्री) REDD+ परियोजना",
+                    "खासी पहाड़ी समुदाय REDD+ परियोजना",
+                    "सिक्किम मामले कामरंग (Sikkim Mamley Kamrang) समुदाय REDD+ परियोजना"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) खासी हिल्स कम्युनिटी आरईडीडी+ प्रोजेक्ट (मेघालय) भारत का पहला प्लान वीवो प्रमाणित प्रोजेक्ट है।"
+            },
+            {
+                topic: "जैव प्रौद्योगिकी / आनुवंशिक चिकित्सा",
+                text: "41. आनुवंशिक चिकित्सा (जेनेटिक मेडिसिन) के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं?\n1. आनुवंशिक चिकित्सा, रोग के लिए उत्तरदायी खराब जीन को सही करती है/की कमी को पूरा करती है।\n2. निर्मित विषाणुओं (engineered viruses) और लिपिड नैनोकणों का प्रयोग आनुवंशिक चिकित्सा के वाहक के रूप में किया जाता है।\n3. आनुवंशिक चिकित्सा संपूर्ण डीएनए (DNA) अनुक्रम को बदल देती है।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 1 और 2। यह संपूर्ण डीएनए अनुक्रम को नहीं बदलती बल्कि केवल लक्षित त्रुटिपूर्ण जीन को ठीक या प्रतिस्थापित करती है।"
+            },
+            {
+                topic: "कंप्यूटर व एआई / LLM तकनीक",
+                text: "42. यंत्र अधिगम (मशीन लर्निंग) में प्रयुक्त लार्ज लैंग्वेज मॉडलों (LLMs) के संबंध में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. LLMs निकटस्थ संभावित शब्दों के लिए प्रायिकताएँ निर्दिष्ट करते हैं और तत्पश्चात सर्वोच्च प्रायिकता वाले शब्द को चुनते हैं।\n2. LLMs पूर्वानुमान संबंधी त्रुटियों को न्यूनतम करने के लिए गणितीय इष्टतमीकरण के माध्यम से डेटा का संसाधन (process) करते हैं।\n3. LLMs निष्पक्ष निर्गम (unbiased outputs) उत्पन्न करते हैं।",
+                options: ["केवल 1", "केवल 1 और 2", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 1 और 2। LLM प्रशिक्षण डेटा में मौजूद पूर्वाग्रहों के कारण निष्पक्ष (unbiased) आउटपुट की पूर्ण गारंटी नहीं दे सकते।"
+            },
+            {
+                topic: "रक्षा तकनीक / स्टेल्थ टेक्नोलॉजी",
+                text: "43. स्टेल्थ (stealth) प्रौद्योगिकी के संबंध में निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. स्टेल्थ वस्तुओं (objects) में अति-लघु रेडार अनुप्रस्थ-परिच्छेद (क्रॉस-सेक्शन) होता है और उन्हें रेडार अवशोषक पदार्थ से विलेपित किया जाता है।\n2. विशिष्ट आवृत्तियों का प्रयोग करके स्टेल्थ वस्तुओं (objects) का पता लगाया जा सकता है।\n3. स्टेल्थ वस्तुओं (objects) को मेटा-पदार्थों (metamaterials) से विलेपित किया जाता है ताकि विद्युत्-चुम्बकीय विकिरण के प्रकीर्णन में वृद्धि की जा सके।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 1 और 2। स्टेल्थ कोटिंग विकिरण के प्रकीर्णन को बढ़ाने के लिए नहीं, बल्कि रडार तरंगों को अवशोषित करने या उन्हें रडार रिसीवर से दूर परावर्तित करने के लिए की जाती है।"
+            },
+            {
+                topic: "विमानन तकनीक / ब्लैक बॉक्स",
+                text: "44. आधुनिक विमानों में प्रयुक्त होने वाले ब्लैक बॉक्सों के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं?\n1. उनमें लाल प्रकाश स्पंद उत्सर्जित करने वाला एक बीकन होता है ताकि उनकी अंतर्जलीय खोज को सुकर बनाया जा सके।\n2. वे कॉकपिट वॉइस और फ्लाइट डेटा, दोनों को रिकॉर्ड करते हैं।\n3. उनके मेमोरी यूनिटों के निर्माण में या तो जंगरोधी इस्पात (स्टेनलेस स्टील) या टाइटेनियम का उपयोग किया जाता है।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2 और 3। पानी के भीतर खोज के लिए इनमें अंडरवाटर लोकेटर बीकन (ULB) होता है जो पराश्रव्य (अल्ट्रासोनिक एकॉस्टिक पल्स) ध्वनि तरंगे छोड़ता है, प्रकाश नहीं।"
+            },
+            {
+                topic: "ऊर्जा तकनीक / हरित हाइड्रोजन",
+                text: "45. हरित (ग्रीन) हाइड्रोजन के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह विकार्बनीकृत (decarbonized) हाइड्रोजन है जो प्राकृतिक गैस के पुनरुत्पादन द्वारा प्राप्त होती है जिसमें कार्बन अभिग्रहण और संचयन (CCS) भी सम्मिलित है।\n2. नवीकरणीय ऊर्जा से जनित विद्युत का उपयोग करके जल के विद्युत-अपघटन द्वारा इसका उत्पादन किया जाता है।\n3. भारत के राष्ट्रीय हरित हाइड्रोजन मिशन का लक्ष्य, वर्ष 2030 तक वार्षिक ग्रीनहाउस गैस उत्सर्जन में लगभग 50 MMT की कमी लाना है।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 2", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2 और 3। कथन 1 में वर्णित प्रक्रिया 'ब्लू हाइड्रोजन' की है, ग्रीन हाइड्रोजन जल के इलेक्ट्रोलिसिस से नवीकरणीय ऊर्जा द्वारा बनती है।"
+            },
+            {
+                topic: "अंतरिक्ष कार्यक्रम / निजी क्षेत्र भागीदारी",
+                text: "46. भारत के अंतरिक्ष कार्यक्रम में निजी संस्थाओं की भागीदारी के संबंध में निम्नलिखित कथनों पर विचार कीजिए :\n1. भारतीय राष्ट्रीय अंतरिक्ष संवर्धन एवं प्राधिकरण केंद्र (IN-SPACe) एक स्वायत्त अभिकरण है जिसकी स्थापना निजी संस्थाओं की भागीदारी को सुकर बनाने के लिए की गई है।\n2. अग्निकुल कॉसमॉस ने विश्व में पहली बार 3D-प्रिंटेड रॉकेट इंजन का उपयोग करके उड़ान (फ्लाइट) का प्रक्षेपण किया।\n3. स्काईरूट एयरोस्पेस ने GSLV के लिए तरल ईंधन (Liquid fuel) विकसित किया।\nउपर्युक्त में से कौन-सा/कौन-से कथन सही है/हैं ?",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 1 और 2। स्काईरूट ने अपने निजी रॉकेट विक्रम-1 के लिए इंजन बनाए हैं, इसरो के जीएसएलवी के लिए तरल ईंधन नहीं।"
+            },
+            {
+                topic: "रक्षा तकनीक / ड्रोन स्वार्म्स",
+                text: "47. ड्रोन झुंडों (स्वार्म्स) के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं?\n1. वे कमांड केंद्र के साथ संचार के लिए टेराहर्ज बैंड आवृत्ति का प्रयोग करते हैं।\n2. झुंड (स्वार्म) में सम्मिलित कोई ड्रोन, झुंड के अन्य ड्रोनों के साथ संचार कर सकता है।\n3. ड्रोन झुंड के हमले को रोकने के लिए जीपीएस स्पूफिंग (GPS Spoofing) सामान्यतः प्रयोग में लाई जाने वाली तकनीक है।",
+                options: ["केवल 1", "केवल 1 और 2", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 2 और 3। ड्रोन स्वार्म में मेश नेटवर्किंग द्वारा अंतर-ड्रोन संचार होता है और इलेक्ट्रॉनिक वारफेयर में जीपीएस स्पूफिंग से इन्हें भटकाया जाता है।"
+            },
+            {
+                topic: "जैव प्रौद्योगिकी / जीनोम परियोजना",
+                text: "48. जीनोमइंडिया परियोजना के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह मानव जीनोम परियोजना का एक भाग है।\n2. यह परियोजना भारत सरकार के जैव प्रौद्योगिकी विभाग (DBT) के द्वारा वित्तपोषित है।\n3. इसका मुख्य लक्ष्य भारतीय जनसंख्या की आनुवंशिक विविधता की सूची तैयार करना है।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2 और 3। जीनोमइंडिया भारत की स्वतंत्र राष्ट्रीय पहल है (अंतरराष्ट्रीय मानव जीनोम परियोजना का भाग नहीं है)।"
+            },
+            {
+                topic: "विज्ञान एवं प्रौद्योगिकी / क्वांटम मिशन",
+                text: "49. राष्ट्रीय क्वांटम मिशन (NQM) के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. इसका उद्देश्य 50 - 1000 भौतिक क्यूबिट की क्षमता वाले मध्यवर्ती-स्तर के क्वांटम कंप्यूटर विकसित करना है।\n2. इसके कार्यान्वयन के अंतर्गत संपूर्ण भारत के शैक्षणिक और राष्ट्रीय अनुसंधान एवं विकास संस्थानों (R&D institutes) में चार विषयगत (थीमेटिक) केंद्रों (T-Hubs) की स्थापना करना सम्मिलित है।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। दोनों कथन राष्ट्रीय क्वांटम मिशन के आधिकारिक लक्ष्यों के अनुसार पूर्णतः सत्य हैं।"
+            },
+            {
+                topic: "समुद्री अनुसंधान / डीप ओशन मिशन",
+                text: "50. भारत के डीप ओशन मिशन के संबंध में, निम्नलिखित में से कौन-सा/कौन-से कथन सही है/हैं ?\n1. इसे भारत सरकार के पत्तन, पोत परिवहन और जलमार्ग मंत्रालय द्वारा आरंभ किया गया था।\n2. गहरे समुद्री खोज हेतु 3 लोगों को ले जाने के लिए मत्स्य-6000 को डिज़ाइन किया गया है।\n3. इस मिशन के अंतर्गत समुद्रयान एक परियोजना है।",
+                options: ["केवल 1", "केवल 2 और 3", "केवल 1 और 2", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2 और 3। डीप ओशन मिशन 'पृथ्वी विज्ञान मंत्रालय' (Ministry of Earth Sciences) द्वारा संचालित है।"
+            },
+            {
+                topic: "नीतिशास्त्र एवं लोक प्रशासन सिद्धांत",
+                text: "51. श्री X ने टीकाकरण कार्यक्रम में निजी प्रदाता द्वारा गुणवत्ता से समझौते और दबाव के बावजूद आवाज़ उठाई, सतर्कता प्राधिकारी को सूचित किया तथा संविदा रोक दी। श्री X की कार्रवाई से लोक प्रशासन के निम्नलिखित सिद्धांतों में से कौन-सा सर्वाधिक प्रभावी रूप से प्रदर्शित होता है ?\n(a) दल भावना (Esprit de corps)\n(b) समता\n(c) उत्तरदायित्व (Accountability)\n(d) प्रत्यायोजन",
+                options: ["दल भावना (Esprit de corps)", "समता", "उत्तरदायित्व (Accountability)", "प्रत्यायोजन"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) उत्तरदायित्व (Accountability)। जनहित, पारदर्शिता और विधिक नियमों के प्रति जवाबदेही का पालन उत्तरदायित्व के सिद्धांत का सर्वोच्च प्रदर्शन है।"
+            },
+            {
+                topic: "प्रशासनिक निर्णय एवं संघर्ष समाधान",
+                text: "52. जनजातीय उपग्राम के पास अपशिष्ट प्रबंधन संयंत्र विवाद में सांस्कृतिक चिंताओं, जनस्वास्थ्य और पर्यावरण में संतुलन हेतु कौन-से कदम समाधान में योगदान देंगे ?\n1. तकनीकी चर्चा से पूर्व सांस्कृतिक चिंताओं को स्वीकार करना।\n2. लघु वर्ग की भावनाओं की उपेक्षा कर परियोजना तत्काल आगे बढ़ाना।\n3. बहु-हितधारक संवाद मंच का गठन।\n4. स्वतंत्र पर्यावरणीय और सामाजिक प्रभाव मूल्यांकन (ESIA) का पारदर्शी साझाकरण।",
+                options: ["केवल 1, 3 और 4", "केवल 2, 3 और 4", "केवल 1 और 2", "1, 2, 3 और 4"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1, 3 और 4। कथन 2 लोकतांत्रिक व संवेदनशील प्रशासनिक समाधान के सिद्धांतों के विपरीत है।"
+            },
+            {
+                topic: "सिविल सेवा आचरण एवं पारदर्शिता",
+                text: "53. सुश्री X को सामुदायिक उद्यान संविदा में चयनित संविदाकार के पुराने भ्रष्टाचार आरोपों की गोपनीय जानकारी मिली, विभागाध्यक्ष ने गोपनीयता की सलाह दी। सुश्री X को क्या करना चाहिए ?\n1. समिति और जनता के समक्ष तत्काल सूचना प्रकट करना।\n2. संविदाकार को हटाने की अनुशंसा करना।\n3. निरीक्षण समिति को 'सीमित प्रकटीकरण' प्रस्तावित करना और जांच होने तक गोपनीय रखना।",
+                options: ["केवल 1 और 2", "केवल 3", "केवल 2 और 3", "1, 2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 3। अपुष्ट गोपनीय सूचना का आंतरिक सक्षम प्राधिकारी/निरीक्षण समिति के समक्ष प्रकटीकरण संस्थागत मर्यादा और निष्पक्षता बनाए रखता है।"
+            },
+            {
+                topic: "भारतीय संविधान / अनुच्छेद 13",
+                text: "54. अनुच्छेद 13 में 'विधि' शब्द के अर्थ पर संगोष्ठी में 'X' का मानना था कि विधि में रूढ़ि/प्रथा सम्मिलित नहीं है, जबकि 'Y' का मानना था कि रूढ़ि या प्रथा सम्मिलित है। कौन-सा निष्कर्ष सही है ?\n(a) 'X' और 'Y' दोनों के विचार सही हैं।\n(b) विधि की व्याख्या में 'X' सही है...\n(c) 'Y' का यह विचार कि विधि में रूढ़ि सम्मिलित है, सही नहीं है।\n(d) केवल 'Y' का विचार सही है।",
+                options: [
+                    "'X' और 'Y' दोनों के विचार सही हैं।",
+                    "विधि की व्याख्या में, 'X' सही है, जिसमें रूढ़ि को सम्मिलित न किए जाने के बारे में उसके विचार भी सम्मिलित हैं।",
+                    "'Y' का यह विचार कि 'विधि' में रूढ़ि सम्मिलित है, सही नहीं है।",
+                    "केवल 'Y' का विचार सही है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 'Y' का विचार सही है। अनुच्छेद 13(3)(a) के अनुसार 'विधि' के अंतर्गत अध्यादेश, आदेश, उपविधि, नियम, विनियम, अधिसूचना, रूढ़ि या प्रथा शामिल हैं।"
+            },
+            {
+                topic: "संविधान के प्रारंभिक व अंतिम उपबंध",
+                text: "55. भारत के संविधान के संदर्भ में निम्नलिखित कथनों पर विचार कीजिए :\n1. संविधान में ऐसा कोई अनुच्छेद नहीं है जो विनिर्दिष्ट करता हो कि इसे आधिकारिक रूप से 'भारत का संविधान' कहा जाएगा।\n2. संविधान में ऐसा कोई अनुच्छेद नहीं है जो विनिर्दिष्ट करता हो कि भारतीय स्वतंत्रता अधिनियम 1947 और भारत सरकार अधिनियम 1935 निरसित किए गए।\n3. संविधान में ऐसा कोई अनुच्छेद नहीं है जिसमें प्रारंभ की तारीख के रूप में 26 जनवरी, 1950 का उल्लेख हो।",
+                options: ["सभी तीन कथन सही हैं।", "कोई भी कथन सही नहीं है।", "दो कथन सही हैं, जिनमें कथन 3 सम्मिलित है।", "केवल एक कथन सही है।"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) कोई भी कथन सही नहीं है। अनुच्छेद 393 संक्षिप्त नाम देता है, अनुच्छेद 395 पुराने अधिनियमों को निरसित करता है, और अनुच्छेद 394 में 26 जनवरी 1950 प्रारंभ की तारीख उल्लिखित है।"
+            },
+            {
+                topic: "सामाजिक न्याय / दिव्यांगजन अधिकार",
+                text: "56. भारत में दिव्यांगजनों के संबंध में निम्नलिखित कथनों में से कौन-सा/कौन-से सही है/हैं ?\n1. संसद द्वारा वर्ष 2018 में पारित दिव्यांगजन अधिकार अधिनियम...\n2. सुगम्य भारत अभियान तीन प्रमुख क्षेत्रों- निर्मित बुनियादी ढाँचा, परिवहन और आईसीटी में सार्वभौमिक पहुँच पर केंद्रित है।\n3. राष्ट्रीय दिव्यांगजन वित्त और विकास निगम (NDFDC) कारपोरेट कार्य मंत्रालय द्वारा स्थापित सार्वजनिक क्षेत्र संगठन है...",
+                options: ["1 और 2", "केवल 2", "1 और 3", "केवल 1"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2। दिव्यांगजन अधिकार अधिनियम 2016 में पारित हुआ था (2018 में नहीं) तथा NDFDC सामाजिक न्याय और अधिकारिता मंत्रालय के अधीन है।"
+            },
+            {
+                topic: "संविधान / SC-ST उपबंध व आरक्षण",
+                text: "57. भारत में अनुसूचित जातियों और अनुसूचित जनजातियों से संबंधित उपबंधों के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. पाँचवीं अनुसूची में असम, मेघालय, त्रिपुरा और मिजोरम के जनजाति क्षेत्रों के प्रशासन के उपबंध हैं।\n2. भारत की कुछ जनजातियाँ कतिपय आय पर आयकर भुगतान से छूट का दावा करने की हकदार हैं।\n3. संविधान में SC और ST की स्त्रियों के लिए पंचायतों में स्थानों के आरक्षण का उपबंध है।",
+                options: [
+                    "दो कथन सही हैं, जिनमें कथन 2 सम्मिलित है।",
+                    "दो कथन सही हैं, जो कि कथन 1 और कथन 3 हैं।",
+                    "केवल एक कथन सही है।",
+                    "सभी तीन कथन सही हैं।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) दो कथन सही हैं, जिनमें कथन 2 सम्मिलित है। आयकर अधिनियम की धारा 10(26) में छूट है और अनुच्छेद 243D(2) में SC/ST महिलाओं हेतु आरक्षण है। असम आदि 4 राज्य छठी अनुसूची में हैं।"
+            },
+            {
+                topic: "संसदीय प्रक्रिया / संसदीय प्रश्न",
+                text: "58. भारत की संसद में सदस्यों द्वारा पूछे जाने वाले प्रश्नों के संबंध में निम्नलिखित कथनों पर विचार कीजिए :\n1. अतारांकित प्रश्न ऐसे प्रश्न हैं, जिन पर कोई सदस्य सदन में मौखिक उत्तर चाहता है।\n2. तारांकित प्रश्न ऐसे प्रश्न हैं, जिन पर कोई सदस्य लिखित उत्तर चाहता है।\n3. किसी अतारांकित प्रश्न पर कोई अनुपूरक प्रश्न नहीं पूछा जा सकता है।",
+                options: ["सभी तीन कथन सही हैं।", "दो कथन सही हैं, जिनमें कथन 2 सम्मिलित है।", "केवल एक कथन सही है।", "कोई भी कथन सही नहीं है।"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल एक कथन सही है (कथन 3)। तारांकित का मौखिक उत्तर होता है (जिस पर अनुपूरक पूछे जा सकते हैं), अतारांकित का लिखित उत्तर होता है जिस पर कोई अनुपूरक नहीं होता।"
+            },
+            {
+                topic: "संसदीय समितियाँ / SC-ST कल्याण समिति",
+                text: "59. अनुसूचित जातियों और अनुसूचित जनजातियों के कल्याण संबंधी संसदीय समिति के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. अध्यक्ष की नियुक्ति राज्य सभा के सभापति द्वारा की जाती है।\n2. राज्य सभा द्वारा बीस सदस्य और लोक सभा द्वारा दस सदस्य निर्वाचित होते हैं।\n3. केंद्रीय सामाजिक न्याय मंत्री के अतिरिक्त कोई मंत्री पात्र नहीं है।\n4. सदस्यों का कार्यकाल 2 वर्ष का होता है।",
+                options: ["चारों कथन सही हैं।", "केवल एक कथन सही है, जो कि कथन 2 है।", "दो कथन सही हैं, जिनमें कथन 1 सम्मिलित है।", "कोई भी कथन सही नहीं है।"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) कोई भी कथन सही नहीं है। इसमें 30 सदस्य (20 लोकसभा + 10 राज्यसभा) होते हैं, अध्यक्ष लोकसभा अध्यक्ष चुनता है, कोई भी मंत्री सदस्य नहीं हो सकता और कार्यकाल 1 वर्ष होता है।"
+            },
+            {
+                topic: "रक्षा सुरक्षा पहल / मिशन सुदर्शन चक्र",
+                text: "60. भारत के मिशन सुदर्शन चक्र के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. इसका उद्देश्य भारत की वायु रक्षा, बैलिस्टिक मिसाइल सुरक्षा और हवाई आक्रमण क्षमताओं में वृद्धि करना है।\n2. इस मिशन को त्वरित, सटीक, और शक्तिशाली रक्षा प्रतिक्रिया के लिए डिज़ाइन किया जा रहा है...\n3. इसका एक उद्देश्य वर्ष 2035 तक सभी सार्वजनिक स्थानों को राष्ट्रव्यापी सुरक्षा कवच प्रदान करना है।",
+                options: ["1, 2 और 3", "केवल 1 और 2", "केवल 2 और 3", "केवल 1"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 1 और 2। यह राष्ट्रीय रणनीतिक व वायु/मिसाइल रक्षा स्वायत्तता हेतु एकीकृत प्रणाली है, सार्वजनिक स्थानों के नागरिक कवच का 2035 का लक्ष्य इसका भाग नहीं है।"
+            },
+            {
+                topic: "पड़ोसी देशों से सीमा संपर्क पुल",
+                text: "61. भारत को पड़ोसी देशों से जोड़ने वाले नदी सेतुओं के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. फेनी नदी पर निर्मित 'मैत्री सेतु', भारत के रामगढ़ को बांग्लादेश के सबरूम से जोड़ता है।\n2. झूलाघाट का झूला सेतु (सस्पेंशन ब्रिज) भारत को म्यांमार से जोड़ता है।\n3. मेची सेतु और उसके पहुँच मार्ग, भारत के पानीटंकी बाइपास को नेपाल के काकरविट्टा से जोड़ते हैं।",
+                options: ["1 और 2", "2 और 3", "केवल 1", "केवल 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 3। मैत्री सेतु भारत के सबरूम (त्रिपुरा) को बांग्लादेश के रामगढ़ से जोड़ता है (उल्टा लिखा है)। झूलाघाट भारत को नेपाल से जोड़ता है (म्यांमार से नहीं)।"
+            },
+            {
+                topic: "आपराधिक न्याय प्रणाली / BNSS 2023",
+                text: "62. भारतीय नागरिक सुरक्षा संहिता (BNSS), 2023 के अधीन जीरो प्रथम सूचना रिपोर्ट (Zero FIR) के बारे में कौन-सा/कौन-से कथन सही है/हैं?\n1. जीरो एफआईआर किसी भी पुलिस स्टेशन में दर्ज कराई जा सकती है, भले ही संज्ञेय/असंज्ञेय अपराध का स्थान क्षेत्राधिकार से बाहर हो।\n2. जहाँ जीरो एफआईआर दर्ज हुई है, वहाँ का प्रभारी अधिकारी अनुमति से प्राथमिक अन्वेषण आरंभ कर सकता है।\n3. सूचना देने वाले के लिए सूचना इलेक्ट्रॉनिक प्ररूप में देना अनिवार्य है।",
+                options: ["1, 2 और 3", "केवल 2 और 3", "केवल 1", "केवल 2"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 2। Zero FIR केवल 'संज्ञेय अपराध' (Cognizable offence) हेतु होती है (असंज्ञेय हेतु नहीं), और इलेक्ट्रॉनिक रूप में देना वैकल्पिक है, अनिवार्य नहीं।"
+            },
+            {
+                topic: "सरकारी संगठन एवं नियंत्रक मंत्रालय",
+                text: "63. संगठनों के विवरणों पर विचार कीजिए :\n1. CEIB : कानून प्रवर्तन एजेंसियों में समन्वय - गृह मंत्रालय\n2. SFIO : जटिल निगमित कपटों की जांच - वित्त मंत्रालय\n3. CBI : सार्वजनिक जीवन में मूल्यों का परिरक्षण - कार्मिक मंत्रालय\nउपर्युक्त कितनी पंक्तियों में विवरण सही सुमेलित हैं ?",
+                options: ["1", "2", "3", "कोई नहीं"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1 (केवल पंक्ति 3 सुमेलित है)। CEIB और SFIO दोनों क्रमशः वित्त मंत्रालय और कॉर्पोरेट कार्य मंत्रालय के अधीन आते हैं।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय अभिसमय / भारत का अनुसमर्थन",
+                text: "64. निम्नलिखित में से किन अंतर्राष्ट्रीय कन्वेंशनों का भारत ने अनुसमर्थन नहीं किया है ?\n1. रोज़गार नीति पर कन्वेंशन\n2. बलात्श्रम के अंत पर कन्वेंशन\n3. सभी प्रवासी श्रमिकों और उनके परिजनों के अधिकारों के संरक्षण पर कन्वेंशन\n4. युद्ध के समय सिविलियन संरक्षण से संबंधित जिनेवा कन्वेंशन\n5. राज्यविहीनता (Statelessness) को कम करने पर कन्वेंशन",
+                options: ["2 और 4", "1 और 2", "केवल 3 और 4", "3, 4 और 5"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 2। ILO के मूलभूत कन्वेंशनों के संदर्भ में भारत ने रोजगार नीति (Convention 122) का अनुसमर्थन नहीं किया है।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय शिखर सम्मेलन / एआई प्रभाव 2026",
+                text: "65. नई दिल्ली में आयोजित एआई प्रभाव शिखर सम्मेलन, 2026 के संबंध में कौन-से कथन सही हैं ?\n1. बौद्धिक ढाँचा तीन सूत्रों: जन, आयोजना और प्रगति पर आधारित था।\n2. प्रस्तावना में एआई लोकतंत्रीकरण पर चार्टर को बाध्यकारी ढाँचे के रूप में स्वीकार किया गया।\n3. नई दिल्ली घोषणा सात चक्रों (स्तंभों) पर केंद्रित थी, जिसमें सामाजिक सशक्तिकरण हेतु पहुँच, विज्ञान के लिए एआई आदि सम्मिलित हैं।",
+                options: ["1, 2 और 3", "केवल 1 और 2", "केवल 2 और 3", "केवल 3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) केवल 3। एआई प्रभाव घोषणापत्र गैर-बाध्यकारी नैतिक व विकासात्मक रूपरेखा (सात चक्रों) पर आधारित था।"
+            },
+            {
+                topic: "क्षेत्रीय संपर्क परियोजनाएं / भारत-आसियान",
+                text: "66. निम्नलिखित में से कौन-सी संपर्क परियोजनाएँ, भारत और आसियान (ASEAN) सदस्य देशों के बीच सहयोग का एक भाग है/हैं ?\n1. कलादान मल्टी-मॉडल ट्रांज़िट ट्रांसपोर्ट प्रोजेक्ट\n2. आईएमटी ट्राइलेटरल हाइवे\n3. अगरतला-आखाउड़ा रेल लाइन",
+                options: ["1 और 2", "2 और 3", "1 और 3", "केवल 2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1 और 2। कलादान (म्यांमार) और भारत-म्यांमार-थाईलैंड (IMT) त्रिपक्षीय राजमार्ग आसियान सहयोग का भाग हैं। अगरतला-अखौरा भारत-बांग्लादेश के बीच है।"
+            },
+            {
+                topic: "द्विपक्षीय विकास साझेदारी / भारत की परियोजनाएं",
+                text: "67. भारत से सहायता प्राप्त परियोजनाओं का देशों से सुमेलन कीजिए :\nA. मंगदेछू पनबिजली परियोजना - भूटान (3)\nB. स्टोर पैलेस का जीर्णोद्धार - अफ़ग़ानिस्तान (2)\nC. डिकओया का ज़िला अस्पताल - श्रीलंका (4)\nD. इंस्टीट्यूट ऑफ़ सिक्योरिटी एंड लॉ एनफोर्समेंट स्टडीज - मालदीव (1)",
+                options: ["A-1, B-4, C-2, D-3", "A-3, B-2, C-4, D-1", "A-3, B-4, C-2, D-1", "A-1, B-2, C-4, D-3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) A-3, B-2, C-4, D-1। मंगदेछू (भूटान), स्टोर पैलेस (काबुल), डिकओया अस्पताल (श्रीलंका), पुलिस अकादमी (मालदीव)।"
+            },
+            {
+                topic: "स्वदेशी रक्षा विनिर्माण",
+                text: "68. रक्षा हार्डवेयर की निम्नलिखित मदों में से किसका/किनका विनिर्माण भारत में किया जाता है?\n1. एसयू-30 एमकेआई लड़ाकू विमान\n2. टी-90 एमके-III टैंक\n3. आकुला श्रेणी पनडुब्बी",
+                options: ["1 और 2", "1 और 3", "केवल 1", "केवल 2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1 और 2। सुखोई-30 MKI (HAL नासिक) और T-90 भीष्म/MK-III (HVF अवाडी) भारत में निर्मित/असेंबल होते हैं। आकुला श्रेणी परमाणु पनडुब्बी रूस से लीज पर ली जाती है।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय सहयोग / प्रवासन मंच",
+                text: "69. बहुपक्षीय सहयोग मंचों के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. 'कोलंबो प्रक्रिया' एक क्षेत्रीय प्रक्रिया है जिसमें सदस्य देश बाध्यकारी निर्णय लेते हैं।\n2. 'अबू धाबी संवाद' संविदा श्रमिकों के आवागमन पर एशियाई देशों के मध्य स्वैच्छिक गैर-बाध्यकारी प्रक्रिया है।\n3. 'प्रवासन और विकास के लिए वैश्विक मंच' (GFMD) एक स्वैच्छिक गैर-बाध्यकारी मंच है।",
+                options: ["1, 2 और 3", "केवल 1 और 3", "केवल 2 और 3", "केवल 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 2 और 3। कोलंबो प्रक्रिया भी पूर्णतः स्वैच्छिक और गैर-बाध्यकारी परामर्शदात्री प्रक्रिया है।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय संस्थाएं / नोबेल शांति पुरस्कार",
+                text: "70. निम्नलिखित संयुक्त राष्ट्र संगठनों/एजेंसियों पर विचार कीजिए :\n1. विश्व खाद्य कार्यक्रम (WFP)\n2. यूनिसेफ (UNICEF)\n3. शरणार्थियों के लिए संयुक्त राष्ट्र उच्चायुक्त (UNHCR)\n4. अंतर्राष्ट्रीय श्रम संगठन (ILO)\nउपर्युक्त में से कितनों को दो बार नोबेल पुरस्कार प्रदान किया गया है ?",
+                options: ["1", "2", "3", "4"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1। केवल UNHCR को दो बार (1954 और 1981 में) नोबेल शांति पुरस्कार से सम्मानित किया गया है।"
+            },
+            {
+                topic: "संयुक्त राष्ट्र शांति स्थापना अभियान",
+                text: "71. संयुक्त राष्ट्र शांति अभियानों को उनकी अवधि से सुमेलित कीजिए :\nA. UNMIL (लाइबेरिया) - 2003-2018 (3)\nB. MINURCAT (चाड/मध्य अफ्रीकी गणराज्य) - 2007-2010 (1)\nC. MINUSTAH (हैती) - 2004-2017 (4)\nD. UNMISET (पूर्वी तिमोर) - 2002-2005 (2)",
+                options: ["A-3, B-4, C-1, D-2", "A-3, B-1, C-4, D-2", "A-2, B-1, C-4, D-3", "A-2, B-4, C-1, D-3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) A-3, B-1, C-4, D-2।"
+            },
+            {
+                topic: "क्षेत्रीय संगठन / बिम्सटेक केंद्र",
+                text: "72. बिम्सटेक केंद्रों को उनके स्थान से सुमेलित कीजिए :\nA. बिम्सटेक सांस्कृतिक उद्योग प्रेक्षण-शाला - थिम्पू (4)\nB. बिम्सटेक ऊर्जा केंद्र - बेंगलुरु (2)\nC. मौसम और जलवायु के लिए बिम्सटेक केंद्र - नोएडा (1)\nD. बिम्सटेक प्रौद्योगिकी हस्तांतरण केंद्र - कोलंबो (3)",
+                options: ["A-3, B-2, C-1, D-4", "A-3, B-1, C-2, D-4", "A-4, B-2, C-1, D-3", "A-4, B-1, C-2, D-3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) A-4, B-2, C-1, D-3।"
+            },
+            {
+                topic: "भारतीय सेना संरचना / कोर मुख्यालय",
+                text: "73. निम्नलिखित में से कौन-सा युग्म सही सुमेलित नहीं है ?\n(a) 3 कोर : दीमापुर\n(b) 4 कोर : तेजपुर\n(c) 14 कोर : लेह\n(d) 33 कोर : श्रीनगर",
+                options: ["3 कोर : दीमापुर", "4 कोर : तेजपुर", "14 कोर : लेह", "33 कोर : श्रीनगर"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 33 कोर का मुख्यालय सुकना (सिलीगुड़ी, पश्चिम बंगाल) में है। श्रीनगर में 15 कोर (चिनार कोर) का मुख्यालय है।"
+            },
+            {
+                topic: "पंचायती राज / RGSA अभियान",
+                text: "74. संशोधित राष्ट्रीय ग्राम स्वराज अभियान (RGSA) के संबंध में कौन-सा/कौन-से कथन सही है/हैं ?\n1. कार्यान्वयन अवधि 1 अप्रैल, 2021 से 31 मार्च, 2026 है।\n2. मुख्य उद्देश्य SDGs की प्राप्ति हेतु पंचायती राज संस्थाओं की क्षमताएं विकसित करना है।\n3. सभी राज्यों व UTs के लिए केंद्रीय वित्त पोषण 100% है।",
+                options: ["1 और 2", "केवल 2", "1 और 3", "2 और 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2। संशोधित RGSA 2022-23 से 2025-26 हेतु अनुमोदित है और राज्यों के लिए केंद्र-राज्य वित्त पोषण अनुपात 60:40 (पूर्वोत्तर/पहाड़ी राज्यों में 90:10) है।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय संगठन / यूरोपीय संघ",
+                text: "75. निम्नलिखित में से कौन-से देश यूरोपीय संघ (EU) के सदस्य हैं ?\n1. बेलारूस\n2. पोलैंड\n3. जर्मनी\n4. स्विट्ज़रलैंड",
+                options: ["1, 2 और 4", "केवल 1 और 4", "2 और 3", "केवल 2 और 4"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 2 और 3। पोलैंड और जर्मनी यूरोपीय संघ के सदस्य हैं। स्विट्जरलैंड और बेलारूस ईयू के सदस्य नहीं हैं।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय कानून प्रवर्तन / इंटरपोल नोटिस",
+                text: "76. इंटरपोल नोटिसों को उनके विवरण से सुमेलित कीजिए :\nA. सिल्वर नोटिस - आपराधिक संपत्तियों की पहचान/ट्रेसिंग (4)\nB. ब्लू नोटिस - व्यक्ति की पहचान/गतिविधि की अतिरिक्त जानकारी (2)\nC. ब्लैक नोटिस - अज्ञात शवों के बारे में जानकारी (1)\nD. ग्रीन नोटिस - सार्वजनिक सुरक्षा हेतु संभावित खतरे की चेतावनी (3)",
+                options: ["A-3, B-2, C-4, D-1", "A-3, B-4, C-2, D-1", "A-4, B-3, C-2, D-1", "A-4, B-2, C-1, D-3"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) A-4, B-2, C-1, D-3।"
+            },
+            {
+                topic: "पर्यावरण एवं जलवायु परिवर्तन / NIRANTAR मंच",
+                text: "77. NIRANTAR मंच के संबंध में कौन-सा/कौन-से कथन सही है/हैं ?\n1. पारिस्थितिकी तंत्र सर्वेक्षण और विश्लेषण का अग्रणी संस्थान BSI कोलकाता है।\n2. पारिस्थितिकी तंत्र सेवा अनुसंधान व प्रबंधन का अग्रणी संस्थान केंद्रीय चिड़ियाघर प्राधिकरण है।\n3. क्षमता विकास सहायता का अग्रणी संस्थान भारतीय वन प्रबंध संस्थान (IIFM) भोपाल है।",
+                options: ["1, 2 और 3", "केवल 1 और 3", "केवल 2", "केवल 3"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 1 और 3। पारिस्थितिकी तंत्र सेवाओं का शोध विंग वानिकी अनुसंधान संस्थानों (ICFRE आदि) के अधीन है, चिड़ियाघर प्राधिकरण नियामक व इन-सीटू/एक्स-सीटू देखरेख हेतु है।"
+            },
+            {
+                topic: "अंतरराष्ट्रीय संबंध / द्विपक्षीय कूटनीति",
+                text: "78. जनवरी, 2026 में जर्मनी के संघीय चांसलर की भारत यात्रा के परिणामों में से कौन-सा सही नहीं है ?\n1. आयुर्वेद संस्थान और हैम्बर्ग विश्वविद्यालय में समझौता\n2. हॉकी इंडिया और जर्मन फेडरेशन में युवा हॉकी समझौता\n3. भारत-प्रशांत क्षेत्र पर द्विपक्षीय संवाद तंत्र स्थापना\n4. लखनऊ में जर्मनी के मानद वाणिज्य दूतावास का उद्घाटन",
+                options: ["2 और 3", "1 और 4", "3 और 4", "केवल 1"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1 और 4। ये दोनों परिणाम इस विशिष्ट यात्रा के आधिकारिक समझौतों में शामिल नहीं थे।"
+            },
+            {
+                topic: "सेमीकंडक्टर तकनीक / DIR-V कार्यक्रम",
+                text: "79. DHRUV64 के बारे में कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह DIR-V कार्यक्रम के अंतर्गत निर्मित तृतीय चिप है जिसका उद्देश्य माइक्रोप्रोसेसर निर्माण को सक्षम करना है।\n2. यह भारत का प्रथम घरेलू 1.0 GHz, 64-बिट डुअल-कोर माइक्रोप्रोसेसर है।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। DHRUV64 भारत के स्वदेशी RISC-V आधारित माइक्रोप्रोसेसर मिशन का प्रमुख तकनीकी मील का पत्थर है।"
+            },
+            {
+                topic: "रक्षा व सुरक्षा मानक / बीआईएस",
+                text: "80. भारतीय मानक ब्यूरो (BIS) के बम निरोधक प्रणाली परीक्षण मानक के संबंध में कौन-से कथन सही हैं ?\n1. नए मानक को IS 19445:2025 के रूप में जाना जाता है।\n2. इससे विभिन्न एजेंसियों के बीच उपकरण की अंतर-संचालनीयता (interoperability) में सुधार होगा।\n3. इसे TBRL द्वारा रूस के सहयोग से विकसित किया गया।",
+                options: ["1, 2 और 3", "केवल 2 और 3", "केवल 1 और 2", "केवल 1"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल 1 और 2। यह स्वदेशी रूप से विकसित भारतीय राष्ट्रीय मानक है, न कि रूसी संस्थान के संयुक्त विकास का परिणाम।"
+            },
+            {
+                topic: "समसामयिकी / नोबेल पुरस्कार 2025",
+                text: "81. 'X' का जन्म UK में हुआ। उन्हें 2025 में नोबेल पुरस्कार प्रदान किया गया। घोषणा के समय वे एक अमरीकी विश्वविद्यालय में प्रोफेसर थे। 'X' को पहचानिए :\n(a) मिशेल एच. डेवोरेट\n(b) रिचर्ड रॉबसन\n(c) जॉन क्लार्क\n(d) जोएल मोकिर",
+                options: ["मिशेल एच. डेवोरेट", "रिचर्ड रॉबसन", "जॉन क्लार्क", "जोएल मोकिर"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) जॉन क्लार्क। प्रोफेसर जॉन क्लार्क (UC बर्कले) सुपरकंडक्टिंग क्वांटम इंटरफेरेंस डिवाइसेस (SQUID) और प्रयोगात्मक भौतिकी में योगदान हेतु सम्मानित हुए।"
+            },
+            {
+                topic: "खेलकूद नियम / ग्रैंड स्लैम टेनिस",
+                text: "82. ग्रैंड स्लैम टेनिस टूर्नामेंटों के संबंध में कौन-से कथन सही हैं ?\n1. इन टूर्नामेंटों का एक साझा शासन ढाँचा है जो चार ग्रैंड स्लैम के बीच साझेदारी स्थापित करता है।\n2. ये टूर्नामेंट 14 वर्ष से अधिक आयु के सभी अंतरराष्ट्रीय रैंक खिलाड़ियों के प्रवेश के लिए खुले हैं।\n3. किसी खिलाड़ी को प्राप्त हो सकने वाले 'वाइल्ड कार्ड' की संख्या की सीमा (limitation) है।",
+                options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1", "1, 2 और 3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1 और 2। ग्रैंड स्लैम टूर्नामेंट बोर्ड नियमों के अनुसार वाइल्ड कार्ड प्रविष्टि हेतु विशिष्ट कोटा व पात्रता होती है, संख्या की ऐसी कोई वैधानिक सीमा नहीं है।"
+            },
+            {
+                topic: "सेमीकंडक्टर मिशन / भारतीय संयंत्र",
+                text: "83. भारत में सेमीकंडक्टर संयंत्रों और उनके अवस्थानों का कौन-सा युग्म सही सुमेलित नहीं है ?\n(a) सीजी पॉवर : गुजरात\n(b) टाटा सेमीकंडक्टर : असम\n(c) एचसीएल-फॉक्सकॉन : मध्य प्रदेश\n(d) सिकसेम प्राइवेट लिमिटेड : ओडिशा",
+                options: [
+                    "सीजी पॉवर एंड इंडस्ट्रियल सॉल्यूशंस : गुजरात",
+                    "टाटा सेमीकंडक्टर असेंबली एंड टेस्ट : असम",
+                    "एच सी एल-फॉक्सकोन ज्वाइंट वेंचर : मध्य प्रदेश",
+                    "सिकसेम प्राइवेट लिमिटेड : ओडिशा"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) एचसीएल-फॉक्सकॉन का सेमीकंडक्टर ओएसएटी संयंत्र जेवर (उत्तर प्रदेश) में प्रस्तावित है, मध्य प्रदेश में नहीं।"
+            },
+            {
+                topic: "मौसम विज्ञान / भारत पूर्वानुमान प्रणाली",
+                text: "84. भारत के स्वदेशी नवीन उच्च रिज़ोल्यूशन मौसम मॉडल 'भारत पूर्वानुमान प्रणाली' के संबंध में कौन-सा/कौन-से कथन सही है/हैं ?\n1. इसका उद्देश्य पंचायत समूह के स्तर पर पूर्वानुमान सृजित करना है।\n2. इसे आईआईटी (IIT) दिल्ली द्वारा विकसित किया गया है।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1। यह मॉडल भारत मौसम विज्ञान विभाग (IMD) और भारतीय उष्णकटिबंधीय मौसम विज्ञान संस्थान (IITM) पुणे द्वारा विकसित किया गया है।"
+            },
+            {
+                topic: "सिनेमा एवं कला / बाफ्टा पुरस्कार",
+                text: "85. फ़िल्म 'बंग' ('Boong') के संबंध में कौन-से कथन सही हैं ?\n1. इसने बाल एवं पारिवारिक फ़िल्म श्रेणी में ब्रिटिश एकेडमी (BAFTA) पुरस्कार जीता।\n2. इस फ़िल्म का निर्देशन लक्ष्मीप्रिया देवी ने किया है।\n3. बाल एवं पारिवारिक श्रेणी में बाफ्टा जीतने वाली यह पहली भारतीय फ़िल्म है।",
+                options: ["1, 2 और 3", "केवल 2 और 3", "केवल 1 और 2", "केवल 3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1, 2 और 3। मणिपुरी पृष्ठभूमि पर आधारित इस फिल्म ने अंतरराष्ट्रीय स्तर पर इतिहास रचा और तीनों कथन सत्य हैं।"
+            },
+            {
+                topic: "डिजिटल तकनीक / ब्लॉकचेन विशेषताएं",
+                text: "86. ब्लॉकचेन प्रौद्योगिकी की विशेषताओं के संबंध में कौन-से कथन सही हैं ?\n1. डेटाबेस में भंडारित अभिलेख, परिवर्तन के जोखिम के बिना संबंधित हितधारकों को दृष्टिगोचर करवाए जा सकते हैं।\n2. संपूर्ण डेटाबेस की प्रतियों को कंप्यूटरों के नेटवर्क पर भंडारित किया जाता है, जो सेकंडों में सिंक होती हैं।\n3. कंसोर्टियम ब्लॉकचेन सार्वजनिक और निजी का मिश्रण है जो चयनित पहुँच की अनुमति देता है।\n4. गणितीय एल्गोरिदम एक बार अभिलिखित डेटा के विलोपन/परिवर्तन को असंभव बना देते हैं।",
+                options: ["1 और 3", "केवल 2 और 4", "1, 2 और 4", "केवल 1 और 4"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2 और 4। वितरित खाता-बही और क्रिप्टोग्राफिक अपरिवर्तनीयता (immutability) ब्लॉकचेन की प्रमुख मूल विशेषताएं हैं।"
+            },
+            {
+                topic: "ई-कॉमर्स / व्यापार मॉडल",
+                text: "87. विक्रेता कीमत तय करता है लेकिन उत्पाद का स्टॉक नहीं रखता, बल्कि तीसरे पक्ष के आपूर्तिकर्ता को ऑर्डर भेजता है जो सीधे ग्राहक को सामान भेजता है। इसे क्या कहते हैं ?\n(a) ड्रॉपशिपिंग मॉडल\n(b) एफिलिएट रेवेन्यू मॉडल\n(c) ट्रांजैक्शन फी रेवेन्यू मॉडल\n(d) एजेंसी रेवेन्यू मॉडल",
+                options: ["ड्रॉपशिपिंग मॉडल", "एफिलिएट रेवेन्यू मॉडल", "ट्रांजैक्शन फी रेवेन्यू मॉडल", "एजेंसी रेवेन्यू मॉडल"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) ड्रॉपशिपिंग मॉडल (Dropshipping Model)। इसमें विक्रेता स्वयं इन्वेंट्री नहीं रखता बल्कि थर्ड-पार्टी सप्लायर से सीधे शिप करवाता है।"
+            },
+            {
+                topic: "बैंकिंग एवं वित्त / वित्तीय समावेशन",
+                text: "88. भारतीय रिज़र्व बैंक (RBI) के वित्तीय समावेशन सूचकांक (FI-Index) के तीन मुख्य उप-सूचकांक कौन-से हैं ?\n(a) क्रेडिट पहुँच, बीमा गहनता, और पेंशन व्याप्ति\n(b) बैंकिंग पहुँच, GDP अंशदान, और वित्तीय साक्षरता\n(c) पहुँच, उपयोग, और गुणवत्ता\n(d) पहुँच, वहनीयता, और पारदर्शिता",
+                options: [
+                    "क्रेडिट पहुँच, बीमा गहनता, और पेंशन व्याप्ति",
+                    "बैंकिंग पहुँच, GDP अंशदान, और वित्तीय साक्षरता",
+                    "पहुँच, उपयोग, और गुणवत्ता",
+                    "पहुँच, वहनीयता (Affordability), और पारदर्शिता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) पहुँच (Access - 35%), उपयोग (Usage - 45%), और गुणवत्ता (Quality - 20%)।"
+            },
+            {
+                topic: "डिजिटल अवसंरचना / ओएनडीसी पहल",
+                text: "89. भारत के 'डिजिटल कॉमर्स के लिए ओपन नेटवर्क' (ONDC) पहल के मूल उद्देश्य का सर्वोत्तम वर्णन कौन-सा है ?\n(a) डिजिटल वाणिज्य लेनदेनों पर सरकारी नियंत्रण\n(b) निजी ई-कॉमर्स व्यापारियों को प्रतिस्थापित करना\n(c) अंतर-संचालनीयता समर्थ बनाकर बड़े प्लेटफॉर्मों के प्रभुत्व को समाप्त करना\n(d) सभी लेनदेनों हेतु UPI अनिवार्य करना",
+                options: [
+                    "सभी डिजिटल वाणिज्य (कॉमर्स) लेनदेनों पर सरकारी नियंत्रण की अनुमति देना",
+                    "निजी ई-कॉमर्स व्यापारियों (प्लेयर्स) को प्रतिस्थापित करना",
+                    "सभी नेटवर्कों के बीच अंतर-संचालनीयता को समर्थ बनाकर बड़े ई-वाणिज्य प्लेटफॉर्मों के प्रभुत्व को समाप्त करना",
+                    "सभी ऑनलाइन लेनदेनों के लिए UPI-आधारित भुगतानों को अनिवार्य करना"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) ONDC का मुख्य उद्देश्य ई-कॉमर्स को प्लेटफॉर्म-केंद्रित मॉडल से मुक्त कर ओपन नेटवर्क अंतर-संचालनीयता स्थापित करना है।"
+            },
+            {
+                topic: "भुगतान प्रणाली / यूपीआई बनाम डिजिटल रुपया",
+                text: "90. एकीकृत भुगतान इंटरफ़ेस (UPI) और केंद्रीय बैंक डिजिटल मुद्रा (डिजिटल रुपया) के बारे में कौन-सा कथन सही नहीं है ?\n(a) UPI तत्काल भुगतान प्रणाली है, डिजिटल रुपया सॉवरेन कागजी मुद्रा के सदृश्य है।\n(b) UPI में तुरंत निपटान होता है, डिजिटल रुपया में निपटान नहीं होता क्योंकि केवल वॉलेट शेष अंतरित होता है।\n(c) UPI बैंक विवरण में दर्ज होता है, डिजिटल रुपया बैंक स्टेटमेंट में दर्ज नहीं होता।\n(d) दोनों मामलों में उपयोगकर्ताओं और उनके बैंकों पर देयता होती है।",
+                options: [
+                    "UPI एक तत्काल भुगतान प्रणाली है, किंतु डिजिटल रुपया राष्ट्रिक (सॉवरेन) कागज़ी मुद्रा के सदृश्य है।",
+                    "UPI के मामले में, धन नामे/जमा होते ही निपटान तत्काल हो जाता है, किंतु डिजिटल रुपया में निपटान नहीं होता क्योंकि वॉलेट शेष का अंतरण होता है।",
+                    "UPI लेनदेनों को बैंक विवरणों में दर्शाया जाता है, किंतु डिजिटल रुपया में बैंक विवरण में कोई डेटा दर्ज नहीं होता।",
+                    "दोनों मामलों (UPI और डिजिटल रुपया) में, उपयोगकर्ताओं और उनके संबंधित बैंकों पर देयता होती है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) डिजिटल रुपया सीधे भारतीय रिज़र्व बैंक (RBI) की प्रत्यक्ष देनदारी (Sovereign Liability) है, वाणिज्यिक बैंकों की नहीं।"
+            },
+            {
+                topic: "वित्तीय नवाचार / संपत्ति टोकनाइजेशन",
+                text: "91. रियल-वर्ल्ड एसेट्स (RWA) टोकनाइजेशन के बारे में कौन-से कथन सही हैं ?\n1. ब्लॉकचेन प्रौद्योगिकी से रियल वर्ल्ड एसेट्स को डिजिटल टोकन में बदलना।\n2. यह 24x7 पहुँच प्रदान करता है जिससे वित्तीय समावेशन बढ़ता है।\n3. यह भारत में लोगों को उच्च संवृद्धि निवेश अवसरों तक पहुँच प्रदान करेगा।",
+                options: ["1, 2 और 3", "केवल 2 और 3", "केवल 1 और 2", "केवल 1 और 3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1, 2 और 3। RWA टोकनाइजेशन तरलता, पारदर्शिता और आंशिक स्वामित्व (fractional ownership) को संभव बनाता है।"
+            },
+            {
+                topic: "वित्तीय साधन / संधारणीय बॉन्ड",
+                text: "92. एक बॉन्ड जिसके आगम (proceeds) का उपयोग केवल पर्यावरणीय और सामाजिक परियोजनाओं दोनों के संयोजन के वित्तपोषण हेतु किया जाता है, उसे क्या कहते हैं ?\n(a) हरित (ग्रीन) बॉन्ड\n(b) सामाजिक (सोशल) बॉन्ड\n(c) संधारणीयता (सस्टेनेबिलिटी) बॉन्ड\n(d) राष्ट्रिक (सॉवरेन) बॉन्ड",
+                options: ["हरित (ग्रीन) बॉन्ड", "सामाजिक (सोशल) बॉन्ड", "संधारणीयता (सस्टेनेबिलिटी) बॉन्ड", "राष्ट्रिक (सॉवरेन) बॉन्ड"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) संधारणीयता (सस्टेनेबिलिटी) बॉन्ड। ग्रीन बॉन्ड केवल पर्यावरण हेतु और सोशल बॉन्ड सामाजिक कार्यों हेतु होते हैं; दोनों के संयोजन को सस्टेनेबिलिटी बॉन्ड कहते हैं।"
+            },
+            {
+                topic: "लघु उद्योग वित्तपोषण / टीआरईडीएस मंच",
+                text: "93. MSMEs के वित्तपोषण में M1xchange की भूमिका के बारे में कौन-सा/कौन-से कथन सही है/हैं ?\n1. यह MSMEs को संपार्श्विक आधारित ऋण उपलब्ध कराता है।\n2. यह इनवाइसों और विनिमय पत्रों के बट्टा काटने (discounting) को सुकर बनाता है।\n3. यह क्रेडिट रेटिंग एजेंसी के रूप में कार्य करता है।",
+                options: ["1, 2 और 3", "केवल 2", "केवल 2 और 3", "केवल 1"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल 2। M1xchange आरबीआई द्वारा अनुमोदित TReDS प्लेटफॉर्म है जो इनवॉइस डिस्काउंटिंग के माध्यम से कार्यशील पूंजी की तरलता सुनिश्चित करता है।"
+            },
+            {
+                topic: "राजकोषीय नीति / क्राउडिंग आउट प्रभाव",
+                text: "94. राजकोषीय नीति के संदर्भ में 'निजी निवेश के बहिर्गमन का प्रभाव' ('Crowding Out Effect') का सर्वोत्तम वर्णन कौन-सा है ?\n(a) सरकारी व्यय बढ़ने से निजी निवेश बढ़ना\n(b) सरकारी उधार से ब्याज दरें उच्च होना जिससे निजी निवेश घटना\n(c) कर बढ़ने से निजी निवेश बढ़ना\n(d) सरकारी व्यय का समग्र मांग पर कोई प्रभाव न पड़ना",
+                options: [
+                    "एक ऐसी स्थिति जहाँ सरकारी व्यय बढ़ने के कारण निजी निवेश बढ़ जाता है",
+                    "एक ऐसी स्थिति जहाँ सरकारी उधार के परिणामस्वरूप ब्याज दरें उच्च हो जाती हैं, जिससे निजी निवेश घट जाता है",
+                    "एक ऐसी स्थिति जहाँ करों में वृद्धि होने के परिणामस्वरूप निजी क्षेत्र निवेश बढ़ जाता है",
+                    "एक ऐसी स्थिति जहाँ सरकार द्वारा किए गए व्यय का समग्र माँग पर कोई प्रभाव नहीं पड़ता है"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) जब सरकार बाजार से अत्यधिक ऋण लेती है, तो ऋण योग्य धन की कमी से ब्याज दरें बढ़ जाती हैं और निजी निवेश हतोत्साहित होता है।"
+            },
+            {
+                topic: "खनिज संसाधन / महत्वपूर्ण खनिज मिशन",
+                text: "95. दुर्लभ मृदा तत्वों (REEs) और महत्वपूर्ण खनिजों के बारे में कौन-से कथन सही हैं ?\n1. एआई, रोबोटिक्स और अंतरिक्ष में इनका व्यापक उपयोग होता है।\n2. खनन में चीन के बाद भारत की सर्वाधिक हिस्सेदारी है।\n3. सरकार ने 2025 में राष्ट्रीय महत्वपूर्ण खनिज मिशन (NCMM) आरंभ किया।\n4. दुर्लभ मृदा तत्व 13 धात्विक तत्वों का समुच्चय हैं।",
+                options: ["केवल 1 और 3", "केवल 3", "1, 3 और 4", "1, 2 और 4"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1 और 3। REE कुल 17 धात्विक तत्वों (15 लैंथेनाइड्स + स्कैंडियम व इट्रियम) का समूह हैं, और खनन में चीन के बाद अमेरिका/ऑस्ट्रेलिया अग्रणी हैं।"
+            },
+            {
+                topic: "विमानन क्षेत्र / बीमा व अंतरराष्ट्रीय नियम",
+                text: "96. विमानन क्षेत्र में बीमा के बारे में कौन-सा/कौन-से कथन सही है/हैं ?\n1. 'विमानन हल बीमा' (Aviation Hull Insurance) के अंतर्गत भौतिक वायुयान, इंजन और ऑन-बोर्ड उपकरण समाविष्ट होते हैं।\n2. मोंट्रियल कन्वेंशन 1999 के अधीन एयरलाइनें मृतक यात्री के परिजनों को दोष सिद्ध करने की आवश्यकता के बिना क्षतिपूर्ति हेतु पूर्णतः उत्तरदायी हैं।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। मोंट्रियल कन्वेंशन में 'सख्त देयता' (Strict Liability) का सिद्धांत लागू होता है।"
+            },
+            {
+                topic: "वित्तीय व्यवस्था / क्राउडफंडिंग",
+                text: "97. क्राउडफंडिंग (विविध समूह निधीयन) के बारे में कौन-सा/कौन-से कथन सही है/हैं ?\n1. किसी परियोजना हेतु वेब प्लेटफॉर्म या सोशल साइट के माध्यम से अनेक निवेशकों से छोटी मात्रा में निधि जुटाने का अनुरोध।\n2. लघु एवं मध्यम उद्यम (SMEs) कठोर प्रक्रियाओं से गुजरे बिना कम लागत पर निधियां जुटा सकते हैं।",
+                options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1, न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1 और 2 दोनों। क्राउडफंडिंग वैकल्पिक वित्तीय प्रणाली के रूप में स्टार्टअप्स व एसएमई को पूंजी तक सुगम पहुँच देती है।"
+            },
+            {
+                topic: "आर्थिक सुधार / प्रमुख समितियां",
+                text: "98. विभिन्न समितियों और उनके संगठनों के विवरणों पर विचार कीजिए :\n1. आर.एन. मल्होत्रा समिति : बीमा सुधार - IRDAI\n2. एल.सी. गुप्ता समिति : डेरिवेटिव व्यापार - सेबी (SEBI)\n3. उर्जित पटेल समिति : आवासीय ऋण सुधार - RBI\n4. वाई.एच. मालेगाम समिति : सूक्ष्म-वित्त सुधार - RBI\nउपर्युक्त में से किन पंक्तियों के सभी विवरण सही सुमेलित हैं ?",
+                options: ["केवल 2", "2 और 3", "1, 3 और 4", "2 और 4"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 2 और 4। मल्होत्रा समिति वित्त मंत्रालय/सरकार द्वारा गठित थी (IRDAI की स्थापना बाद में हुई)। उर्जित पटेल समिति मौद्रिक नीति रूपरेखा हेतु थी।"
+            },
+            {
+                topic: "बैंकिंग विनियमन / एनबीएफसी नियम",
+                text: "99. भारत में गैर-बैंकिंग वित्तीय कंपनियों (NBFCs) के बारे में कौन-से कथन सही हैं ?\n1. NBFCs मांग जमा (demand deposits) स्वीकार नहीं कर सकती हैं।\n2. भारत में सभी NBFCs को RBI में पंजीकृत होना चाहिए।\n3. NBFCs भुगतान व निपटान प्रणाली का भाग हैं और स्वयं पर आहरित चेक जारी कर सकती हैं।\n4. जमा लेने वाली NBFCs के जमाकर्ताओं को DICGC की जमा बीमा सुविधा उपलब्ध नहीं है।",
+                options: ["1 और 4", "1, 2 और 3", "केवल 4", "2, 3 और 4"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 1 और 4। हाउसिंग फाइनेंस कंपनियां (NHB), मर्चेंट बैंक (SEBI) आदि अन्य नियामकों के पास पंजीकृत हैं (सभी RBI में नहीं)। NBFC चेक जारी नहीं कर सकतीं।"
+            },
+            {
+                topic: "आर्थिक एवं सामाजिक विकास / गरीबी सूचकांक",
+                text: "100. बहुआयामी ग़रीबी सूचकांक (MPI) के बारे में निम्नलिखित कथनों पर विचार कीजिए :\n1. MPI का परिकलन अलकिरे-फोस्टर पद्धति से किया जाता है।\n2. नीति आयोग द्वारा परिकलित राष्ट्रीय MPI के कुल बारह संकेतक हैं।\n3. नीति आयोग और UNDP के MPI में मातृ स्वास्थ्य और बैंक खाता उभयनिष्ठ संकेतक (common indicators) हैं।",
+                options: ["केवल 1 और 2", "1, 2 और 3", "केवल 1 और 3", "केवल 2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल 1 और 2। वैश्विक MPI (UNDP) में 10 संकेतक हैं; नीति आयोग ने भारत के राष्ट्रीय संदर्भ में दो नए संकेतक (मातृ स्वास्थ्य और बैंक खाता) जोड़े हैं, अतः ये उभयनिष्ठ नहीं हैं।"
+            }
+        ];
+
+        const TOTAL_Q = questions.length;
+        const MARKS_PER_CORRECT = 2.00;
+        const NEGATIVE_MARK = 0.666;
+        const TIME_MINUTES = 120;
+        const STORAGE_KEY = 'upsc_prelims_2026_gs1_saved';
+
+        document.getElementById('home-q-count').innerText = TOTAL_Q;
+
+        let totalSeconds = TIME_MINUTES * 60;
+        let timerInterval;
+        let currentQIndex = 0;
+        let userAnswers = new Array(TOTAL_Q).fill(null);
+        let studentName = "";
+
+        function toggleTopicModal() { document.getElementById('topic-modal-overlay').classList.toggle('show'); }
+        function closeTopicModal(e) { if(e.target.id === 'topic-modal-overlay') toggleTopicModal(); }
+
+        function startTest() {
+            studentName = document.getElementById('candidate-name').value.trim();
+            if(!studentName) {
+                alert("कृपया टेस्ट शुरू करने से पहले अपना नाम दर्ज करें!");
+                return;
+            }
+            
+            let savedData = localStorage.getItem(STORAGE_KEY);
+            if(savedData) {
+                let parsed = JSON.parse(savedData);
+                if(confirm("आपकी पुरानी प्रगति सेव है। क्या आप वहीं से टेस्ट जारी रखना चाहते हैं?")) {
+                    userAnswers = parsed.answers;
+                    totalSeconds = parsed.time;
+                    studentName = parsed.name || studentName;
+                } else {
+                    localStorage.removeItem(STORAGE_KEY);
+                }
+            }
+            
+            document.getElementById('display-name-header').innerText = studentName;
+            document.getElementById('res-display-name').innerText = studentName;
+
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('test-screen').classList.remove('hidden');
+            
+            initPalette();
+            loadQuestion(0);
+            
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let hrs = Math.floor(totalSeconds / 3600);
+                let mins = Math.floor((totalSeconds % 3600) / 60);
+                let secs = totalSeconds % 60;
+                
+                let timeStr = "";
+                if(hrs > 0) {
+                    timeStr = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                } else {
+                    timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }
+                document.getElementById('timer-display').innerText = timeStr;
+                
+                if(totalSeconds % 5 === 0) saveProgress();
+                if(totalSeconds <= 0) { clearInterval(timerInterval); submitTest(); }
+            }, 1000);
+        }
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                answers: userAnswers,
+                time: totalSeconds,
+                name: studentName
+            }));
+        }
+
+        function loadQuestion(index) {
+            currentQIndex = index;
+            document.getElementById('q-counter').innerText = `प्रश्न ${index + 1} / ${TOTAL_Q}`;
+            document.getElementById('q-num-display').innerText = `Q. ${index + 1} / ${TOTAL_Q}`;
+            
+            const q = questions[index];
+            document.getElementById('q-topic-display').innerText = q.topic;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / TOTAL_Q) * 100}%`;
+            document.getElementById('q-text').innerText = q.text;
+            
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((optText, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = `option ${userAnswers[index] === i ? 'selected' : ''}`;
+                optDiv.onclick = () => selectOption(i);
+                optDiv.innerHTML = `<div class="opt-letter">${letters[i]}</div><div class="opt-text">${optText}</div>`;
+                optsContainer.appendChild(optDiv);
+            });
+
+            document.getElementById('next-btn').innerText = (index === TOTAL_Q - 1) ? 'सबमिट करें' : 'अगला ▶';
+            document.getElementById('answered-counter').innerText = `उत्तर दिए: ${userAnswers.filter(ans => ans !== null).length}`;
+            updatePaletteUI();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQIndex] = optIndex;
+            saveProgress();
+            loadQuestion(currentQIndex);
+        }
+        
+        function markSkipped() { nextQuestion(); }
+        function nextQuestion() { if (currentQIndex < TOTAL_Q - 1) loadQuestion(currentQIndex + 1); else submitTest(); }
+        function prevQuestion() { if (currentQIndex > 0) loadQuestion(currentQIndex - 1); }
+
+        function initPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'q-grid-btn';
+                btn.id = `pal-btn-${i}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => { loadQuestion(i); togglePalette(); };
+                grid.appendChild(btn);
+            }
+        }
+
+        function updatePaletteUI() {
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.getElementById(`pal-btn-${i}`);
+                if(!btn) continue;
+                btn.className = 'q-grid-btn'; 
+                if (i === currentQIndex) btn.classList.add('status-current');
+                else if (userAnswers[i] !== null) btn.classList.add('status-answered');
+            }
+        }
+
+        function togglePalette() {
+            const modal = document.getElementById('palette-modal');
+            const overlay = document.getElementById('overlay');
+            if(modal.classList.contains('open')){
+                modal.classList.remove('open');
+                overlay.style.display = 'none';
+            } else {
+                updatePaletteUI();
+                modal.classList.add('open');
+                overlay.style.display = 'block';
+            }
+        }
+
+        function retakeTest() {
+            if(confirm("क्या आप सचमुच टेस्ट को पुनः आरंभ करना चाहते हैं?")) {
+                localStorage.removeItem(STORAGE_KEY);
+                userAnswers = new Array(TOTAL_Q).fill(null);
+                totalSeconds = TIME_MINUTES * 60;
+                document.getElementById('result-screen').classList.add('hidden');
+                document.getElementById('home-screen').classList.remove('hidden');
+            }
+        }
+
+        function submitTest() {
+            if(totalSeconds > 0 && !confirm("क्या आप वाकई परीक्षा सबमिट करना चाहते हैं?")) return;
+
+            clearInterval(timerInterval);
+
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            document.getElementById('palette-modal').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+
+            let correct = 0, wrong = 0, skipped = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            let printHTML = `
+                <div class="print-header-box">
+                    <h2>UPSC CIVIL SERVICES (PRELIMINARY) EXAMINATION 2026</h2>
+                    <h3>GENERAL STUDIES PAPER - 1 (BOOKLET SERIES A)</h3>
+                    <p>अभ्यर्थी का नाम: ${studentName} | अंकन योजना: +2.00, -0.66</p>
+                    <div class="print-score-row">
+                        <div>कुल अंक: <span style="color: #000;" id="p-score"></span> / ${(TOTAL_Q * MARKS_PER_CORRECT).toFixed(2)}</div>
+                        <div>सही: <span style="color: #10b981;" id="p-correct"></span></div>
+                        <div>गलत: <span style="color: #ef4444;" id="p-wrong"></span></div>
+                        <div>छूटे: <span style="color: #64748b;" id="p-skipped"></span></div>
+                    </div>
+                </div>
+            `;
+
+            questions.forEach((q, idx) => {
+                const uAns = userAnswers[idx];
+                let statusColor = '', statusText = '', printStatusColor = '';
+
+                if (uAns === null) {
+                    skipped++; statusColor = 'var(--skipped)'; statusText = 'अनुत्तरित (SKIPPED)'; printStatusColor = '#64748b';
+                } else if (uAns === q.correctAnswer) {
+                    correct++; statusColor = 'var(--correct)'; statusText = 'सही (CORRECT)'; printStatusColor = '#10b981';
+                } else {
+                    wrong++; statusColor = 'var(--wrong)'; statusText = 'गलत (INCORRECT)'; printStatusColor = '#ef4444';
+                }
+
+                const uAnsText = uAns !== null ? `(${letters[uAns]}) ${q.options[uAns]}` : "कोई नहीं (Unattempted)";
+                const cAnsText = `(${letters[q.correctAnswer]}) ${q.options[q.correctAnswer]}`;
+                
+                reviewContainer.innerHTML += `
+                    <div class="review-box">
+                        <div class="q-header-row" style="margin-bottom:6px;">
+                           <span style="font-size:13px; color:var(--primary); font-weight:bold;">Q${idx + 1}.</span>
+                           <span class="q-topic-tag">${q.topic}</span>
+                        </div>
+                        <div class="review-q">${q.text}</div>
+                        <div class="ans-row"><div class="ans-lbl">आपका उत्तर:</div> <div class="ans-val" style="color:${statusColor}">${uAnsText}</div></div>
+                        <div class="ans-row"><div class="ans-lbl">सही उत्तर:</div> <div class="ans-val" style="color:var(--correct)">${cAnsText}</div></div>
+                        <div style="color:${statusColor}; font-size:11px; font-weight:bold; margin-top:2px;">${statusText}</div>
+                        <div class="solution-box"><div class="solution-title">💡 विस्तृत समाधान:</div>${q.solution}</div>
+                    </div>
+                `;
+
+                let optionsHTML = '';
+                q.options.forEach((opt, i) => { optionsHTML += `<div>(${letters[i]}) ${opt}</div>`; });
+                printHTML += `
+                    <div class="print-q-box">
+                        <div class="print-q-head"><span>Q${idx + 1}.</span><span class="print-q-topic">${q.topic}</span></div>
+                        <div class="print-q-text">${q.text}</div>
+                        <div class="print-options-grid">${optionsHTML}</div>
+                        <div class="print-ans-row"><strong>आपका उत्तर:</strong> <span style="color:${printStatusColor}">${uAnsText}</span></div>
+                        <div class="print-ans-row"><strong>आधिकारिक उत्तर:</strong> <span style="color:#10b981">${cAnsText}</span></div>
+                        <div class="print-sol-box"><div class="print-sol-lbl">व्याख्या:</div>${q.solution}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('print-content').innerHTML = printHTML;
+
+            let marks = (correct * MARKS_PER_CORRECT) - (wrong * NEGATIVE_MARK);
+            if(marks < 0) marks = 0;
+
+            let timeTakenSec = (TIME_MINUTES * 60) - totalSeconds;
+            let m = Math.floor(timeTakenSec / 60);
+            let s = timeTakenSec % 60;
+            let avgTime = Math.round(timeTakenSec / TOTAL_Q);
+            let accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+
+            document.getElementById('final-score').innerHTML = marks.toFixed(2) + '<span style="font-size: 16px; color: var(--text-muted);"> / ' + (TOTAL_Q * MARKS_PER_CORRECT).toFixed(2) + '</span>';
+            
+            document.getElementById('stat-correct').innerText = correct;
+            document.getElementById('stat-wrong').innerText = wrong;
+            document.getElementById('stat-skipped').innerText = skipped;
+            document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+            document.getElementById('stat-time').innerText = `${m}m ${s}s`;
+            document.getElementById('stat-avg-time').innerText = `${avgTime}s`;
+
+            document.getElementById('p-score').innerText = marks.toFixed(2);
+            document.getElementById('p-correct').innerText = correct;
+            document.getElementById('p-wrong').innerText = wrong;
+            document.getElementById('p-skipped').innerText = skipped;
+            
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
