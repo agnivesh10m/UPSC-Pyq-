@@ -7,7 +7,6 @@
 <meta name="copyright" content="© 2026 SACHIN SHARMA. All rights reserved.">
 <title>UPSC PYQ SOLVER & MASTER PORTAL | SACHIN SHARMA</title>
 
-<!-- PWA Manifest & Icons -->
 <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/84df9j.jpg">
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#0d192b">
@@ -32,10 +31,9 @@
     --accent: #1e293b; 
   }
   
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
-  body { background: var(--bg); color: var(--text); padding-bottom: 60px; transition: background 0.3s, color 0.3s; position: relative; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); padding-bottom: 70px; transition: background 0.3s, color 0.3s; position: relative; }
   
-  /* Splash Screen / Loading Animation */
   #splashScreen {
     position: fixed; inset: 0; background: #030712; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -90,41 +88,50 @@
 
   .section-title { font-size: 17px; margin: 26px 0 14px; border-left: 4px solid var(--gold); padding-left: 10px; color: var(--text); font-weight: 700; font-family: Georgia, serif; }
   
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
   .card { 
     background: var(--card); border: 1px solid var(--border); border-radius: 14px; 
     padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
-    transition: transform 0.2s, border-color 0.2s; border-top: 4px solid var(--gold); 
-    position: relative; overflow: hidden; 
+    border-top: 4px solid var(--gold); position: relative; overflow: hidden; 
   }
-  .card:hover { transform: translateY(-2px); border-color: var(--gold); }
   .card h3 { font-size: 16.5px; margin-bottom: 8px; color: var(--primary); font-family: Georgia, serif; }
   body.dark-mode .card h3 { color: #60a5fa; }
   .card p { font-size: 12.5px; color: #64748b; margin-bottom: 15px; line-height: 1.5; }
   body.dark-mode .card p { color: #94a3b8; }
   
-  .btn { display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); color: white; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; text-align: center; }
-  
   .year-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-  .year-item { display: flex; justify-content: space-between; align-items: center; background: var(--accent); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 12.5px; font-weight: bold; }
+  .year-item { 
+    display: flex; justify-content: space-between; align-items: center; 
+    background: var(--accent); padding: 10px 14px; border-radius: 8px; 
+    border: 1px solid var(--border); font-size: 12.5px; font-weight: bold; 
+  }
   .year-item span { font-size: 11px; color: #64748b; font-weight: normal; }
+  body.dark-mode .year-item span { color: #94a3b8; }
 
-  /* ================= CLEAN SECURE ORANGE WATERMARK BADGES (NO TEXT OVERLAP) ================= */
+  /* BUTTON STATES */
+  .btn-test { 
+    display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); 
+    color: white !important; padding: 7px 14px; border-radius: 6px; 
+    text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; text-align: center;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3); transition: 0.2s;
+  }
+  .btn-test:active { transform: scale(0.96); }
+
+  .btn-soon { 
+    display: inline-block; background: #64748b; color: white !important; 
+    padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 11.5px; 
+    font-weight: bold; border: none; cursor: pointer; text-align: center; opacity: 0.85; transition: 0.2s;
+  }
+  .btn-soon:hover { opacity: 1; }
+
   .clean-watermark-badge {
     display: inline-block;
     background: linear-gradient(135deg, #ea580c, #c2410c);
-    color: #ffffff;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    padding: 3px 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3);
-    text-transform: uppercase;
+    color: #ffffff; font-size: 11px; font-weight: 900; letter-spacing: 2px;
+    padding: 3px 10px; border-radius: 6px; margin-bottom: 8px;
+    box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3); text-transform: uppercase;
   }
 
-  /* Clean Floating Bottom Tag */
   .sachin-bottom-tag {
     position: fixed; bottom: 8px; left: 10px; z-index: 100000;
     background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px);
@@ -134,6 +141,26 @@
   }
   .sachin-bottom-tag a { color: #fef3c7; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
 
+  /* CUSTOM MODAL FOR NOTICES */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99999;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: auto; }
+  .modal-box {
+    background: var(--card); border: 2px solid var(--gold); border-radius: 16px;
+    max-width: 440px; width: 100%; padding: 22px; text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5); transform: translateY(20px); transition: transform 0.3s ease;
+  }
+  .modal-overlay.active .modal-box { transform: translateY(0); }
+  .modal-box h4 { font-size: 17px; color: var(--gold); margin-bottom: 12px; font-family: Georgia, serif; }
+  .modal-box p { font-size: 13.5px; line-height: 1.6; color: var(--text); margin-bottom: 18px; }
+  .modal-btn {
+    background: var(--gold); color: white; border: none; padding: 10px 24px;
+    border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px;
+  }
+
   footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 12px; border-top: 1px solid var(--border); color: #64748b; line-height: 1.6; position: relative; z-index: 5; }
   footer a { color: var(--gold); text-decoration: none; font-weight: bold; }
   .hidden { display: none !important; }
@@ -141,25 +168,34 @@
 </head>
 <body>
 
-<!-- Clean Floating Owner Tag -->
 <div class="sachin-bottom-tag">
   <a href="https://t.me/Avigat1210" target="_blank" rel="noopener">
     <span>🥀</span> <b>SACHIN SHARMA · @Avigat1210</b>
   </a>
 </div>
 
-<!-- स्प्लैश स्क्रीन लोडिंग एनिमेशन -->
 <div id="splashScreen">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
   <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#fef3c7;">SACHIN SHARMA PORTAL</h2>
   <div class="loader-bar"></div>
 </div>
 
+<!-- NOTICE MODAL -->
+<div class="modal-overlay" id="noticeModal" onclick="closeNotice()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div style="font-size:32px; margin-bottom:6px;">⏳</div>
+    <h4>शीघ्र उपलब्ध कराया जा रहा है!</h4>
+    <p>
+      प्रिय अभ्यर्थी, हम इस वर्ष के प्रश्न-पत्र को 100% शुद्धता, प्रामाणिक उत्तर कुंजी और विस्तृत समाधान के साथ तैयार करने का लगातार प्रयास कर रहे हैं।<br><br>
+      समय के थोड़े अभाव के कारण इसे तैयार किया जा रहा है और बहुत जल्द अपलोड कर दिया जाएगा। कृपया थोड़ा धैर्य रखें और अन्य उपलब्ध वर्षों से अपना अभ्यास जारी रखें।
+    </p>
+    <button class="modal-btn" onclick="closeNotice()">समझ गया (Close)</button>
+  </div>
+</div>
+
 <header>
-  <!-- Watermark Badge 1 -->
   <div style="margin-bottom: 6px;"><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
 
-  <!-- Non-Overlapping Top Bar -->
   <div class="top-bar">
     <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
     <button class="top-btn" onclick="toggleDark()">🌙</button>
@@ -173,47 +209,30 @@
 
 <div class="container">
 
-  <!-- Clean Hinglish Karyapranali Box with Watermark Badge 2 -->
   <div class="info-box">
     <div><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
     <h3>🎯 UPSC PYQ & Test Portal Ki Karyapranali:</h3>
     <p>
-      Is portal ke madhyam se aap Sangh Lok Seva Ayog (UPSC) ki प्रारंभिक परीक्षा ke pichle varshon ke prashnon ka abhyas kar sakte hain. Yahan sabhi paper official answer key ke sath shuddh Hindi madhyam mein uplabdh karaye gaye hain. Exam rules ke anusar sahi uttar par <b>+2.0 marks</b> aur galat uttar par <b>-0.66</b> negative marking ka real engine active hai.
+      इस पोर्टल पर संघ लोक सेवा आयोग (UPSC) की प्रारंभिक परीक्षा के पिछले 14 वर्षों (2013-2026) के प्रश्न-पत्र उपलब्ध कराए जा रहे हैं। प्रत्येक प्रश्न-पत्र में रियल-टाइम परीक्षा इंजन, आधिकारिक उत्तर कुंजी, विस्तृत समाधान, नकारात्मक अंकन (+2/-0.66 GS एवं +2.5/-0.83 CSAT) और परिणाम का A4 साइज़ PDF प्रिंट आउट की सुविधा दी गई है।
     </p>
   </div>
 
   <div class="section-title">📂 Prelims Previous Years Question Papers (2013 - 2026)</div>
   
   <div class="grid">
-    <!-- Prelims GS Card -->
+    <!-- General Studies Paper 1 (2026 to 2013) -->
     <div class="card">
       <div><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
       <h3>Prelims GS Paper 1</h3>
-      <p>General Studies Paper-1 ke year-wise original question sets, booklet series aur official answer key ke sath.</p>
-      
-      <div class="year-list">
-        <div class="year-item">
-          <div><b>UPSC Prelims 2026</b> <br><span>Booklet Series A (TDMN-A-ASO)</span></div>
-          <a href="prelims/gs1_2026.html" class="btn">टेस्ट दें ↗</a>
-        </div>
-        <div class="year-item">
-          <div><b>UPSC Prelims 2025</b> <br><span>Standard Official Set</span></div>
-          <a href="prelims/gs1_2025.html" class="btn" style="background: #64748b;">शीघ्र उपलब्ध</a>
-        </div>
-      </div>
+      <p>General Studies Paper-1 के 2013 से 2026 तक के वर्षवार ओरिजिनल सेट्स, टाइमर और आधिकारिक उत्तर कुंजी के साथ।</p>
+      <div class="year-list" id="gs-list"></div>
     </div>
 
-    <!-- Prelims CSAT Card -->
+    <!-- CSAT Paper 2 (2026 to 2013) -->
     <div class="card">
       <h3>Prelims CSAT Paper 2</h3>
-      <p>Civil Services Aptitude Test (CSAT) ke year-wise practice sets, comprehension aur reasoning ke sath.</p>
-      
-      <div class="year-list">
-        <div class="year-item">
-          <div><b>UPSC CSAT 2026</b> <br><span>Official Pattern Set</span></div>
-          <a href="prelims/csat_2026.html" class="btn">टेस्ट दें ↗</a>
-        </div>
-      </div>
+      <p>Civil Services Aptitude Test (CSAT) के वर्षवार प्रैक्टिस सेट्स, कॉम्प्रिहेंशन, रीजनिंग और क्वांट व्याख्या सहित।</p>
+      <div class="year-list" id="csat-list"></div>
     </div>
   </div>
 
@@ -225,8 +244,76 @@
 </footer>
 
 <script>
-  // 1. स्प्लैश स्क्रीन 1.2 सेकंड बाद गायब होगी
+  // YEARS RANGE: 2026 to 2013
+  const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
+
+  function showNotice() {
+    document.getElementById('noticeModal').classList.add('active');
+  }
+  function closeNotice() {
+    document.getElementById('noticeModal').classList.remove('active');
+  }
+
+  // AUTO-DETECTION LOGIC
+  async function checkFileExists(url) {
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function buildPortal() {
+    const gsList = document.getElementById('gs-list');
+    const csatList = document.getElementById('csat-list');
+
+    for (let yr of years) {
+      // 1. GS Paper 1
+      const gsUrl = `prelims/gs1_${yr}.html`;
+      const gsItem = document.createElement('div');
+      gsItem.className = 'year-item';
+      gsItem.innerHTML = `
+        <div><b>UPSC Prelims ${yr}</b> <br><span>GS Paper 1 (Official Set)</span></div>
+        <div id="btn-gs-${yr}"><button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button></div>
+      `;
+      gsList.appendChild(gsItem);
+
+      // Check if uploaded (2026 & 2025 are pre-verified, others auto-checked)
+      if (yr === 2026 || yr === 2025) {
+        document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+      } else {
+        checkFileExists(gsUrl).then(exists => {
+          if (exists) {
+            document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+          }
+        });
+      }
+
+      // 2. CSAT Paper 2
+      const csatUrl = `prelims/csat_${yr}.html`;
+      const csatItem = document.createElement('div');
+      csatItem.className = 'year-item';
+      csatItem.innerHTML = `
+        <div><b>UPSC CSAT ${yr}</b> <br><span>Paper 2 (Official Set)</span></div>
+        <div id="btn-csat-${yr}"><button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button></div>
+      `;
+      csatList.appendChild(csatItem);
+
+      if (yr === 2026) {
+        document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+      } else {
+        checkFileExists(csatUrl).then(exists => {
+          if (exists) {
+            document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+          }
+        });
+      }
+    }
+  }
+
   window.addEventListener('load', () => {
+    buildPortal();
     setTimeout(() => {
       const splash = document.getElementById('splashScreen');
       splash.style.opacity = '0';
@@ -234,7 +321,6 @@
     }, 1200);
   });
 
-  // 2. डार्क मोड टॉगल
   function toggleDark() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('dark', document.body.classList.contains('dark-mode') ? '1' : '0');
