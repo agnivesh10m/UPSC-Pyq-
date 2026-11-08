@@ -11,8 +11,15 @@
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#0d192b">
 
-<!-- Supabase Client -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Html2Canvas for ID Card Download -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<!-- GATEKEEPER CHECK: बिना लॉगिन के अंदर नहीं जा सकते -->
+<script>
+  if (!localStorage.getItem('upsc_logged_user')) {
+    window.location.replace("login.html");
+  }
+</script>
 
 <style>
   :root { 
@@ -37,40 +44,38 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
   body { background: var(--bg); color: var(--text); padding-bottom: 70px; transition: background 0.3s, color 0.3s; position: relative; }
   
-  /* SPLASH SCREEN: PURE CSS + FAILSAFE TIMEOUT */
+  /* SPLASH SCREEN */
   #splashScreen {
-    position: fixed; inset: 0; background: #030712 !important; z-index: 999999;
+    position: fixed; inset: 0; background: #030712; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: white; text-align: center; padding: 20px;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-  }
-  #splashScreen.hide-splash {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    color: white; text-align: center; padding: 20px; transition: opacity 0.5s ease;
   }
   #splashScreen img {
-    width: 140px; height: auto; object-fit: contain;
-    border-radius: 14px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    margin-bottom: 16px; animation: pulseLogo 1.5s infinite alternate;
+    width: 130px; height: auto; object-fit: contain;
+    border-radius: 14px; border: 2px solid var(--gold); box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    margin-bottom: 15px; animation: pulseLogo 1.5s infinite alternate;
   }
-  @keyframes pulseLogo { 0% { transform: scale(0.96); } 100% { transform: scale(1.04); } }
+  @keyframes pulseLogo { 0% { transform: scale(0.95); } 100% { transform: scale(1.05); } }
   
-  .splash-title {
-    font-size: 19px; font-family: Georgia, serif; letter-spacing: 1.5px;
-    color: #fef3c7; margin-bottom: 6px; text-transform: uppercase; font-weight: 800;
-  }
-  
-  /* RED BRANDING CREDIT */
   .splash-credit {
     font-size: 12.5px; font-weight: 900; letter-spacing: 1.5px;
-    color: #ef4444 !important; text-transform: uppercase; margin-bottom: 18px;
+    color: #ef4444 !important; text-transform: uppercase; margin-bottom: 14px;
     text-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
   }
 
-  .loader-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
-  .loader-bar::after { content: ''; display: block; width: 45%; height: 100%; background: #ef4444; animation: loadAnim 1s infinite alternate; }
+  .loader-bar { width: 130px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+  .loader-bar::after { content: ''; display: block; width: 40%; height: 100%; background: var(--gold); animation: loadAnim 1s infinite alternate; }
   @keyframes loadAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+
+  /* UPDATE BANNER NOTIFICATION */
+  .update-notification-bar {
+    background: linear-gradient(90deg, #ea580c, #c2410c); color: white;
+    padding: 8px 14px; font-size: 11.5px; font-weight: bold; text-align: center;
+    position: relative; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .update-notification-bar button {
+    background: transparent; border: none; color: white; font-size: 14px; cursor: pointer; margin-left: 10px;
+  }
 
   header { 
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
@@ -141,13 +146,6 @@
   }
   .btn-test:active { transform: scale(0.96); }
 
-  .btn-locked {
-    display: inline-block; background: #334155; color: #fde047 !important; 
-    padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 11.5px; 
-    font-weight: bold; border: 1px solid rgba(253, 224, 71, 0.3); cursor: pointer; text-align: center; transition: 0.2s;
-  }
-  .btn-locked:hover { background: #1e293b; }
-
   .btn-soon { 
     display: inline-block; background: #64748b; color: white !important; 
     padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 11.5px; 
@@ -192,13 +190,7 @@
     border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px;
   }
 
-  .auth-input {
-    width: 100%; padding: 11px 14px; border-radius: 8px; border: 1.5px solid var(--border);
-    margin-bottom: 10px; font-size: 13.5px; background: var(--bg); color: var(--text); outline: none;
-  }
-  .auth-input:focus { border-color: var(--gold); }
-
-  /* DIGITAL CARD */
+  /* DIGITAL ASPIRANT CARD (GOLDEN LOOK) */
   .aspirant-card {
     width: 100%;
     background: linear-gradient(145deg, #0b1120 0%, #030712 100%);
@@ -273,15 +265,21 @@
   </a>
 </div>
 
-<!-- SPLASH SCREEN -->
-<div id="splashScreen" onclick="dismissSplash()">
+<!-- LATEST UPDATE NOTIFICATION -->
+<div class="update-notification-bar" id="updateBar">
+  <span>📢 <b>नया अपडेट (2026):</b> UPSC Prelims 2025 GS-1 एवं CSAT Paper-2 आधिकारिक उत्तर कुंजी सहित लाइव कर दिए गए हैं!</span>
+  <button onclick="document.getElementById('updateBar').style.display='none'">✕</button>
+</div>
+
+<!-- SPLASH SCREEN WITH RED BRANDING -->
+<div id="splashScreen">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
-  <div class="splash-title">SACHIN SHARMA PORTAL</div>
+  <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#fef3c7; margin-bottom: 6px;">SACHIN SHARMA PORTAL</h2>
   <div class="splash-credit">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
   <div class="loader-bar"></div>
 </div>
 
-<!-- NOTICE MODAL (COMING SOON) -->
+<!-- COMING SOON NOTICE MODAL -->
 <div class="modal-overlay" id="noticeModal" onclick="closeNotice()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div style="font-size:32px; margin-bottom:6px;">⏳</div>
@@ -294,43 +292,10 @@
   </div>
 </div>
 
-<!-- LOGIN REQUIRED NOTICE MODAL -->
-<div class="modal-overlay" id="loginRequiredModal" onclick="closeLoginRequired()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <div style="font-size:34px; margin-bottom:8px;">🔒</div>
-    <h4>लॉगिन आवश्यक है!</h4>
-    <p>
-      UPSC टेस्ट सीरीज़ और डिजिटल परीक्षा मॉड्यूल तक पहुँचने के लिए पहले लॉगिन करना अनिवार्य है।<br><br>
-      कृपया अपने 10-अंकों के मोबाइल नंबर और 4-अंकों के गुप्त PIN से लॉगिन करें अथवा अपना नया डिजिटल कार्ड प्राप्त करें।
-    </p>
-    <button class="modal-btn" onclick="openAuthFromLock()" style="width: 100%;">🔑 अभी लॉगिन करें (Login Now)</button>
-  </div>
-</div>
-
-<!-- AUTH MODAL (LOGIN / REGISTER) -->
-<div class="modal-overlay" id="authModal" onclick="closeAuthModal()">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <h4 id="authModalTitle">👤 नया डिजिटल कार्ड बनाएँ (Register)</h4>
-    <p style="font-size: 12.5px; margin-bottom: 14px;">अपने मोबाइल नंबर और 4-अंकों के PIN से कार्ड प्राप्त करें या लॉगिन करें:</p>
-    
-    <div id="registerFields">
-      <input type="text" id="authName" class="auth-input" placeholder="आपका पूरा नाम (Full Name)">
-      <input type="text" id="authDistrict" class="auth-input" placeholder="ज़िला / राज्य (उदा. Kotputli-Behror, Raj)">
-    </div>
-    <input type="tel" id="authMobile" class="auth-input" placeholder="10-अंकों का मोबाइल नंबर" maxlength="10">
-    <input type="password" id="authPin" class="auth-input" placeholder="4-अंकों का गुप्त PIN" maxlength="4" style="letter-spacing: 3px; font-size: 16px;">
-    
-    <button class="modal-btn" id="authSubmitBtn" onclick="submitAuthForm()" style="width: 100%; margin-top: 5px;">🚀 आगे बढ़ें (Continue)</button>
-    <div style="margin-top: 12px; font-size: 12px;">
-      <a href="javascript:void(0)" onclick="toggleAuthMode()" id="authToggleLink" style="color: var(--gold); text-decoration: none; font-weight: bold;">क्या आप पहले से रजिस्टर्ड हैं? यहाँ लॉगिन करें</a>
-    </div>
-  </div>
-</div>
-
 <!-- DIGITAL CARD MODAL -->
 <div class="modal-overlay" id="cardModal" onclick="closeCardModal()">
   <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 420px; padding: 15px; background: transparent; border: none; box-shadow: none;">
-    <div class="aspirant-card">
+    <div class="aspirant-card" id="digitalCardCapture">
       <div class="card-top">
         <div class="card-logo-area">
           <span class="emblem-icon">🏛️</span>
@@ -369,9 +334,10 @@
       </div>
     </div>
 
-    <div style="margin-top: 14px; display: flex; gap: 10px; justify-content: center;">
-      <button class="modal-btn" onclick="logoutAspirant()" style="background: #ef4444; font-size: 12px; padding: 8px 16px;">🚪 लॉगआउट</button>
-      <button class="modal-btn" onclick="closeCardModal()" style="font-size: 12px; padding: 8px 16px;">✕ बंद करें</button>
+    <div style="margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+      <button class="modal-btn" onclick="downloadAspirantCard()" style="background: #10b981; font-size: 12px; padding: 8px 14px;">🖨️ कार्ड डाउनलोड करें (PNG)</button>
+      <button class="modal-btn" onclick="logoutUser()" style="background: #ef4444; font-size: 12px; padding: 8px 14px;">🚪 लॉगआउट</button>
+      <button class="modal-btn" onclick="closeCardModal()" style="background: #475569; font-size: 12px; padding: 8px 14px;">✕ बंद करें</button>
     </div>
   </div>
 </div>
@@ -382,8 +348,8 @@
   <div class="top-bar">
     <div style="display: flex; gap: 8px; align-items: center;">
       <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
-      <button class="top-btn" id="userProfileBtn" onclick="handleProfileClick()" style="border-color: var(--gold); color: #fef3c7;">
-        <span>🪪</span> <span id="userBtnLabel">लॉगिन / डिजिटल कार्ड</span>
+      <button class="top-btn" onclick="openAspirantCard()" style="border-color: var(--gold); color: #fef3c7;">
+        <span>🪪</span> <span id="userTopName">मेरा कार्ड</span>
       </button>
     </div>
     <button class="top-btn" onclick="toggleDark()">🌙</button>
@@ -432,270 +398,122 @@
 </footer>
 
 <script>
-  // FAILSAFE SPLASH SCREEN DISMISSAL
-  function dismissSplash() {
-    const splash = document.getElementById('splashScreen');
-    if (splash) {
-      splash.classList.add('hide-splash');
-      setTimeout(() => { splash.style.display = 'none'; }, 400);
-    }
-  }
-  setTimeout(dismissSplash, 1200);
-
-  // SUPABASE CONFIGURATION
-  const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
-  let supabase = null;
-
-  function initSupabase() {
-    try {
-      if (!supabase && window.supabase && typeof window.supabase.createClient === 'function') {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      }
-    } catch(err) {
-      console.warn("Supabase init note:", err);
-    }
-    return supabase;
-  }
-
-  let isRegisterMode = true;
-
-  // SESSION MANAGEMENT
-  function getLoggedInUser() {
+  // USER SESSION SETUP
+  function getUserData() {
     try {
       const saved = localStorage.getItem('upsc_logged_user');
-      if (saved) return JSON.parse(saved);
-    } catch(e) {}
-    return null;
+      return saved ? JSON.parse(saved) : null;
+    } catch(e) { return null; }
   }
 
-  function updateProfileButtonUI() {
-    const user = getLoggedInUser();
-    const btnLabel = document.getElementById('userBtnLabel');
-    if (!btnLabel) return;
-    if (user && user.full_name) {
-      btnLabel.innerText = user.full_name.split(' ')[0] + " (Card 🪪)";
-    } else {
-      btnLabel.innerText = "लॉगिन / डिजिटल कार्ड";
+  const currentUser = getUserData();
+  if (currentUser && currentUser.full_name) {
+    document.getElementById('userTopName').innerText = currentUser.full_name.split(' ')[0] + " (Card 🪪)";
+  }
+
+  function openAspirantCard() {
+    if (currentUser) {
+      document.getElementById('cardName').innerText = currentUser.full_name;
+      document.getElementById('cardRollId').innerText = currentUser.roll_id;
+      document.getElementById('cardDistrict').innerText = currentUser.district || "Rajasthan";
+      document.getElementById('cardModal').classList.add('active');
     }
-  }
-
-  function handleProfileClick() {
-    const user = getLoggedInUser();
-    if (user) {
-      showDigitalCard(user);
-    } else {
-      openAuthModal();
-    }
-  }
-
-  function openAuthModal() {
-    document.getElementById('authModal').classList.add('active');
-  }
-  function closeAuthModal() {
-    document.getElementById('authModal').classList.remove('active');
-  }
-
-  function toggleAuthMode() {
-    isRegisterMode = !isRegisterMode;
-    const regFields = document.getElementById('registerFields');
-    const title = document.getElementById('authModalTitle');
-    const toggleLink = document.getElementById('authToggleLink');
-
-    if (isRegisterMode) {
-      regFields.style.display = 'block';
-      title.innerText = "👤 नया डिजिटल कार्ड बनाएँ (Register)";
-      toggleLink.innerText = "क्या आप पहले से रजिस्टर्ड हैं? यहाँ लॉगिन करें";
-    } else {
-      regFields.style.display = 'none';
-      title.innerText = "🔐 Aspirant Portal लॉगिन";
-      toggleLink.innerText = "नया कार्ड बनाना चाहते हैं? यहाँ क्लिक करें";
-    }
-  }
-
-  function showLoginRequired() {
-    document.getElementById('loginRequiredModal').classList.add('active');
-  }
-  function closeLoginRequired() {
-    document.getElementById('loginRequiredModal').classList.remove('active');
-  }
-  function openAuthFromLock() {
-    closeLoginRequired();
-    openAuthModal();
-  }
-
-  function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
-  function closeNotice() { document.getElementById('noticeModal').classList.remove('active'); }
-
-  // AUTH SUBMISSION (ONLINE DB + OFFLINE SECURE SESSION)
-  async function submitAuthForm() {
-    const mobile = document.getElementById('authMobile').value.trim();
-    const pin = document.getElementById('authPin').value.trim();
-    const client = initSupabase();
-
-    if (mobile.length !== 10 || isNaN(mobile)) {
-      alert("कृपया 10-अंकों का सही मोबाइल नंबर दर्ज करें!");
-      return;
-    }
-    if (pin.length !== 4 || isNaN(pin)) {
-      alert("कृपया 4-अंकों का गुप्त PIN दर्ज करें!");
-      return;
-    }
-
-    if (isRegisterMode) {
-      const name = document.getElementById('authName').value.trim();
-      const district = document.getElementById('authDistrict').value.trim() || "Rajasthan";
-
-      if (!name) {
-        alert("कृपया अपना पूरा नाम दर्ज करें!");
-        return;
-      }
-
-      const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
-      const newUser = { mobile, pin, full_name: name, district, roll_id: rollId };
-
-      if (client) {
-        try {
-          const { data: existing } = await client.from('aspirants').select('*').eq('mobile', mobile).maybeSingle();
-          if (existing) {
-            alert("यह मोबाइल नंबर पहले से रजिस्टर्ड है! कृपया लॉगिन करें।");
-            toggleAuthMode();
-            return;
-          }
-          await client.from('aspirants').insert([newUser]);
-        } catch(e) {
-          console.warn("DB save note:", e);
-        }
-      }
-
-      localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
-      closeAuthModal();
-      updateProfileButtonUI();
-      renderAllButtons();
-      showDigitalCard(newUser);
-
-    } else {
-      // Login Mode
-      if (client) {
-        try {
-          const { data: user, error } = await client.from('aspirants').select('*').eq('mobile', mobile).maybeSingle();
-          if (user) {
-            if (user.pin !== pin) {
-              alert("गलत PIN दर्ज किया गया है!");
-              return;
-            }
-            localStorage.setItem('upsc_logged_user', JSON.stringify(user));
-            closeAuthModal();
-            updateProfileButtonUI();
-            renderAllButtons();
-            showDigitalCard(user);
-            return;
-          }
-        } catch(e) {}
-      }
-
-      // Local storage matching fallback
-      const local = getLoggedInUser();
-      if (local && local.mobile === mobile && local.pin === pin) {
-        closeAuthModal();
-        updateProfileButtonUI();
-        renderAllButtons();
-        showDigitalCard(local);
-        return;
-      }
-
-      alert("यह मोबाइल नंबर नहीं मिला! कृपया पहले नया कार्ड बनाएँ।");
-      toggleAuthMode();
-    }
-  }
-
-  function showDigitalCard(user) {
-    document.getElementById('cardName').innerText = user.full_name;
-    document.getElementById('cardRollId').innerText = user.roll_id;
-    document.getElementById('cardDistrict').innerText = user.district || "Rajasthan";
-    document.getElementById('cardModal').classList.add('active');
   }
 
   function closeCardModal() {
     document.getElementById('cardModal').classList.remove('active');
   }
 
-  function logoutAspirant() {
-    if (confirm("क्या आप वाकई लॉगआउट करना चाहते हैं?")) {
-      localStorage.removeItem('upsc_logged_user');
-      closeCardModal();
-      updateProfileButtonUI();
-      renderAllButtons();
+  function downloadAspirantCard() {
+    const cardElement = document.getElementById('digitalCardCapture');
+    if (typeof html2canvas === 'function') {
+      html2canvas(cardElement, { scale: 3, backgroundColor: null }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = `UPSC_Aspirant_Card_${currentUser ? currentUser.roll_id : 'Member'}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    } else {
+      alert("कार्ड डाउनलोड हो रहा है, कृपया स्क्रीनशॉट लें!");
     }
   }
 
-  // ALL YEARS (2026 to 2013) RENDERING (IMMEDIATE & DEPENDABLE)
+  function logoutUser() {
+    if (confirm("क्या आप वाकई लॉगआउट करना चाहते हैं?")) {
+      localStorage.removeItem('upsc_logged_user');
+      window.location.replace("login.html");
+    }
+  }
+
+  // YEARS RANGE: 2026 to 2013
   const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
 
-  function renderAllButtons() {
+  function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
+  function closeNotice() { document.getElementById('noticeModal').classList.remove('active'); }
+
+  async function checkFileExists(url) {
+    try {
+      const res = await fetch(url, { method: 'HEAD' });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function buildPortal() {
     const gsList = document.getElementById('gs-list');
     const csatList = document.getElementById('csat-list');
-    const isLoggedIn = !!getLoggedInUser();
-
-    if (!gsList || !csatList) return;
-    gsList.innerHTML = '';
-    csatList.innerHTML = '';
 
     for (let yr of years) {
       // 1. GS Paper 1
+      const gsUrl = `prelims/gs1_${yr}.html`;
       const gsItem = document.createElement('div');
       gsItem.className = 'year-item';
-      
-      let gsActionBtn = '';
-      if (yr === 2026 || yr === 2025) {
-        if (isLoggedIn) {
-          gsActionBtn = `<a href="prelims/gs1_${yr}.html" class="btn-test">टेस्ट दें ↗</a>`;
-        } else {
-          gsActionBtn = `<button class="btn-locked" onclick="showLoginRequired()">🔒 टेस्ट दें</button>`;
-        }
-      } else {
-        gsActionBtn = `<button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button>`;
-      }
-
       gsItem.innerHTML = `
         <div><b>UPSC Prelims ${yr}</b> <br><span>GS Paper 1 (Official Set)</span></div>
-        <div>${gsActionBtn}</div>
+        <div id="btn-gs-${yr}"><button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button></div>
       `;
       gsList.appendChild(gsItem);
 
-      // 2. CSAT Paper 2
-      const csatItem = document.createElement('div');
-      csatItem.className = 'year-item';
-
-      let csatActionBtn = '';
       if (yr === 2026 || yr === 2025) {
-        if (isLoggedIn) {
-          csatActionBtn = `<a href="prelims/csat_${yr}.html" class="btn-test">टेस्ट दें ↗</a>`;
-        } else {
-          csatActionBtn = `<button class="btn-locked" onclick="showLoginRequired()">🔒 टेस्ट दें</button>`;
-        }
+        document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
       } else {
-        csatActionBtn = `<button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button>`;
+        checkFileExists(gsUrl).then(exists => {
+          if (exists) document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+        });
       }
 
+      // 2. CSAT Paper 2
+      const csatUrl = `prelims/csat_${yr}.html`;
+      const csatItem = document.createElement('div');
+      csatItem.className = 'year-item';
       csatItem.innerHTML = `
         <div><b>UPSC CSAT ${yr}</b> <br><span>Paper 2 (Official Set)</span></div>
-        <div>${csatActionBtn}</div>
+        <div id="btn-csat-${yr}"><button class="btn-soon" onclick="showNotice()">शीघ्र उपलब्ध</button></div>
       `;
       csatList.appendChild(csatItem);
+
+      if (yr === 2026 || yr === 2025) {
+        document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+      } else {
+        checkFileExists(csatUrl).then(exists => {
+          if (exists) document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
+        });
+      }
     }
   }
 
-  // EXECUTE IMMEDIATELY ON DOM LOAD
-  document.addEventListener('DOMContentLoaded', () => {
-    renderAllButtons();
-    updateProfileButtonUI();
-    initSupabase();
+  // AUTO DISMISS SPLASH SCREEN IN EXACTLY 1.2 SECONDS
+  window.addEventListener('load', () => {
+    buildPortal();
+    setTimeout(() => {
+      const splash = document.getElementById('splashScreen');
+      if (splash) {
+        splash.style.opacity = '0';
+        setTimeout(() => splash.classList.add('hidden'), 500);
+      }
+    }, 1200);
   });
-
-  // FALLBACK INSTANT RENDER
-  renderAllButtons();
-  updateProfileButtonUI();
 
   function toggleDark() {
     document.body.classList.toggle('dark-mode');
