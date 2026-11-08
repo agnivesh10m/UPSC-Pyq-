@@ -11,6 +11,9 @@
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#0d192b">
 
+<!-- Supabase CDN Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   :root { 
     --bg: #f8fafc; 
@@ -58,6 +61,7 @@
   .top-bar { 
     display: flex; justify-content: space-between; align-items: center; 
     margin-bottom: 15px; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto;
+    flex-wrap: wrap; gap: 8px;
   }
   .top-btn { 
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); 
@@ -108,7 +112,6 @@
   .year-item span { font-size: 11px; color: #64748b; font-weight: normal; }
   body.dark-mode .year-item span { color: #94a3b8; }
 
-  /* BUTTON STATES */
   .btn-test { 
     display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); 
     color: white !important; padding: 7px 14px; border-radius: 6px; 
@@ -141,10 +144,10 @@
   }
   .sachin-bottom-tag a { color: #fef3c7; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
 
-  /* CUSTOM MODAL FOR NOTICES */
+  /* MODALS */
   .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99999;
-    display: flex; align-items: center; justify-content: center; padding: 20px;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 99999;
+    display: flex; align-items: center; justify-content: center; padding: 16px;
     opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
   .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -157,9 +160,78 @@
   .modal-box h4 { font-size: 17px; color: var(--gold); margin-bottom: 12px; font-family: Georgia, serif; }
   .modal-box p { font-size: 13.5px; line-height: 1.6; color: var(--text); margin-bottom: 18px; }
   .modal-btn {
-    background: var(--gold); color: white; border: none; padding: 10px 24px;
+    background: var(--gold); color: white; border: none; padding: 10px 20px;
     border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px;
   }
+
+  /* AUTH FORM STYLES */
+  .auth-input {
+    width: 100%; padding: 11px 14px; border-radius: 8px; border: 1.5px solid var(--border);
+    margin-bottom: 10px; font-size: 13.5px; background: var(--bg); color: var(--text); outline: none;
+  }
+  .auth-input:focus { border-color: var(--gold); }
+
+  /* DIGITAL ASPIRANT CARD */
+  .aspirant-card {
+    width: 100%;
+    background: linear-gradient(145deg, #0b1120 0%, #030712 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 18px;
+    padding: 18px;
+    color: #ffffff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(245, 158, 11, 0.15);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+  }
+  .aspirant-card::before {
+    content: "UPSC";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    font-size: 110px;
+    font-weight: 900;
+    color: rgba(245, 158, 11, 0.04);
+    pointer-events: none;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+  }
+  .card-logo-area { display: flex; align-items: center; gap: 8px; }
+  .emblem-icon { font-size: 26px; }
+  .card-logo-area h4 { font-size: 13px; letter-spacing: 1px; color: #f59e0b; margin: 0; }
+  .card-logo-area p { font-size: 8px; color: #94a3b8; letter-spacing: 0.5px; margin: 0; }
+  .card-badge {
+    background: linear-gradient(135deg, #f59e0b, #b45309);
+    color: #030712; font-size: 9px; font-weight: 800;
+    padding: 3px 8px; border-radius: 12px; letter-spacing: 0.5px;
+  }
+  .card-body { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+  .avatar-box {
+    width: 68px; height: 68px; border-radius: 14px;
+    background: #1e293b; border: 2px solid #f59e0b;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); flex-shrink: 0;
+  }
+  .details-box h3 { font-size: 17px; margin: 0 0 2px 0; color: #f8fafc; }
+  .aspirant-id { font-size: 10.5px; color: #f59e0b; font-weight: 700; margin-bottom: 6px; }
+  .meta-row { display: flex; gap: 12px; font-size: 11px; color: #cbd5e1; margin-top: 2px; }
+  .meta-row label { color: #94a3b8; }
+  .card-footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    border-top: 1px dashed rgba(255, 255, 255, 0.15); padding-top: 8px;
+  }
+  .footer-left span { display: block; font-size: 9px; color: #10b981; font-weight: 700; }
+  .footer-left small { font-size: 9px; color: #64748b; }
+  .footer-right { text-align: right; }
+  .tele-tag { display: block; font-size: 9.5px; color: #60a5fa; font-weight: 600; }
+  .signature { display: block; font-size: 9px; color: #f59e0b; letter-spacing: 1px; margin-top: 2px; }
 
   footer { text-align: center; margin-top: 40px; padding: 20px; font-size: 12px; border-top: 1px solid var(--border); color: #64748b; line-height: 1.6; position: relative; z-index: 5; }
   footer a { color: var(--gold); text-decoration: none; font-weight: bold; }
@@ -180,7 +252,7 @@
   <div class="loader-bar"></div>
 </div>
 
-<!-- NOTICE MODAL -->
+<!-- NOTICE MODAL (COMING SOON) -->
 <div class="modal-overlay" id="noticeModal" onclick="closeNotice()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div style="font-size:32px; margin-bottom:6px;">⏳</div>
@@ -193,11 +265,85 @@
   </div>
 </div>
 
+<!-- AUTH MODAL (LOGIN / REGISTER) -->
+<div class="modal-overlay" id="authModal" onclick="closeAuthModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h4 id="authModalTitle">👤 UPSC Aspirant Portal Login</h4>
+    <p style="font-size: 12.5px; margin-bottom: 14px;">अपने मोबाइल नंबर और 4-अंकों के PIN से लॉगिन करें या नया डिजिटल कार्ड बनाएँ:</p>
+    
+    <div id="registerFields">
+      <input type="text" id="authName" class="auth-input" placeholder="आपका पूरा नाम (Full Name)">
+      <input type="text" id="authDistrict" class="auth-input" placeholder="ज़िला / राज्य (उदा. Kotputli-Behror, Raj)">
+    </div>
+    <input type="tel" id="authMobile" class="auth-input" placeholder="10-अंकों का मोबाइल नंबर" maxlength="10">
+    <input type="password" id="authPin" class="auth-input" placeholder="4-अंकों का गुप्त PIN" maxlength="4" style="letter-spacing: 3px; font-size: 16px;">
+    
+    <button class="modal-btn" id="authSubmitBtn" onclick="submitAuthForm()" style="width: 100%; margin-top: 5px;">🚀 आगे बढ़ें (Continue)</button>
+    <div style="margin-top: 12px; font-size: 12px;">
+      <a href="javascript:void(0)" onclick="toggleAuthMode()" id="authToggleLink" style="color: var(--gold); text-decoration: none; font-weight: bold;">क्या आप पहले से रजिस्टर्ड हैं? यहाँ लॉगिन करें</a>
+    </div>
+  </div>
+</div>
+
+<!-- DIGITAL CARD MODAL -->
+<div class="modal-overlay" id="cardModal" onclick="closeCardModal()">
+  <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 420px; padding: 15px; background: transparent; border: none; box-shadow: none;">
+    <div class="aspirant-card">
+      <div class="card-top">
+        <div class="card-logo-area">
+          <span class="emblem-icon">🏛️</span>
+          <div>
+            <h4>UPSC CIVIL SERVICES</h4>
+            <p>ASPIRANT DIGITAL IDENTITY CARD</p>
+          </div>
+        </div>
+        <div class="card-badge">VERIFIED ASPIRANT</div>
+      </div>
+
+      <div class="card-body">
+        <div class="avatar-box"><span>👨‍🎓</span></div>
+        <div class="details-box">
+          <h3 id="cardName">सचिन शर्मा</h3>
+          <p class="aspirant-id">ROLL: <span id="cardRollId">UPSC-2027-8492</span></p>
+          <div class="meta-row">
+            <div><label>लक्ष्य:</label> <b>CSE 2027</b></div>
+            <div><label>माध्यम:</label> <b>हिन्दी</b></div>
+          </div>
+          <div class="meta-row">
+            <div><label>स्थान:</label> <b id="cardDistrict">Rajasthan</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="footer-left">
+          <span>आधिकारिक सदस्य</span>
+          <small>© SACHIN SHARMA</small>
+        </div>
+        <div class="footer-right">
+          <span class="tele-tag">✈️ @Avigat1210</span>
+          <span class="signature">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px; display: flex; gap: 10px; justify-content: center;">
+      <button class="modal-btn" onclick="logoutAspirant()" style="background: #ef4444; font-size: 12px; padding: 8px 16px;">🚪 लॉगआउट</button>
+      <button class="modal-btn" onclick="closeCardModal()" style="font-size: 12px; padding: 8px 16px;">✕ बंद करें</button>
+    </div>
+  </div>
+</div>
+
 <header>
   <div style="margin-bottom: 6px;"><span class="clean-watermark-badge">SACHIN SHARMA</span></div>
 
   <div class="top-bar">
-    <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <a href="https://t.me/Avigat1210" target="_blank" rel="noopener" class="top-btn"><span>🥀</span> @Avigat1210</a>
+      <button class="top-btn" id="userProfileBtn" onclick="handleProfileClick()" style="border-color: var(--gold); color: #fef3c7;">
+        <span>🪪</span> <span id="userBtnLabel">लॉगिन / डिजिटल कार्ड</span>
+      </button>
+    </div>
     <button class="top-btn" onclick="toggleDark()">🌙</button>
   </div>
   
@@ -244,17 +390,168 @@
 </footer>
 
 <script>
-  // YEARS RANGE: 2026 to 2013
+  // SUPABASE CONFIGURATION
+  const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let isRegisterMode = true;
+
+  // AUTH STATE LOGIC
+  function checkExistingSession() {
+    const saved = localStorage.getItem('upsc_logged_user');
+    if (saved) {
+      const user = JSON.parse(saved);
+      document.getElementById('userBtnLabel').innerText = user.full_name.split(' ')[0] + " (Card 🪪)";
+      return user;
+    }
+    document.getElementById('userBtnLabel').innerText = "लॉगिन / डिजिटल कार्ड";
+    return null;
+  }
+
+  function handleProfileClick() {
+    const user = checkExistingSession();
+    if (user) {
+      showDigitalCard(user);
+    } else {
+      openAuthModal();
+    }
+  }
+
+  function openAuthModal() {
+    document.getElementById('authModal').classList.add('active');
+  }
+  function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('active');
+  }
+
+  function toggleAuthMode() {
+    isRegisterMode = !isRegisterMode;
+    const regFields = document.getElementById('registerFields');
+    const title = document.getElementById('authModalTitle');
+    const toggleLink = document.getElementById('authToggleLink');
+
+    if (isRegisterMode) {
+      regFields.style.display = 'block';
+      title.innerText = "👤 नया डिजिटल कार्ड बनाएँ (Register)";
+      toggleLink.innerText = "क्या आप पहले से रजिस्टर्ड हैं? यहाँ लॉगिन करें";
+    } else {
+      regFields.style.display = 'none';
+      title.innerText = "🔐 Aspirant Portal लॉगिन";
+      toggleLink.innerText = "नया कार्ड बनाना चाहते हैं? यहाँ क्लिक करें";
+    }
+  }
+
+  async function submitAuthForm() {
+    const mobile = document.getElementById('authMobile').value.trim();
+    const pin = document.getElementById('authPin').value.trim();
+
+    if (mobile.length !== 10 || isNaN(mobile)) {
+      alert("कृपया सही 10-अंकों का मोबाइल नंबर दर्ज करें!");
+      return;
+    }
+    if (pin.length !== 4 || isNaN(pin)) {
+      alert("कृपया 4-अंकों का गुप्त PIN दर्ज करें!");
+      return;
+    }
+
+    if (isRegisterMode) {
+      const name = document.getElementById('authName').value.trim();
+      const district = document.getElementById('authDistrict').value.trim() || "Rajasthan";
+
+      if (!name) {
+        alert("कृपया अपना पूरा नाम दर्ज करें!");
+        return;
+      }
+
+      // 1. Check if user already exists
+      const { data: existing } = await supabase
+        .from('aspirants')
+        .select('*')
+        .eq('mobile', mobile)
+        .single();
+
+      if (existing) {
+        alert("यह मोबाइल नंबर पहले से रजिस्टर्ड है! कृपया लॉगिन करें।");
+        toggleAuthMode();
+        return;
+      }
+
+      const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
+      const newUser = {
+        mobile: mobile,
+        pin: pin,
+        full_name: name,
+        district: district,
+        roll_id: rollId
+      };
+
+      const { data, error } = await supabase
+        .from('aspirants')
+        .insert([newUser])
+        .select()
+        .single();
+
+      if (error) {
+        alert("त्रुटि: " + error.message);
+      } else {
+        localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
+        closeAuthModal();
+        checkExistingSession();
+        showDigitalCard(newUser);
+      }
+
+    } else {
+      // Login Mode
+      const { data: user, error } = await supabase
+        .from('aspirants')
+        .select('*')
+        .eq('mobile', mobile)
+        .single();
+
+      if (error || !user) {
+        alert("यह मोबाइल नंबर नहीं मिला! कृपया पहले रजिस्ट्रेशन करें।");
+        toggleAuthMode();
+        return;
+      }
+
+      if (user.pin !== pin) {
+        alert("गलत PIN दर्ज किया गया है! कृपया पुनः प्रयास करें।");
+        return;
+      }
+
+      localStorage.setItem('upsc_logged_user', JSON.stringify(user));
+      closeAuthModal();
+      checkExistingSession();
+      showDigitalCard(user);
+    }
+  }
+
+  function showDigitalCard(user) {
+    document.getElementById('cardName').innerText = user.full_name;
+    document.getElementById('cardRollId').innerText = user.roll_id;
+    document.getElementById('cardDistrict').innerText = user.district;
+    document.getElementById('cardModal').classList.add('active');
+  }
+
+  function closeCardModal() {
+    document.getElementById('cardModal').classList.remove('active');
+  }
+
+  function logoutAspirant() {
+    if (confirm("क्या आप वाकई लॉगआउट करना चाहते हैं?")) {
+      localStorage.removeItem('upsc_logged_user');
+      closeCardModal();
+      checkExistingSession();
+    }
+  }
+
+  // PORTAL YEARS & AUTO-DETECTION
   const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
 
-  function showNotice() {
-    document.getElementById('noticeModal').classList.add('active');
-  }
-  function closeNotice() {
-    document.getElementById('noticeModal').classList.remove('active');
-  }
+  function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
+  function closeNotice() { document.getElementById('noticeModal').classList.remove('active'); }
 
-  // AUTO-DETECTION LOGIC
   async function checkFileExists(url) {
     try {
       const res = await fetch(url, { method: 'HEAD' });
@@ -269,7 +566,7 @@
     const csatList = document.getElementById('csat-list');
 
     for (let yr of years) {
-      // 1. GS Paper 1
+      // GS Paper 1
       const gsUrl = `prelims/gs1_${yr}.html`;
       const gsItem = document.createElement('div');
       gsItem.className = 'year-item';
@@ -279,18 +576,15 @@
       `;
       gsList.appendChild(gsItem);
 
-      // Check if uploaded (2026 & 2025 are pre-verified, others auto-checked)
       if (yr === 2026 || yr === 2025) {
         document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
       } else {
         checkFileExists(gsUrl).then(exists => {
-          if (exists) {
-            document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
-          }
+          if (exists) document.getElementById(`btn-gs-${yr}`).innerHTML = `<a href="${gsUrl}" class="btn-test">टेस्ट दें ↗</a>`;
         });
       }
 
-      // 2. CSAT Paper 2
+      // CSAT Paper 2
       const csatUrl = `prelims/csat_${yr}.html`;
       const csatItem = document.createElement('div');
       csatItem.className = 'year-item';
@@ -300,13 +594,11 @@
       `;
       csatList.appendChild(csatItem);
 
-      if (yr === 2026) {
+      if (yr === 2026 || yr === 2025) {
         document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
       } else {
         checkFileExists(csatUrl).then(exists => {
-          if (exists) {
-            document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
-          }
+          if (exists) document.getElementById(`btn-csat-${yr}`).innerHTML = `<a href="${csatUrl}" class="btn-test">टेस्ट दें ↗</a>`;
         });
       }
     }
@@ -314,6 +606,7 @@
 
   window.addEventListener('load', () => {
     buildPortal();
+    checkExistingSession();
     setTimeout(() => {
       const splash = document.getElementById('splashScreen');
       splash.style.opacity = '0';
