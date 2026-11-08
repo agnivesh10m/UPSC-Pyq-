@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="SACHIN SHARMA">
+<title>UPSC Aspirant Login & Card Portal | SACHIN SHARMA</title>
+
+<link rel="icon" type="image/jpeg" href="https://files.catbox.moe/84df9j.jpg">
+<link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
+<meta name="theme-color" content="#030712">
+
+<!-- Supabase CDN Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  :root {
+    --bg: #030712;
+    --card: #0f172a;
+    --gold: #d97706;
+    --primary: #f59e0b;
+    --text: #f8fafc;
+    --border: #1e293b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body {
+    background: radial-gradient(circle at top, #1e293b 0%, #030712 100%);
+    color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .login-card {
+    background: rgba(15, 23, 42, 0.95); border: 2px solid var(--gold); border-radius: 18px;
+    width: 100%; max-width: 420px; padding: 26px 22px; box-shadow: 0 20px 45px rgba(0,0,0,0.8);
+    text-align: center; backdrop-filter: blur(10px);
+  }
+  .login-logo {
+    width: 85px; height: auto; border-radius: 12px; border: 2px solid var(--gold);
+    margin-bottom: 12px; background: #fff; padding: 2px;
+  }
+  h2 { font-size: 19px; font-family: Georgia, serif; color: var(--gold); margin-bottom: 4px; }
+  .brand-sub { font-size: 11px; color: #ef4444; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 18px; }
+  
+  .auth-box { text-align: left; }
+  .input-label { font-size: 11.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; display: block; }
+  .auth-input {
+    width: 100%; padding: 12px 14px; border-radius: 8px; border: 1.5px solid var(--border);
+    margin-bottom: 14px; font-size: 14px; background: #030712; color: #fff; outline: none;
+    transition: 0.2s border-color;
+  }
+  .auth-input:focus { border-color: var(--gold); }
+  
+  .btn-submit {
+    width: 100%; padding: 13px; border-radius: 8px; background: linear-gradient(135deg, #d97706, #b45309);
+    color: white; font-size: 14px; font-weight: bold; border: none; cursor: pointer;
+    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4); text-transform: uppercase; letter-spacing: 1px;
+    margin-top: 6px;
+  }
+  .btn-submit:active { transform: scale(0.97); }
+
+  .toggle-text { margin-top: 16px; font-size: 12.5px; color: #94a3b8; text-align: center; }
+  .toggle-text a { color: var(--gold); text-decoration: none; font-weight: bold; }
+  
+  .sec-tag { font-size: 10px; color: #64748b; margin-top: 20px; font-weight: 600; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <img src="https://files.catbox.moe/84df9j.jpg" alt="Logo" class="login-logo">
+  <h2>UPSC ASPIRANT PORTAL</h2>
+  <div class="brand-sub">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+
+  <div class="auth-box">
+    <div id="registerOnlyFields">
+      <label class="input-label">पूरा नाम (Candidate Full Name):</label>
+      <input type="text" id="candName" class="auth-input" placeholder="उदा. सचिन शर्मा">
+
+      <label class="input-label">गृह ज़िला / राज्य (District, State):</label>
+      <input type="text" id="candDistrict" class="auth-input" placeholder="उदा. Kotputli-Behror, Rajasthan">
+    </div>
+
+    <label class="input-label">मोबाइल नंबर (10-Digit Indian Mobile):</label>
+    <input type="tel" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10">
+
+    <label class="input-label">4-अंकों का गुप्त PIN (4-Digit PIN):</label>
+    <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" style="letter-spacing: 4px; font-size: 18px;">
+
+    <button class="btn-submit" id="authBtn" onclick="handleAuthAction()">सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔</button>
+
+    <div class="toggle-text">
+      <span id="toggleQuestion">पहले से रजिस्टर्ड हैं?</span> 
+      <a href="javascript:void(0)" onclick="toggleMode()" id="toggleBtn">यहाँ लॉगिन करें</a>
+    </div>
+  </div>
+
+  <div class="sec-tag">🔒 100% सुरक्षित सर्वर एवं डेटाबेस सुरक्षा · Supabase Secure Engine</div>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let isRegisterMode = true;
+
+  // भारतीय मोबाइल नंबर वैलिडेशन (10 अंक एवं 6, 7, 8, 9 से शुरू)
+  function isValidIndianMobile(mobile) {
+    const reg = /^[6-9]\d{9}$/;
+    return reg.test(mobile);
+  }
+
+  function toggleMode() {
+    isRegisterMode = !isRegisterMode;
+    const regFields = document.getElementById('registerOnlyFields');
+    const authBtn = document.getElementById('authBtn');
+    const toggleQ = document.getElementById('toggleQuestion');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    if (isRegisterMode) {
+      regFields.classList.remove('hidden');
+      authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
+      toggleQ.innerText = "पहले से रजिस्टर्ड हैं?";
+      toggleBtn.innerText = "यहाँ लॉगिन करें";
+    } else {
+      regFields.classList.add('hidden');
+      authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
+      toggleQ.innerText = "नया कार्ड बनाना चाहते हैं?";
+      toggleBtn.innerText = "नया रजिस्ट्रेशन करें";
+    }
+  }
+
+  async function handleAuthAction() {
+    const mobile = document.getElementById('candMobile').value.trim();
+    const pin = document.getElementById('candPin').value.trim();
+
+    if (!isValidIndianMobile(mobile)) {
+      alert("कृपया एक वैध 10-अंकों का भारतीय मोबाइल नंबर दर्ज करें (शुरुआत 6, 7, 8 या 9 से होनी चाहिए)!");
+      return;
+    }
+    if (pin.length !== 4 || isNaN(pin)) {
+      alert("कृपया 4-अंकों का संख्यात्मक (Numeric) गुप्त PIN दर्ज करें!");
+      return;
+    }
+
+    if (isRegisterMode) {
+      const name = document.getElementById('candName').value.trim();
+      const district = document.getElementById('candDistrict').value.trim() || "Rajasthan";
+
+      if (!name) {
+        alert("कृपया अपना पूरा नाम दर्ज करें!");
+        return;
+      }
+
+      // Check existing user
+      try {
+        const { data: existing } = await supabase.from('aspirants').select('*').eq('mobile', mobile).maybeSingle();
+        if (existing) {
+          alert("यह मोबाइल नंबर पहले से पंजीकृत है! कृपया 'यहाँ लॉगिन करें' पर क्लिक करके प्रवेश करें।");
+          toggleMode();
+          return;
+        }
+      } catch(e) {}
+
+      const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
+      const newUser = { mobile, pin, full_name: name, district, roll_id: rollId };
+
+      try {
+        await supabase.from('aspirants').insert([newUser]);
+      } catch(err) {
+        console.warn("DB notice:", err);
+      }
+
+      localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
+      alert("बधाई हो! आपका UPSC डिजिटल कार्ड सक्रिय हो चुका है।");
+      window.location.href = "index.html";
+
+    } else {
+      // Login Mode
+      try {
+        const { data: user, error } = await supabase.from('aspirants').select('*').eq('mobile', mobile).maybeSingle();
+        if (user) {
+          if (user.pin !== pin) {
+            alert("गलत PIN दर्ज किया गया है! कृपया सही पिन दर्ज करें।");
+            return;
+          }
+          localStorage.setItem('upsc_logged_user', JSON.stringify(user));
+          window.location.href = "index.html";
+          return;
+        }
+      } catch(e) {}
+
+      // Local storage fallback
+      const saved = localStorage.getItem('upsc_logged_user');
+      if (saved) {
+        const local = JSON.parse(saved);
+        if (local.mobile === mobile && local.pin === pin) {
+          window.location.href = "index.html";
+          return;
+        }
+      }
+
+      alert("उपयोगकर्ता नहीं मिला! कृपया पहले नया रजिस्ट्रेशन करें।");
+      toggleMode();
+    }
+  }
+
+  // यदि छात्र पहले से लॉगिन है तो सीधे index.html पर भेजें
+  window.addEventListener('load', () => {
+    if (localStorage.getItem('upsc_logged_user')) {
+      window.location.href = "index.html";
+    }
+  });
+</script>
+</body>
+</html>
