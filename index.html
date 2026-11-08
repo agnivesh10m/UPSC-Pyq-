@@ -37,17 +37,19 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
   body { background: var(--bg); color: var(--text); padding-bottom: 70px; transition: background 0.3s, color 0.3s; position: relative; }
   
-  /* SPLASH SCREEN STYLING */
+  /* SPLASH SCREEN: PURE CSS AUTO-HIDE (NEVER GETS STUCK) */
   #splashScreen {
     position: fixed; inset: 0; background: #030712 !important; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: white; transition: opacity 0.4s ease, visibility 0.4s ease;
+    color: white; text-align: center; padding: 20px;
+    animation: fadeOutSplash 0.4s ease 1.2s forwards;
   }
-  #splashScreen.hide-splash {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+  @keyframes fadeOutSplash {
+    0% { opacity: 1; visibility: visible; }
+    99% { opacity: 0; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; display: none; pointer-events: none; }
   }
+
   #splashScreen img {
     width: 140px; height: auto; object-fit: contain;
     border-radius: 14px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
@@ -60,11 +62,11 @@
     color: #fef3c7; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;
   }
   
-  /* RED BRANDING CREDIT */
+  /* BOLD RED BRANDING */
   .splash-credit {
     font-size: 13px; font-weight: 900; letter-spacing: 2px;
     color: #ef4444 !important; text-transform: uppercase; margin-bottom: 18px;
-    text-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
   }
 
   .loader-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
@@ -264,8 +266,8 @@
   </a>
 </div>
 
-<!-- SPLASH SCREEN WITH RED BRANDING -->
-<div id="splashScreen">
+<!-- SPLASH SCREEN WITH RED BRANDING & CLICK-TO-DISMISS -->
+<div id="splashScreen" onclick="this.style.display='none'">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
   <div class="splash-title">SACHIN SHARMA PORTAL</div>
   <div class="splash-credit">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
@@ -288,8 +290,8 @@
 <!-- AUTH MODAL (LOGIN / REGISTER) -->
 <div class="modal-overlay" id="authModal" onclick="closeAuthModal()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <h4 id="authModalTitle">👤 UPSC Aspirant Portal Login</h4>
-    <p style="font-size: 12.5px; margin-bottom: 14px;">अपने मोबाइल नंबर और 4-अंकों के PIN से लॉगिन करें या नया डिजिटल कार्ड बनाएँ:</p>
+    <h4 id="authModalTitle">👤 नया डिजिटल कार्ड बनाएँ (Register)</h4>
+    <p style="font-size: 12.5px; margin-bottom: 14px;">अपने मोबाइल नंबर और 4-अंकों के PIN से कार्ड प्राप्त करें या लॉगिन करें:</p>
     
     <div id="registerFields">
       <input type="text" id="authName" class="auth-input" placeholder="आपका पूरा नाम (Full Name)">
@@ -410,16 +412,6 @@
 </footer>
 
 <script>
-  // FAILSAFE SPLASH DISMISSAL (कंपलसरी 1.2 सेकंड में स्प्लैश स्क्रीन हट जाएगी)
-  function dismissSplashNow() {
-    const splash = document.getElementById('splashScreen');
-    if (splash && !splash.classList.contains('hide-splash')) {
-      splash.classList.add('hide-splash');
-      setTimeout(() => { splash.style.display = 'none'; }, 400);
-    }
-  }
-  setTimeout(dismissSplashNow, 1200);
-
   // SUPABASE CONFIGURATION
   const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
@@ -431,13 +423,14 @@
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       }
     } catch(err) {
-      console.warn("Supabase Init Error:", err);
+      console.warn("Supabase Init:", err);
     }
     return supabase;
   }
 
   let isRegisterMode = true;
 
+  // Local storage session check
   function checkExistingSession() {
     try {
       const saved = localStorage.getItem('upsc_logged_user');
@@ -502,7 +495,15 @@
     }
 
     if (!client) {
-      alert("डेटाबेस से संपर्क स्थापित किया जा रहा है, कृपया 2 सेकंड बाद पुनः क्लिक करें!");
+      // Offline fallback: save to localStorage directly if connection pending
+      const name = document.getElementById('authName').value.trim() || "Aspirant";
+      const district = document.getElementById('authDistrict').value.trim() || "Rajasthan";
+      const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
+      const offlineUser = { mobile, pin, full_name: name, district, roll_id: rollId };
+      localStorage.setItem('upsc_logged_user', JSON.stringify(offlineUser));
+      closeAuthModal();
+      checkExistingSession();
+      showDigitalCard(offlineUser);
       return;
     }
 
@@ -619,7 +620,7 @@
     csatList.innerHTML = '';
 
     for (let yr of years) {
-      // 1. GS Paper 1
+      // GS Paper 1
       const gsUrl = `prelims/gs1_${yr}.html`;
       const gsItem = document.createElement('div');
       gsItem.className = 'year-item';
@@ -637,7 +638,7 @@
         });
       }
 
-      // 2. CSAT Paper 2
+      // CSAT Paper 2
       const csatUrl = `prelims/csat_${yr}.html`;
       const csatItem = document.createElement('div');
       csatItem.className = 'year-item';
@@ -657,17 +658,18 @@
     }
   }
 
-  // DOM Loaded Event
+  // BUILD PORTAL ON DOM READY
   document.addEventListener('DOMContentLoaded', () => {
     buildPortal();
     checkExistingSession();
     initSupabase();
   });
 
-  // Window Load Event (Backup Failsafe)
-  window.addEventListener('load', () => {
-    dismissSplashNow();
-  });
+  function toggleDark() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('dark', document.body.classList.contains('dark-mode') ? '1' : '0');
+  }
+  if(localStorage.getItem('dark') === '1') document.body.classList.add('dark-mode');
 </script>
 </body>
 </html>
