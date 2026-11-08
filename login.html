@@ -38,7 +38,6 @@
   h2 { font-size: 19px; font-family: Georgia, serif; color: var(--gold); margin-bottom: 4px; }
   .brand-sub { font-size: 11px; color: #ef4444; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 16px; }
   
-  /* RED ERROR NOTICE BOX */
   .notice-banner {
     display: none; background: var(--err-bg); border: 1.5px solid var(--err-border);
     color: #fca5a5; padding: 12px 14px; border-radius: 8px; font-size: 12.5px; margin-bottom: 15px;
@@ -49,6 +48,7 @@
 
   .auth-box { text-align: left; }
   .input-label { font-size: 11.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; display: block; }
+  .input-wrapper { position: relative; width: 100%; }
   .auth-input {
     width: 100%; padding: 12px 14px; border-radius: 8px; border: 1.5px solid var(--border);
     margin-bottom: 14px; font-size: 14px; background: #030712; color: #fff; outline: none;
@@ -56,6 +56,11 @@
   }
   .auth-input:focus { border-color: var(--gold); }
   
+  .toggle-mask-btn {
+    position: absolute; right: 12px; top: 12px; background: transparent;
+    border: none; color: #94a3b8; font-size: 16px; cursor: pointer;
+  }
+
   .btn-submit {
     width: 100%; padding: 14px; border-radius: 8px; background: linear-gradient(135deg, #d97706, #b45309);
     color: white; font-size: 14px; font-weight: bold; border: none; cursor: pointer;
@@ -76,10 +81,9 @@
   <h2>UPSC ASPIRANT PORTAL</h2>
   <div class="brand-sub">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
 
-  <!-- ERROR NOTICE -->
+  <!-- NOTICE BOX -->
   <div class="notice-banner" id="noticeBox"></div>
 
-  <!-- FORM CONTAINER -->
   <div class="auth-box">
     <div id="registerOnlyFields">
       <label class="input-label">पूरा नाम (Candidate Full Name):</label>
@@ -90,7 +94,10 @@
     </div>
 
     <label class="input-label">मोबाइल नंबर (10-Digit Indian Mobile):</label>
-    <input type="tel" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10" inputmode="numeric">
+    <div class="input-wrapper">
+      <input type="password" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10" inputmode="numeric" style="padding-right: 40px;">
+      <button type="button" class="toggle-mask-btn" onclick="toggleMobileMask()" id="maskIcon">👁️</button>
+    </div>
 
     <label class="input-label">4-अंकों का गुप्त PIN (4-Digit PIN):</label>
     <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" inputmode="numeric" style="letter-spacing: 4px; font-size: 18px;">
@@ -105,11 +112,33 @@
 </div>
 
 <script>
-  // SUPABASE REST CONFIG (NO BLOCKING CDN REQUIRED)
+  // AUTO REDIRECT IF ALREADY LOGGED IN
+  const savedUser = localStorage.getItem('upsc_logged_user');
+  if (savedUser) {
+    try {
+      const u = JSON.parse(savedUser);
+      if (u && u.full_name && u.mobile) {
+        window.location.replace("index.html");
+      }
+    } catch(e) {}
+  }
+
   const SB_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
   const SB_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
 
   let isRegisterMode = true;
+
+  function toggleMobileMask() {
+    const mobInput = document.getElementById('candMobile');
+    const maskIcon = document.getElementById('maskIcon');
+    if (mobInput.type === "password") {
+      mobInput.type = "tel";
+      maskIcon.innerText = "🙈";
+    } else {
+      mobInput.type = "password";
+      maskIcon.innerText = "👁️";
+    }
+  }
 
   function showNotice(text) {
     const box = document.getElementById('noticeBox');
@@ -149,7 +178,6 @@
     }
   }
 
-  // DIRECT REST API BACKGROUND SYNC
   function syncToSupabase(userObj) {
     fetch(`${SB_URL}/rest/v1/aspirants`, {
       method: "POST",
@@ -160,7 +188,7 @@
         "Prefer": "return=minimal"
       },
       body: JSON.stringify(userObj)
-    }).catch(err => console.log("Sync queued"));
+    }).catch(err => console.log("Sync logged"));
   }
 
   async function checkUserInSupabase(mobile) {
@@ -185,19 +213,17 @@
     const pin = document.getElementById('candPin').value.trim();
     const authBtn = document.getElementById('authBtn');
 
-    // 1. Mobile Field Validation
     if (!mobile) {
-      showNotice("<b>मोबाइल नंबर अनिवार्य है!</b> कृपया अपना 10-अंकों का मोबाइल नंबर दर्ज करें।");
+      showNotice("<b>मोबाइल नंबर अनिवार्य है!</b> कृपया 10-अंकों का नंबर दर्ज करें।");
       return;
     }
     if (!isValidIndianMobile(mobile)) {
-      showNotice("<b>अमान्य मोबाइल नंबर!</b> कृपया एक वैध 10-अंकों का भारतीय नंबर दर्ज करें (जो 6, 7, 8 या 9 से शुरू होता हो)।");
+      showNotice("<b>अमान्य मोबाइल नंबर!</b> कृपया एक वैध 10-अंकों का भारतीय नंबर दर्ज करें (शुरुआत 6, 7, 8 या 9 से होनी चाहिए)।");
       return;
     }
 
-    // 2. PIN Field Validation
     if (!pin) {
-      showNotice("<b>PIN अनिवार्य है!</b> कृपया अपना 4-अंकों का गुप्त PIN दर्ज करें।");
+      showNotice("<b>PIN अनिवार्य है!</b> कृपया 4-अंकों का गुप्त PIN दर्ज करें।");
       return;
     }
     if (pin.length !== 4 || isNaN(pin)) {
@@ -210,36 +236,19 @@
       const district = document.getElementById('candDistrict').value.trim() || "LBSNAA, Mussoorie";
 
       if (!name) {
-        showNotice("<b>नाम अनिवार्य है!</b> कृपया अपना पूरा नाम दर्ज करें ताकि आपका डिजिटल कार्ड बन सके।");
+        showNotice("<b>पूरा नाम अनिवार्य है!</b> कृपया अपना नाम दर्ज करें।");
         return;
       }
 
       authBtn.innerText = "कार्ड तैयार हो रहा है...";
       authBtn.disabled = true;
 
-      // Local session check
-      const saved = localStorage.getItem('upsc_logged_user');
-      if (saved) {
-        const local = JSON.parse(saved);
-        if (local.mobile === mobile) {
-          showNotice("यह नंबर पहले से पंजीकृत है! कृपया 'यहाँ लॉगिन करें' पर क्लिक करें।");
-          toggleAuthMode();
-          authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
-          authBtn.disabled = false;
-          return;
-        }
-      }
-
       const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
       const newUser = { mobile, pin, full_name: name, district, roll_id: rollId };
 
-      // Immediate Local Storage Save
       localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
-
-      // Background Non-blocking DB sync
       syncToSupabase(newUser);
 
-      // Instant Redirect
       setTimeout(() => {
         window.location.replace("index.html");
       }, 300);
@@ -249,7 +258,6 @@
       authBtn.innerText = "सत्यापन हो रहा है...";
       authBtn.disabled = true;
 
-      // 1. Check in local storage first
       const saved = localStorage.getItem('upsc_logged_user');
       if (saved) {
         try {
@@ -259,7 +267,7 @@
               window.location.replace("index.html");
               return;
             } else {
-              showNotice("<b>गलत PIN!</b> आपने जो 4-अंकों का PIN डाला है वह मेल नहीं खाता।");
+              showNotice("<b>गलत PIN!</b> 4-अंकों का PIN सही नहीं है।");
               authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
               authBtn.disabled = false;
               return;
@@ -268,7 +276,6 @@
         } catch(e) {}
       }
 
-      // 2. Check in Online Database
       const dbUser = await checkUserInSupabase(mobile);
       if (dbUser) {
         if (dbUser.pin === pin) {
@@ -283,16 +290,11 @@
         }
       }
 
-      showNotice("<b>खाता नहीं मिला!</b> यह मोबाइल नंबर पंजीकृत नहीं है। कृपया पहले नया कार्ड बनाएँ।");
+      showNotice("<b>खाता नहीं मिला!</b> यह नंबर पंजीकृत नहीं है। कृपया पहले नया कार्ड बनाएँ।");
       toggleAuthMode();
       authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
       authBtn.disabled = false;
     }
-  }
-
-  // Already logged in check
-  if (localStorage.getItem('upsc_logged_user')) {
-    window.location.replace("index.html");
   }
 </script>
 </body>
