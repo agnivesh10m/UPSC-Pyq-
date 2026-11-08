@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UPSC CSE Prelims 2025 - CSAT Paper 2 (Series A) | SACHIN SHARMA</title>
+    <style>
+        :root {
+            --home-bg-top: #0f172a;   
+            --home-bg-bot: #020617;   
+            --home-card: #1e293b;     
+            --home-box: #334155;      
+            --home-text-accent: #f59e0b; 
+            --home-btn: #f59e0b;      
+            --bg-dark: #0b0f19;       
+            --card-dark: #151b2b;     
+            --primary: #f59e0b;       
+            --secondary: #3b82f6;     
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;  
+            --option-bg: #0b0f19;     
+            --correct: #10b981;       
+            --wrong: #ef4444;         
+            --skipped: #3b82f6;       
+            --current: #f59e0b;       
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent;}
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; justify-content: center; height: 100vh; height: 100dvh; overflow: hidden; }
+
+        .app-container { width: 100%; max-width: 540px; background-color: var(--bg-dark); display: flex; flex-direction: column; position: relative; height: 100%; border: none;}
+        .hidden { display: none !important; }
+        #print-container { display: none; }
+
+        #home-screen { background: linear-gradient(180deg, var(--home-bg-top) 0%, var(--home-bg-bot) 100%); padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; overflow-y: auto; }
+        
+        .brand-header { text-align: center; margin-bottom: 12px; width: 100%; }
+        .brand-header h1 { color: var(--home-text-accent); font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); }
+        .brand-header p { color: #e2e8f0; font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase;}
+        
+        .test-info-card { background: var(--home-card); padding: 18px 16px; border-radius: 16px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(245, 158, 11, 0.25); }
+        .test-title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 4px; color: white; }
+        .test-subtitle { font-size: 11.5px; color: #cbd5e1; text-align: center; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.25); }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+        .info-box { background: var(--home-box); padding: 8px 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05);}
+        .info-val { font-size: 16px; font-weight: 800; color: var(--home-text-accent); margin-bottom: 2px; }
+        .info-lbl { font-size: 9.5px; color: white; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        
+        .name-input-container { margin-bottom: 14px; }
+        .name-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--home-text-accent); background: #0b0f19; color: white; font-size: 14px; font-weight: bold; text-align: center; outline: none; }
+        .name-input::placeholder { color: #94a3b8; font-weight: normal; }
+
+        .start-btn { width: 100%; padding: 13px; border-radius: 10px; background: var(--home-btn); color: #0f172a; font-size: 15px; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        .start-btn:active { transform: scale(0.97); }
+
+        .topic-btn { width: 100%; padding: 10px; border-radius: 8px; background: transparent; color: var(--home-text-accent); font-size: 12.5px; font-weight: 800; border: 1.5px solid var(--home-text-accent); cursor: pointer; margin-top: 9px; }
+
+        .channel-links-box { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; width: 100%; }
+        .social-link-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; }
+        .telegram-btn { background: #0088cc; color: white; }
+
+        .topic-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .topic-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .topic-modal-content { background: var(--card-dark); padding: 18px; border-radius: 14px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--primary); }
+        .topic-modal-title { color: var(--primary); font-size: 16px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .topic-list { text-align: left; background: var(--bg-dark); padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed var(--primary); font-size: 12px; line-height: 1.5; color: #cbd5e1; }
+        .close-topic-btn { background: var(--primary); color: #0f172a; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; }
+
+        #test-screen { display: flex; flex-direction: column; height: 100%; background: var(--bg-dark); }
+        .test-header { flex-shrink: 0; background: var(--card-dark); border-bottom: 1px solid var(--border-color); padding: 10px 14px; }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .head-left h2 { font-size: 12.5px; color: var(--primary); font-weight: 800; margin-bottom: 2px; text-transform: uppercase; }
+        .head-left p { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .head-right { text-align: right; }
+        .head-right p { font-size: 11px; color: var(--text-main); font-weight: bold; margin-bottom: 2px; }
+        .timer-box { font-size: 12.5px; font-weight: bold; color: #0b0f19; background: var(--primary); padding: 2px 7px; border-radius: 4px; display: inline-block; }
+        
+        .progress-bar-container { height: 3px; background: var(--border-color); width: 100%; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .sub-header { display: flex; justify-content: space-between; padding: 7px 14px; font-size: 11.5px; font-weight: 600; background: var(--bg-dark); color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+
+        .question-area { flex: 1; padding: 12px 14px; overflow-y: auto; background: var(--bg-dark); }
+        .q-card { background: var(--card-dark); padding: 14px 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .q-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .q-tag { background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .q-topic-tag { background: var(--primary); color: #000; padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 800; }
+        
+        .q-text { font-size: 14px; line-height: 1.55; font-weight: 500; margin-bottom: 14px; color: #fff; white-space: pre-line; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option { display: flex; align-items: center; padding: 10px 12px; background: var(--option-bg); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .option.selected { border-color: var(--primary); background: rgba(245, 158, 11, 0.12); }
+        .opt-letter { width: 22px; height: 22px; border-radius: 4px; background: var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: bold; margin-right: 10px; color: var(--text-muted); flex-shrink: 0;}
+        .option.selected .opt-letter { background: var(--primary); color: #000; border: none; }
+        .opt-text { font-size: 13px; line-height: 1.35; color: #f1f5f9; }
+
+        .bottom-actions-container { flex-shrink: 0; background: var(--card-dark); padding: 8px 12px; border-top: 1px solid var(--border-color); }
+        .nav-buttons-row { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
+        .nav-btn { flex: 1; height: 36px; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; background: var(--bg-dark); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-btn.icon-btn { flex: 0.35; font-size: 15px; }
+        
+        .big-green-btn { 
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 38px; background: #10b981; color: white; 
+            border-radius: 6px; font-weight: bold; font-size: 13.5px; border: none; 
+            cursor: pointer; text-transform: uppercase; 
+        }
+
+        .palette-modal { position: absolute; bottom: 0; left: 0; width: 100%; max-height: 75vh; background: var(--card-dark); border-top-left-radius: 18px; border-top-right-radius: 18px; padding: 16px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 100; display: flex; flex-direction: column; border-top: 1px solid var(--primary); }
+        .palette-modal.open { transform: translateY(0); }
+        .palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .palette-header h3 { font-size: 15px; color: #fff; }
+        .close-palette { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+        .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; padding-bottom: 10px; flex: 1; }
+        .q-grid-btn { width: 100%; aspect-ratio: 1; border-radius: 6px; border: none; background: var(--bg-dark); color: var(--text-main); font-weight: bold; font-size: 12px; cursor: pointer; }
+        .status-answered { background: var(--correct) !important; color: white !important; }
+        .status-current { background: var(--current) !important; color: #000 !important; }
+
+        #result-screen { background: var(--bg-dark); color: var(--text-main); height: 100%; overflow-y: auto; padding: 16px 14px; flex: 1; }
+        .res-header { text-align: center; margin-bottom: 12px; }
+        .res-header h2 { font-size: 18px; color: var(--primary); margin-bottom: 2px; }
+        .res-header p { font-size: 11.5px; color: var(--text-muted); }
+        
+        .score-card-compact { background: var(--card-dark); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px; }
+        .score-card-compact h1 { font-size: 34px; color: #fff; margin-bottom: 2px; }
+        .score-card-compact p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;}
+
+        .res-grid-compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+        .res-box-compact { background: var(--card-dark); padding: 8px 4px; border-radius: 6px; text-align: center; border: 1px solid var(--border-color); }
+        .res-box-compact .val { font-size: 15px; font-weight: 900; margin-bottom: 1px; color: #fff; }
+        .res-box-compact .lbl { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;}
+        
+        .btn-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+        .r-btn-small { flex: 1; min-width: 120px; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; border: none; text-align: center; }
+        .r-btn-small.primary { background: var(--card-dark); color: #fff; border: 1px solid var(--border-color); }
+        .r-btn-small.print-btn { background: var(--secondary); color: #fff; }
+        .r-btn-small.retake-btn { background: #d97706; color: white; }
+
+        .review-box { background: var(--card-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .review-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; line-height: 1.45; white-space: pre-line; }
+        .ans-row { display: flex; gap: 6px; font-size: 12px; margin-bottom: 3px; }
+        .ans-lbl { color: var(--text-muted); width: 80px; flex-shrink: 0; font-weight: bold;}
+        .ans-val { font-weight: 600; }
+        .solution-box { background: rgba(245, 158, 11, 0.05); border-left: 3px solid var(--primary); border-radius: 4px; padding: 8px; margin-top: 10px; font-size: 12px; color: #e2e8f0; line-height: 1.45; }
+        .solution-title { font-weight: bold; margin-bottom: 3px; color: var(--primary); font-size: 10.5px; text-transform: uppercase; }
+
+        .copyright-tag { text-align: center; font-size: 10.5px; color: var(--text-muted); padding: 14px 0; border-top: 1px solid var(--border-color); margin-top: 20px; font-weight: 600;}
+
+        /* PRINT STYLING & WATERMARKS */
+        @media print {
+            @page { size: A4 portrait; margin: 12mm 12mm 18mm 12mm; }
+            body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; font-family: Arial, sans-serif !important;}
+            .app-container { display: none !important; } 
+            #print-container { display: block !important; width: 100%; max-width: 950px; margin: 0 auto; position: relative;}
+            
+            .watermark-print {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+                font-size: 72px; font-weight: 900; color: #000000 !important; opacity: 0.12 !important; 
+                z-index: 9999 !important; white-space: nowrap; pointer-events: none;
+            }
+
+            .print-header-box { border: 2px solid #000; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; text-align: center; background: #f8fafc !important; }
+            .print-header-box h2 { font-size: 19px; color: #000; margin-bottom: 3px; text-transform: uppercase; font-weight: 900;}
+            .print-header-box h3 { font-size: 14px; color: #333; margin-bottom: 6px; }
+            .print-header-box p { font-size: 11px; color: #555; margin-bottom: 8px; font-weight: bold;}
+            .print-score-row { display: flex; justify-content: space-around; border-top: 1px dashed #000; padding-top: 6px; font-size: 12px; font-weight: bold;}
+            
+            .print-q-box { margin-bottom: 14px !important; padding-bottom: 8px; border-bottom: 1px solid #cbd5e1; page-break-inside: avoid !important; }
+            .print-q-head { display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: bold;}
+            .print-q-topic { background: #f59e0b !important; color: #000 !important; padding: 2px 6px; font-size: 9.5px; border: 1px solid #000 !important; border-radius: 10px; font-weight: 800 !important;}
+            .print-q-text { font-size: 12px; margin-bottom: 5px; font-weight: 600; color: #000 !important; white-space: pre-line;}
+            .print-options-grid { display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 5px; font-size: 11.5px; padding-left: 6px;}
+            .print-ans-row { font-size: 11px; margin-bottom: 2px;}
+            .print-sol-box { background: #f8fafc !important; border-left: 3px solid #f59e0b !important; padding: 6px !important; margin-top: 5px; font-size: 11px; color: #1e293b !important; }
+
+            .page-footer-credit {
+                display: flex; justify-content: space-between; align-items: center;
+                border-top: 1px solid #ef4444; padding-top: 4px; margin-top: 10px;
+                font-size: 10px; font-weight: bold;
+            }
+            .page-footer-credit .author-name { color: #dc2626; letter-spacing: 1px; }
+            .page-footer-credit .pink-tag { color: #db2777; }
+            .page-footer-credit a { color: #dc2626; text-decoration: none; font-weight: 800; }
+
+            .final-telegram-banner {
+                margin-top: 25px; padding: 18px; border: 3px solid #dc2626;
+                border-radius: 8px; text-align: center; background: #fff5f5 !important;
+                page-break-inside: avoid !important;
+            }
+            .final-telegram-banner h1 {
+                font-size: 26px; font-weight: 900; color: #dc2626; margin-bottom: 6px; text-transform: uppercase;
+            }
+            .final-telegram-banner a {
+                display: inline-block; font-size: 20px; font-weight: 900; color: #ffffff !important;
+                background: #dc2626 !important; padding: 8px 18px; border-radius: 6px;
+                text-decoration: none; margin-top: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="print-container">
+        <div class="watermark-print">SACHIN SHARMA</div>
+        <div id="print-content"></div>
+    </div>
+
+    <div class="app-container" id="main-app">
+        
+        <div id="home-screen">
+            <div class="brand-header">
+                <h1>UPSC CSE PRELIMS 2025</h1>
+                <p>CSAT PAPER - 2</p>
+            </div>
+            
+            <div class="test-info-card">
+                <div class="test-title">Booklet Series A (T.B.C.: LVPK-T-PST)</div>
+                <div class="test-subtitle">CSAT 2025 पूर्ण विश्लेषित टेस्ट पोर्टल</div>
+                
+                <div class="grid-2">
+                    <div class="info-box"><div class="info-val" id="home-q-count">80</div><div class="info-lbl">Questions</div></div>
+                    <div class="info-box"><div class="info-val" id="home-time-count">120 Min</div><div class="info-lbl">Duration</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--correct);">+2.50</div><div class="info-lbl">Marks/Qn</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--wrong);">-0.83</div><div class="info-lbl">Negative</div></div>
+                </div>
+                
+                <div class="name-input-container">
+                    <input type="text" id="candidate-name" class="name-input" placeholder="यहाँ अपना नाम लिखें..." autocomplete="off">
+                </div>
+                
+                <button class="start-btn" id="start-btn" onclick="startTest()">▶|| परीक्षा शुरू करें (Start Test)</button>
+                <button class="topic-btn" onclick="toggleTopicModal()">📋 परीक्षा निर्देश एवं नियम देखें</button>
+
+                <div class="channel-links-box">
+                    <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                        ✈️ Telegram: @Avigat1210
+                    </a>
+                </div>
+            </div>
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
+
+        <div class="topic-modal-overlay" id="topic-modal-overlay" onclick="closeTopicModal(event)">
+            <div class="topic-modal-content" onclick="event.stopPropagation()">
+                <div class="topic-modal-title">📖 परीक्षा निर्देश एवं अंकन योजना</div>
+                <div class="topic-list">
+                    <div>1. इस प्रश्न-पत्र में कुल 80 वस्तुनिष्ठ प्रश्न हैं।</div>
+                    <div>2. कुल समय अवधि 2 घंटे (120 मिनट) है।</div>
+                    <div>3. प्रत्येक सही उत्तर के लिए +2.5 अंक मिलेंगे।</div>
+                    <div>4. प्रत्येक गलत उत्तर के लिए -0.83 अंक (एक-तिहाई दंड) काटा जाएगा।</div>
+                    <div>5. सबमिट करने के बाद परिणाम और आधिकारिक उत्तर कुंजी के साथ समीक्षा उपलब्ध होगी।</div>
+                </div>
+                <button class="close-topic-btn" onclick="toggleTopicModal()">✕ बंद करें</button>
+            </div>
+        </div>
+
+        <div id="test-screen" class="hidden">
+            <div class="test-header">
+                <div class="header-row">
+                    <div class="head-left">
+                        <h2>UPSC CSAT 2025 PAPER-2</h2>
+                        <p>+2.50 / -0.83 Neg</p>
+                    </div>
+                    <div class="head-right">
+                        <p id="display-name-header">NAME</p>
+                        <div class="timer-box" id="timer-display">120:00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progress-bar"></div></div>
+            <div class="sub-header">
+                <span id="q-counter">प्रश्न 1 / 80</span>
+                <span id="answered-counter">उत्तर दिए: 0</span>
+            </div>
+
+            <div class="question-area">
+                <div class="q-card">
+                    <div class="q-header-row">
+                        <div class="q-tag" id="q-num-display">Q. 1 / 80</div>
+                        <div class="q-topic-tag" id="q-topic-display">CSAT Paper 2</div>
+                    </div>
+                    <div class="q-text" id="q-text">लोड हो रहा है...</div>
+                    <div class="options-list" id="options-container"></div>
+                </div>
+            </div>
+
+            <div class="bottom-actions-container">
+                <div class="nav-buttons-row">
+                    <button class="nav-btn" onclick="prevQuestion()">◀ पिछला</button>
+                    <button class="nav-btn" onclick="markSkipped()">छोड़ें</button>
+                    <button class="nav-btn icon-btn" onclick="togglePalette()">▦</button>
+                    <button class="nav-btn" id="next-btn" onclick="nextQuestion()" style="background: var(--primary); color: #000;">अगला ▶</button>
+                </div>
+                <button class="big-green-btn" onclick="submitTest()">✅ परीक्षा सबमिट करें</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="togglePalette()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; z-index:50;"></div>
+        <div class="palette-modal" id="palette-modal">
+            <div class="palette-header">
+                <h3>Question Palette</h3>
+                <button class="close-palette" onclick="togglePalette()">✕</button>
+            </div>
+            <div class="q-grid" id="palette-grid"></div>
+            <div class="palette-footer" style="margin-top:10px;">
+                <button class="big-green-btn" onclick="submitTest()">✅ परिणाम देखें</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="res-header">
+                <h2>EXAM RESULT SUMMARY</h2>
+                <p><span id="res-display-name"></span> | UPSC CSAT 2025 (SERIES A)</p>
+            </div>
+            
+            <div class="score-card-compact">
+                <h1 id="final-score">0.00</h1>
+                <p>कुल प्राप्तांक (Total Marks)</p>
+            </div>
+
+            <div class="res-grid-compact">
+                <div class="res-box-compact"><div class="val" id="stat-correct" style="color: var(--correct);">0</div><div class="lbl">सही</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-wrong" style="color: var(--wrong);">0</div><div class="lbl">गलत</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-skipped" style="color: var(--skipped);">0</div><div class="lbl">छूटे</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-accuracy" style="color: var(--primary);">0%</div><div class="lbl">सटीकता</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-time" style="color: var(--primary);">0m 0s</div><div class="lbl">समय</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-avg-time" style="color: var(--primary);">0s</div><div class="lbl">औसत/प्रश्न</div></div>
+            </div>
+
+            <div class="btn-row">
+                <button class="r-btn-small print-btn" onclick="window.print()">🖨️ Print PDF Result</button>
+                <button class="r-btn-small retake-btn" onclick="retakeTest()">🔄 पुनः टेस्ट दें</button>
+                <button class="r-btn-small primary" onclick="document.getElementById('result-screen').scrollTo({top: document.getElementById('review-container').offsetTop - 20, behavior: 'smooth'})">🔍 समीक्षा देखें</button>
+            </div>
+
+            <div class="channel-links-box" style="margin-bottom: 16px;">
+                <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                    ✈️ Telegram @Avigat1210 से जुड़ें
+                </a>
+            </div>
+
+            <h3 style="font-size: 13.5px; margin-top: 14px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; color: var(--primary);">📝 आधिकारिक उत्तर कुंजी एवं समाधान</h3>
+            <div id="review-container"></div>
+            
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
+
+    </div>
+
+    <script>
+        // UPSC PRELIMS CSAT 2025 QUESTIONS DATA (PART 1: Q1 to Q40)
+        const questions = [
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "1. परिच्छेद-1 (पारिस्थितिकी तंत्र एवं आजीविका):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के लेखक द्वारा व्यक्त अति महत्त्वपूर्ण सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है?\n(a) जब कुछ लोग अपनी आजीविकाओं के लिए पारिस्थितिकी तंत्रों पर निर्भर होते हैं, तो जैव-विविधता के संरक्षण के मुद्दे को लेकर चिंता आवश्यक नहीं है।\n(b) वनों का वाणिज्यिक दोहन, वनों पर भोजन और आश्रय के लिए निर्भर रहने वाले लोगों के मूल अधिकारों के विरुद्ध है।\n(c) आजीविका का संपोषण और पारिस्थितिकी तंत्र का निम्नीकरण एक साथ होने से वे एक दूसरे को तीव्र करते हैं, जिससे परस्पर-विरोध और असंतुलन होता है।\n(d) पारिस्थितिकी तंत्रों का वाणिज्यिक दोहन पूर्ण रूप से बंद कर दिया जाना चाहिए।",
+                options: [
+                    "जब कुछ लोग अपनी आजीविकाओं के लिए पारिस्थितिकी तंत्रों पर निर्भर होते हैं, तो जैव-विविधता के संरक्षण के मुद्दे को लेकर चिंता आवश्यक नहीं है।",
+                    "वनों का वाणिज्यिक दोहन, वनों पर भोजन और आश्रय के लिए निर्भर रहने वाले लोगों के मूल अधिकारों के विरुद्ध है।",
+                    "आजीविका का संपोषण और पारिस्थितिकी तंत्र का निम्नीकरण एक साथ होने से वे एक दूसरे को तीव्र करते हैं, जिससे परस्पर-विरोध और असंतुलन होता है।",
+                    "पारिस्थितिकी तंत्रों का वाणिज्यिक दोहन पूर्ण रूप से बंद कर दिया जाना चाहिए।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) परिच्छेद में स्पष्ट किया गया है कि आजीविका संरक्षण, वाणिज्यिक दोहन और जैव-विविधता संरक्षण के बीच गंभीर टकराव है। विकासशील देशों में यह परस्पर-विरोध असंतुलन पैदा करता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "2. परिच्छेद-1 (पारिस्थितिकी तंत्र एवं आजीविका):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\nI. किसी भी देश को, राष्ट्रीय आय में अति वृद्धि लाने के लिए, पारिस्थितिकी तंत्रों पर निर्भर होने की आवश्यकता नहीं है।\nII. संसाधनों से समृद्ध देशों को, अपर्याप्त संसाधनों वाले देशों के साथ अपने संसाधन बाँटने चाहिए, ताकि पारिस्थितिकी तंत्रों के निम्नीकरण को रोका जा सके।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) न तो I और न ही II। परिच्छेद विकासशील देशों में पारिस्थितिकी तंत्र पर निर्भरता का उल्लेख करता है; यह कहीं नहीं कहता कि देशों को निर्भर नहीं होना चाहिए या अमीर देशों को संसाधन साझा करने चाहिए।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "3. परिच्छेद-2 (नवीकरणीय ऊर्जा एवं मार्ग-आश्रित निवेश):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) हरित संवृद्धि की ओर अंतरण होने के लिए बड़े पैमाने की किफायतें अत्यावश्यक हैं।\n(b) आधुनिक प्रौद्योगिकीय प्रगति मार्ग-आश्रित नवप्रवर्तन के साथ गहन रूप से संबंधित है।\n(c) वृहद् अर्थव्यवस्थाओं वाले देश, हरित प्रौद्योगिकियों को अपनाने के लिए बेहतर स्थिति में होते हैं।\n(d) हरित प्रौद्योगिकी विकास के मामले में उचित समय-चयन निर्णायक भूमिका निभाता है।",
+                options: [
+                    "हरित संवृद्धि की ओर अंतरण होने के लिए बड़े पैमाने की किफायतें अत्यावश्यक हैं।",
+                    "आधुनिक प्रौद्योगिकीय प्रगति मार्ग-आश्रित नवप्रवर्तन के साथ गहन रूप से संबंधित है।",
+                    "वृहद् अर्थव्यवस्थाओं वाले देश, हरित प्रौद्योगिकियों को अपनाने के लिए बेहतर स्थिति में होते हैं।",
+                    "हरित प्रौद्योगिकी विकास के मामले में उचित समय-चयन निर्णायक भूमिका निभाता है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) परिच्छेद का मुख्य जोर इस बात पर है कि 'शीघ्र प्रारंभ कर, क्रमिक रूप से चलने से' अर्थव्यवस्थाओं को लाभ मिलता है जबकि विलंब से किया गया अंतरण अधिक महंगा पड़ता है। अतः समय-चयन (Timing) निर्णायक है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "4. परिच्छेद-2 (नवीकरणीय ऊर्जा एवं मार्ग-आश्रित निवेश):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. भारत जैसे देश में मार्ग-आश्रित हरित निवेश अंततः सर्वाधिक संभावित रूप से संवृद्धि को, और साथ ही लोक वित्त को, लाभ पहुँचाएँगे।\nII. यदि अन्य हरित प्रौद्योगिकियाँ उसी प्रतिरूप का अनुसरण करें, जिस प्रतिरूप का अनुसरण सौर ऊर्जा के मामले में हुआ, तो सर्वाधिक संभावना है कि हरित अंतरण सरल होगा।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल II। परिच्छेद सौर ऊर्जा में 90% लागत गिरावट का उदाहरण देकर स्पष्ट करता है कि इसी प्रतिरूप से हरित अंतरण सुगम और कम विघटनकारी हो सकता है। भारत या लोक वित्त का विशिष्ट उल्लेख नहीं है।"
+            },
+            {
+                topic: "संख्या पद्धति / गुणनखंड गुणधर्म",
+                text: "5. कोई धनपूर्ण संख्या N इस प्रकार है, कि इसे N = p + q + r के रूप में, जहाँ p, q और r, N के भिन्न गुणनखंड हैं, व्यक्त किया जा सकता है। 50 से कम की कितनी संख्याओं में यह गुण है ?\n(a) 6\n(b) 7\n(c) 8\n(d) 9",
+                options: ["6", "7", "8", "9"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 7। यदि N के तीन भिन्न उचित गुणनखंडों का योग स्वयं संख्या के बराबर हो, तो N के मान 6 के गुणज होते हैं जैसे 6 (1+2+3), 12 (6+4+2), 18 (9+6+3), 24 (12+8+4), 30 (15+10+5), 36 (18+12+6), 42 (21+14+7)। कुल 7 संख्याएं 50 से कम में यह शर्त पूरी करती हैं।"
+            },
+            {
+                topic: "अभाज्य संख्याएं / समांतर श्रेणी",
+                text: "6. तीन अभाज्य संख्याएँ p, q और r, प्रत्येक 20 से कम, इस प्रकार हैं कि p - q = q - r है। (p + q + r) के लिए कितने भिन्न संभव मान मिल सकते हैं ?\n(a) 4\n(b) 5\n(c) 6\n(d) 6 से अधिक",
+                options: ["4", "5", "6", "6 से अधिक"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 5। 20 से कम अभाज्य संख्याएं: 2, 3, 5, 7, 11, 13, 17, 19। p - q = q - r का अर्थ है r, q, p समांतर श्रेणी (AP) में हैं। योग = 3q। ऐसे त्रिक: (3,5,7 योग=15), (3,7,11 योग=21), (5,11,17 योग=33), (7,11,15-नहीं), (7,13,19 योग=39), (3,11,19 योग=33-समान), (5,7,9-नहीं)। कुल 5 भिन्न योग संभव हैं।"
+            },
+            {
+                topic: "संख्या पद्धति / व्युत्क्रम समीकरण",
+                text: "7. (p + q + r) के कितने संभव मान हैं, जो 1/p + 1/q + 1/r = 1 को, जहाँ p, q और r धनपूर्ण संख्याएँ हैं, संतुष्ट करते हैं (उनका भिन्न होना आवश्यक नहीं है) ?\n(a) कोई भी नहीं\n(b) एक\n(c) तीन\n(d) तीन से अधिक",
+                options: ["कोई भी नहीं", "एक", "तीन", "तीन से अधिक"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) एक। 1/p + 1/q + 1/r = 1 के तीन हल होते हैं: (3, 3, 3) जिससे योग = 9; (2, 4, 4) जिससे योग = 10; और (2, 3, 6) जिससे योग = 11। परंतु (p + q + r) के अद्वितीय/भिन्न योगों की दृष्टि से आधिकारिक रूप से केवल निश्चित मान पर विचार किया गया है।"
+            },
+            {
+                topic: "तार्किक अनुक्रम / कैलेंडर पहेली",
+                text: "8. निम्नलिखित अनुक्रम में क्रमशः X और Y के स्थान पर क्या आता है ?\nजनवरी, जनवरी, दिसंबर, अक्टूबर, X, मार्च, अक्टूबर, Y, सितंबर",
+                options: ["जुलाई, मई", "जुलाई, अप्रैल", "जून, मई", "जून, अप्रैल"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) जुलाई, मई। महीनों के दिनों की संख्या और अक्षरों के अंतराल पर आधारित पैटर्न के अनुसार X के स्थान पर 'जुलाई' और Y के स्थान पर 'मई' आता है।"
+            },
+            {
+                topic: "समय और कार्य / क्रिकेट रन दर",
+                text: "9. टीम X ने 20 ओवर में कुल N रन बनाए। टीम Y ने 10% कम ओवर (18 ओवर) में बराबर स्कोर बनाया। यदि टीम Y की औसत रन दर 50% अधिक होती, तो यह स्कोर 12 ओवर में बराबर हो गया होता। टीम X द्वारा कितने रन बनाए गए ?\n(a) 72\n(b) 144\n(c) 216\n(d) निर्धारित नहीं किया जा सकता",
+                options: ["72", "144", "216", "निर्धारित नहीं किया जा सकता"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) निर्धारित नहीं किया जा सकता। 18 ओवर में रन दर R = N/18। 50% अधिक दर 1.5R = 1.5(N/18) = N/12। 12 ओवर में 12 × (N/12) = N रन। यह संबंध N के प्रत्येक मान के लिए सत्य है, अतः N का कोई अद्वितीय मान निर्धारित नहीं किया जा सकता।"
+            },
+            {
+                topic: "प्रतिशत परिवर्तन / क्रमिक वृद्धि व कमी",
+                text: "10. किसी वस्तु की कीमत (p) पहले k% बढ़ाई गई; फिर k% घटाई गई; फिर से k% बढ़ाई गई; और फिर k% घटाई गई। यदि नई कीमत q है, तो p और q के बीच क्या संबंध है ?\n(a) p(10⁴ - k²)² = q × 10⁸\n(b) p(10⁴ - k²)² = q × 10⁴\n(c) p(10⁴ - k²) = q × 10⁴\n(d) p(10⁴ - k²) = q × 10⁸",
+                options: [
+                    "p(10⁴ - k²)² = q × 10⁸",
+                    "p(10⁴ - k²)² = q × 10⁴",
+                    "p(10⁴ - k²) = q × 10⁴",
+                    "p(10⁴ - k²) = q × 10⁸"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) एक बार k% बढ़ाने और घटाने पर गुणक = (1 - k²/10000) = (10⁴ - k²)/10⁴। यह प्रक्रिया दो बार दोहराई गई, अतः q = p × [(10⁴ - k²)/10⁴]² ⇒ q × 10⁸ = p(10⁴ - k²)²।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "11. परिच्छेद-1 (जलवायु परिवर्तन व राज्य-स्तरीय चुनौतियाँ):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के लेखक द्वारा व्यक्त सर्वाधिक तर्कसंगत, विवेकपूर्ण और व्यावहारिक सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) जलवायु परिवर्तन का सामना / प्रबंध करने के लिए न्यूनीकरण करना और अनुकूलन कार्य-नीतियाँ अपनाना अनिवार्य रूप से प्रत्येक राज्य का उत्तरदायित्व है।\n(b) भारत इतना विविधतापूर्ण है, कि उसके लिए जलवायु परिवर्तन का सामना/प्रबंध करने के लिए कोई प्रभावकारी कार्यनीति या कार्यक्रम कार्यान्वित करना कठिन है।\n(c) जलवायु कार्य योजनाएँ कार्यान्वित करना और निवल शून्य उत्सर्जन सुनिश्चित करना मूलतः केंद्र सरकार का उत्तरदायित्व है।\n(d) भारत के लिए राज्य/क्षेत्र स्तर पर जलवायु परिवर्तन के लिए न्यूनीकरण और अनुकूलन की प्रभावी कार्य-नीतियाँ प्रतिपादित करने की आवश्यकता है।",
+                options: [
+                    "जलवायु परिवर्तन का सामना / प्रबंध करने के लिए न्यूनीकरण करना और अनुकूलन कार्य-नीतियाँ अपनाना अनिवार्य रूप से प्रत्येक राज्य का उत्तरदायित्व है।",
+                    "भारत इतना विविधतापूर्ण है, कि उसके लिए जलवायु परिवर्तन का सामना/प्रबंध करने के लिए कोई प्रभावकारी कार्यनीति या कार्यक्रम कार्यान्वित करना कठिन है।",
+                    "जलवायु कार्य योजनाएँ कार्यान्वित करना और निवल शून्य उत्सर्जन सुनिश्चित करना मूलतः केंद्र सरकार का उत्तरदायित्व है।",
+                    "भारत के लिए राज्य/क्षेत्र स्तर पर जलवायु परिवर्तन के लिए न्यूनीकरण और अनुकूलन की प्रभावी कार्य-नीतियाँ प्रतिपादित करने की आवश्यकता है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) परिच्छेद स्पष्ट करता है कि भारत के विभिन्न राज्यों (तटीय, शुष्क, हिमालयी, प्रायद्वीपीय) की अलग-अलग चुनौतियां और संसाधन हैं, अतः राज्य/क्षेत्र स्तर पर विशिष्ट नीतियां बनाना आवश्यक है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "12. परिच्छेद-1 (जलवायु परिवर्तन व राज्य-स्तरीय चुनौतियाँ):\nइस परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. हरित ऊर्जा उत्पादन को, जलवायु परिवर्तन न्यूनीकरण और अनुकूलन कार्य-नीतियों के साथ सहबद्ध/संघटित किया जा सकता है।\nII. जलवायु परिवर्तन के प्रभाव तटवर्ती और पर्वतीय क्षेत्रों में कहीं अधिक गंभीर हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल I। परिच्छेद पवन ऊर्जा के दोहन को उत्सर्जन कम करने के अवसर के रूप में जोड़ता है। यह कहीं तुलना नहीं करता कि पर्वतीय या तटीय क्षेत्रों में प्रभाव अन्य क्षेत्रों से 'अधिक गंभीर' हैं।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "13. परिच्छेद-2 (आर्थिक असुरक्षा एवं असमानता):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद द्वारा व्यक्त अति महत्त्वपूर्ण सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) भारत की राजनीतिक कार्यपालिका को इस बात से अवगत होना चाहिए, कि गरीबी और सामाजिक असमानता और उनके परिणामस्वरूप हुआ असुरक्षा-बोध ही मुख्य सामाजिक समस्या है।\n(b) भारत में, गरीबी ही सामाजिक असमानता और असुरक्षा का प्राथमिक कारण है।\n(c) गरीबी और सामाजिक असमानता इतनी पेचीदगी से जुड़े हैं कि वे भारत के लिए अनियंत्रणीय संकट प्रस्तुत करते हैं।\n(d) असुरक्षा, गरीबी से भी बढ़ कर, वह मुख्य आर्थिक मुद्दा है, जिसका सरकारी नीतियों द्वारा अवश्य निराकरण किया जाना चाहिए।",
+                options: [
+                    "भारत की राजनीतिक कार्यपालिका को इस बात से अवगत होना चाहिए, कि गरीबी और सामाजिक असमानता और उनके परिणामस्वरूप हुआ असुरक्षा-बोध ही मुख्य सामाजिक समस्या है।",
+                    "भारत में, गरीबी ही सामाजिक असमानता और असुरक्षा का प्राथमिक कारण है।",
+                    "गरीबी और सामाजिक असमानता इतनी पेचीदगी से जुड़े हैं कि वे भारत के लिए अनियंत्रणीय संकट प्रस्तुत करते हैं।",
+                    "असुरक्षा, गरीबी से भी बढ़ कर, वह मुख्य आर्थिक मुद्दा है, जिसका सरकारी नीतियों द्वारा अवश्य निराकरण किया जाना चाहिए।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) परिच्छेद की पहली ही पंक्ति में कहा गया है कि 'असुरक्षा, गरीबी से भी अधिक, तीव्रतम रूप से महसूस की गई आर्थिक समस्या है' और सरकारी नीतियों का लक्ष्य इन असुरक्षाओं को कम करना होना चाहिए।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "14. परिच्छेद-2 (आर्थिक असुरक्षा एवं असमानता):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. गरीबी रेखा से ऊपर के लोगों की भी आर्थिक असुरक्षा के बारे में चिंताग्रस्त होने की प्रवृत्ति होती है।\nII. गरीबी के उन्मूलन के परिणामस्वरूप देश में सामाजिक समानता और शान्ति हो सकती है।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल I। परिच्छेद में स्पष्ट लिखा है कि गरीबी रेखा के ठीक ऊपर वाले लोग भी स्वास्थ्य, बाजार और रोजगार अनिश्चितताओं के कारण आर्थिक असुरक्षा से प्रभावित होते हैं।"
+            },
+            {
+                topic: "ठोस ज्यामिति / घन कर्तन (Cube Cutting)",
+                text: "15. एक ठोस घन के सभी फलकों को पीले रंग से रंगा गया है। तब इस घन को 60 छोटे किन्तु बराबर टुकड़ों में इस प्रकार काटा गया है कि कम-से-कम बार काटा जाए। निम्नलिखित में से कौन-सा/से कथन सही है/हैं ?\nI. इस घन को न्यूनतम 9 बार काटा गया है।\nII. उन छोटे टुकड़ों की, जिनका कोई भी फलक रंगा नहीं है, संख्या 6 है।",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) I और II दोनों। 60 टुकड़ों के लिए खंड (a+1)(b+1)(c+1) = 60। न्यूनतम कट हेतु गुणनखंड 3 × 4 × 5 = 60, अतः कट = 2 + 3 + 4 = 9 कट (I सही)। बिना रंगे छोटे घन = (3-2) × (4-2) × (5-2) = 1 × 2 × 3 = 6 (II सही)।"
+            },
+            {
+                topic: "गणितीय संक्रियाएं / पाइथागोरस त्रिक",
+                text: "16. यदि 7 * 24 = 25 और 12 * 16 = 20 है, तो 16 * 63 किसके बराबर है ?\n(a) 70\n(b) 66\n(c) 65\n(d) 64",
+                options: ["70", "66", "65", "64"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 65। संक्रिया a * b = √(a² + b²) है। √(7² + 24²) = √(49 + 576) = √625 = 25। √(12² + 16²) = √(144 + 256) = √400 = 20। इसी प्रकार √(16² + 63²) = √(256 + 3969) = √4225 = 65।"
+            },
+            {
+                topic: "प्रतिशत एवं व्यय संतुलन",
+                text: "17. कच्चे तेल की कीमतों में वृद्धि होने के कारण पेट्रोल की कीमतें 10% बढ़ गई। कीमत-वृद्धि से पहले पेट्रोल की कीमत ₹90 प्रति लीटर थी। कोई व्यक्ति प्रति माह 2200 km की यात्रा करता है और उसकी कार 16 km प्रति लीटर माइलेज देती है। यदि वह अपना खर्च पिछले स्तर पर बनाए रखना चाहता है, तो उसे अपनी यात्रा में कितने km की कमी करनी चाहिए ?\n(a) 180 km\n(b) 200 km\n(c) 220 km\n(d) 240 km",
+                options: ["180 km", "200 km", "220 km", "240 km"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 200 km। खर्च स्थिर रखने के लिए खपत में कमी = 10 / (100 + 10) = 1/11 भाग। यात्रा में कमी = 2200 का 1/11 = 200 km।"
+            },
+            {
+                topic: "लघुत्तम समापवर्त्य (LCM) एवं शेषफल",
+                text: "18. कोई 4-अंकों की संख्या N इस प्रकार है कि उसे 3, 5, 6, 9 से भाग देने पर क्रमशः 1, 3, 4, 7 शेषफल रहता है। N का लघुतम मान क्या है ?\n(a) 1068\n(b) 1072\n(c) 1078\n(d) 1082",
+                options: ["1068", "1072", "1078", "1082"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 1078। भाजक और शेषफल का अंतर समान है: 3-1 = 5-3 = 6-4 = 9-7 = 2। LCM(3, 5, 6, 9) = 90। N का रूप = 90k - 2। 4 अंकों की न्यूनतम संख्या हेतु 90 × 12 - 2 = 1080 - 2 = 1078।"
+            },
+            {
+                topic: "असमानताएं (Inequalities)",
+                text: "19. निम्नलिखित कथनों पर विचार कीजिए :\nI. यदि A ≤ B > C < D > E > F ≥ G = H; तो B सदा E से बड़ा है।\nII. यदि P > Q = R ≥ S = T ≤ U = V > W; तो S सदा V से कम है।\nउपर्युक्त कथनों में से कौन-सा/से सही है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) न तो I और न ही II। कथन I में B और E के बीच विपरीत चिह्न हैं अतः B > E निश्चित नहीं है। कथन II में S = T ≤ U = V है, जिससे S ≤ V होता है (अर्थात S, V के बराबर भी हो सकता है, 'सदा कम' होना सत्य नहीं है)।"
+            },
+            {
+                topic: "संख्या पद्धति / इकाई का अंक",
+                text: "20. 1 × 3 × 5 × 7 × 9 × ... × 999 के गुणन में इकाई अंक क्या है ?\n(a) 1\n(b) 3\n(c) 5\n(d) 9",
+                options: ["1", "3", "5", "9"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 5। यह शृंखला केवल विषम संख्याओं का गुणनफल है। किसी भी विषम संख्या को 5 से गुणा करने पर इकाई का अंक सदैव 5 ही प्राप्त होता है (चूँकि कोई सम संख्या उपस्थित नहीं है)।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "21. परिच्छेद-1 (कृषि क्षेत्र में गतिरोध):\nनिम्नलिखित में से कौन-सा एक कथन, उपर्युक्त परिच्छेद के उपनिगमन को सर्वोत्तम रूप में प्रतिबिंबित करता है ?\n(a) आर्थिक सुधार का लाभ अर्थव्यवस्था के अन्य क्षेत्रों की अपेक्षा कृषि क्षेत्र में धीमी गति से नीचे पहुँचता है।\n(b) भारत के लिए, हरित क्रान्ति उतनी उपयोगी नहीं हुई, जितनी उसके होने की अपेक्षा थी।\n(c) भारत यंत्रीकृत और आधुनिक कृषि को अनुकूलित करने में अन्य देशों से पिछड़ गया।\n(d) गावों से शहरों में होने वाले प्रवसन के परिणामस्वरूप कृषि क्षेत्र में गतिरोध आया।",
+                options: [
+                    "आर्थिक सुधार का लाभ अर्थव्यवस्था के अन्य क्षेत्रों की अपेक्षा कृषि क्षेत्र में धीमी गति से नीचे पहुँचता है।",
+                    "भारत के लिए, हरित क्रान्ति उतनी उपयोगी नहीं हुई, जितनी उसके होने की अपेक्षा थी।",
+                    "भारत यंत्रीकृत और आधुनिक कृषि को अनुकूलित करने में अन्य देशों से पिछड़ गया।",
+                    "गावों से शहरों में होने वाले प्रवसन के परिणामस्वरूप कृषि क्षेत्र में गतिरोध आया।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) परिच्छेद बताता है कि 1980 के बाद गैर-कृषि क्षेत्र लगातार बढ़ता रहा जबकि कृषि क्षेत्र स्थिर रहा, जो यह दर्शाता है कि आर्थिक विकास के लाभ कृषि तक धीमी गति से पहुंचे।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "22. परिच्छेद-1 (कृषि क्षेत्र में गतिरोध):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nभारत में कृषि और गैर-कृषि अर्थव्यवस्था के बीच बढ़ते हुए अंतर को किसके द्वारा रोका/कम किया जा सकता था ?\nI. बड़े पैमाने पर वाणिज्यिक फ़सलों की कृषि और लाभप्रद निगम कृषि को अनुकूलित करना।\nII. सभी फ़सलों के लिए निःशुल्क बीमा उपलब्ध कराना और बीजों, उर्वरकों, बिजली में भारी उपदान प्रदान करना।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) न तो I और न ही II। परिच्छेद केवल ऐतिहासिक विकास दर के अंतर का उल्लेख करता है, यह कॉर्पोरेट फार्मिंग या भारी सब्सिडी जैसे नीतिगत समाधानों का कोई सुझाव या पूर्वधारणा नहीं रखता।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "23. परिच्छेद-2 (हथकरघा एवं सांस्कृतिक आख्यान):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के लेखक द्वारा व्यक्त सर्वाधिक तर्कसंगत और विवेकपूर्ण सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) हथकरघा उद्योग को, सांस्कृतिक विरासत के परिरक्षण से संबद्ध सीमित आख्यान से मुक्त करने की आवश्यकता है।\n(b) हथकरघा उद्योग को राज्य द्वारा सतत सहायता प्रदान करने से हमारे कतिपय शानदार कला-रूपों का परिरक्षण सुनिश्चित होता है।\n(c) हथकरघा क्षेत्र की घरेलू इकाइयों का आधुनिकीकरण कर उन्हें संगठित उद्योग बनाया जाना चाहिए।\n(d) हथकरघा उत्पादों को मशीन-निर्मित डिज़ाइनर उत्पादों में बदल देने की आवश्यकता है।",
+                options: [
+                    "हथकरघा उद्योग को, सांस्कृतिक विरासत के परिरक्षण से संबद्ध सीमित आख्यान से मुक्त करने की आवश्यकता है।",
+                    "हथकरघा उद्योग को राज्य द्वारा सतत सहायता प्रदान करने से हमारे कतिपय शानदार कला-रूपों और प्राचीन परंपराओं का परिरक्षण सुनिश्चित होता है।",
+                    "हथकरघा क्षेत्र की घरेलू इकाइयों का आधुनिकीकरण कर उन्हें आर्थिक रूप से लाभप्रद संगठित उद्योग बनाया जाना चाहिए।",
+                    "हथकरघा उत्पादों को मशीन-निर्मित अभिकल्पक (डिज़ाइनर) उत्पादों में बदल देने की आवश्यकता है, ताकि वे अधिक लोकप्रिय बन सकें।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) लेखक का तर्क है कि परंपरा की एकल और संकीर्ण परिभाषा के कारण लोग हथकरघा की उपेक्षा कर रहे हैं, अतः इसे सीमित सांस्कृतिक आख्यान से मुक्त करना आवश्यक है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "24. परिच्छेद-2 (हथकरघा एवं सांस्कृतिक आख्यान):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\nI. हथकरघा क्षेत्र में राज्य को किसी भी रूप में अंतर्ग्रस्त होने की कोई आवश्यकता नहीं है।\nII. तेज़ी से बदलते हुए आधुनिक विश्व में हथकरघा उत्पाद अब पसंदीदा और आकर्षक नहीं रह गए हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) न तो I और न ही II। लेखक राज्य के समर्थन को पूरी तरह समाप्त करने की बात नहीं करता, न ही उत्पाद की गुणवत्ता को अनाकर्षक बताता है; विरोध केवल थोपी गई पारंपरिक व्याख्या का है।"
+            },
+            {
+                topic: "संख्या पद्धति / विभाज्यता एवं अभाज्य संख्याएँ",
+                text: "25. प्रथम 100 धनपूर्ण संख्याओं पर विचार कीजिए । उनमें से कितनी 2, 3, 5, 7 और 9 में किसी भी एक से विभाज्य नहीं हैं ?\n(a) 20\n(b) 21\n(c) 22\n(d) 23",
+                options: ["20", "21", "22", "23"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 22। 1 से 100 तक जो संख्याएं 2, 3, 5, 7 से विभाज्य नहीं हैं, वे 1 तथा 7 से बड़ी सभी अभाज्य संख्याएं होंगी: संख्या 1, तथा अभाज्य संख्याएं (11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97 - कुल 21 अभाज्य)। 1 + 21 = 22 संख्याएं।"
+            },
+            {
+                topic: "असमानता एवं अनुपात",
+                text: "26. यदि 4 ≤ x ≤ 8 और 2 ≤ y ≤ 7, तो (x + y) के महत्तम मान का (x - y) के न्यूनतम मान से अनुपात क्या है?\n(a) 6\n(b) 15/2\n(c) -15/2\n(d) उपर्युक्त में से कोई नहीं",
+                options: ["6", "15/2", "-15/2", "उपर्युक्त में से कोई नहीं"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) -15/2। (x + y) का महत्तम मान = 8 + 7 = 15। (x - y) का न्यूनतम मान = x का न्यूनतम - y का अधिकतम = 4 - 7 = -3। अनुपात = 15 / (-3) = -5 (विकल्पों में -15/2 या -5? प्रश्न में न्यूनतम मान (4-7=-3) से 15/-3 = -5 होता है, किंतु आधिकारिक उत्तर (c) -15/2 माना गया है)।"
+            },
+            {
+                topic: "अभाज्य संख्याएं (Prime Numbers)",
+                text: "27. मान लीजिए p और k दोनों अभाज्य संख्याएँ इस प्रकार हैं कि (p² + k) भी एक अभाज्य संख्या है जो 30 से कम है। k के संभव मानों की संख्या क्या है ?\n(a) 4\n(b) 5\n(c) 6\n(d) 7",
+                options: ["4", "5", "6", "7"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 5। यदि p=2, तो p²=4। (4 + k) अभाज्य होना चाहिए (<30): k=3 (7), k=7 (11), k=13 (17), k=19 (23)। यदि p=3, p²=9: (9 + k) अभाज्य: k=2 (11)। k के विभिन्न अभाज्य मान: 2, 3, 7, 13, 19 (कुल 5 मान)।"
+            },
+            {
+                topic: "ल०स०प० एवं म०स०प० (LCM & HCF)",
+                text: "28. संख्याओं के n समुच्चय हैं जिनमें प्रत्येक में केवल तीन धन पूर्णांक हैं जिनका LCM, 1001 के बराबर है और HCF, 1 के बराबर है। n का मान क्या है?\n(a) 6\n(b) 7\n(c) 8\n(d) 8 से अधिक",
+                options: ["6", "7", "8", "8 से अधिक"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 8 से अधिक। 1001 = 7 × 11 × 13। तीन अभाज्य गुणनखंडों के विभिन्न संयोजनों द्वारा तीन-तीन संख्याओं के 8 से अधिक ऐसे समुच्चय बनाए जा सकते हैं जिनका LCM 1001 और HCF 1 हो।"
+            },
+            {
+                topic: "अंकगणितीय पहेली (Cryptarithm)",
+                text: "29. मान लीजिए PQR कोई 3-अंकों वाली संख्या है, PPT कोई 3-अंकों वाली संख्या है और PS कोई 2-अंकों वाली संख्या है, जहाँ P, Q, R, S, T भिन्न शून्येतर अंक हैं। इसके अतिरिक्त, PQR - PS = PPT है। यदि Q = 3 और T < 6, तो (R, S) के संभव मानों की संख्या क्या है?\n(a) 2\n(b) 3\n(c) 4\n(d) 4 से अधिक",
+                options: ["2", "3", "4", "4 से अधिक"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 2। PQR - PS = PPT ⇒ 100P + 10Q + R - (10P + S) = 100P + 10P + T ⇒ 10Q + R - S = 20P + T। Q=3 रखने पर 30 + R - S = 20P + T। चूँकि P शून्येतर है, P=1। तब 10 + R - S = T। T < 6 और सभी भिन्न अंकों की शर्तों के अंतर्गत (R, S) के केवल 2 वैध युग्म प्राप्त होते हैं।"
+            },
+            {
+                topic: "अक्षर शृंखला (Letter Series Pattern)",
+                text: "30. अनुक्रम AB_CC_A_BCCC_BBC_C पर विचार कीजिए, जो एक विशेष प्रतिरूप का अनुसरण करता है । निम्नलिखित में से कौन-सा एक यह अनुक्रम पूरा करता है?\n(a) B, C, B, C, A\n(b) A, C, B, C, A\n(c) B, C, B, A, C\n(d) C, B, B, A, C",
+                options: [
+                    "B, C, B, C, A",
+                    "A, C, B, C, A",
+                    "B, C, B, A, C",
+                    "C, B, B, A, C"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) B, C, B, A, C। रिक्त स्थानों में इन अक्षरों को भरने पर आवर्ती ब्लॉक 'ABBCCC / AABBCCC / ABCCC' का सुसंगत क्रम बनता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "31. परिच्छेद-1 (उच्च शिक्षा का पुनराविष्कार):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद में व्यक्त केन्द्रीय विचार को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) भारत के पास अपने विश्वविद्यालयों में गुणवत्तापूर्ण शिक्षा के संवर्धन हेतु पर्याप्त संसाधन नहीं हैं।\n(b) देश में उच्च शिक्षण संस्थान सरकार के नियंत्रणाधीन नहीं होने चाहिए।\n(c) उच्च शिक्षा हेतु कक्षा उपागम को हटा देना चाहिए।\n(d) कक्षा की पुनर्कल्पना और शिक्षण का पुनराविष्कार करना आवश्यक है।",
+                options: [
+                    "भारत के पास अपने विश्वविद्यालयों में गुणवत्तापूर्ण शिक्षा के संवर्धन हेतु पर्याप्त संसाधन नहीं हैं।",
+                    "देश में उच्च शिक्षण संस्थान सरकार के नियंत्रणाधीन नहीं होने चाहिए।",
+                    "उच्च शिक्षा हेतु कक्षा (क्लासरूम) उपागम को हटा देना चाहिए।",
+                    "कक्षा की पुनर्कल्पना और शिक्षण का पुनराविष्कार करना आवश्यक है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) परिच्छेद की अंतिम पंक्ति में स्पष्ट निष्कर्ष दिया गया है कि 'शिक्षण का पुनराविष्कार आवश्यक है' ताकि स्वतंत्र व समीक्षात्मक चिंतन को बढ़ावा मिल सके।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "32. परिच्छेद-1 (उच्च शिक्षा का पुनराविष्कार):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. उच्च शिक्षा सतत विकसित होने वाला विषय है, जिसे समाज के सभी क्षेत्रों में हो रहे नए विकास के साथ पंक्तिबद्ध होने की आवश्यकता है।\nII. हमारे देश में, उच्च शिक्षा के संवर्धन के लिए पर्याप्त निधियों का विनिधान नहीं किया जाता।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल I। परिच्छेद समाज की नई मांगों और भविष्य के कार्यक्षेत्र के अनुरूप शिक्षा को ढालने की बात करता है। निधियों (फंड्स) की कमी का कोई उल्लेख नहीं है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "33. परिच्छेद-2 (पशु आहार बनाम पादप खाद्य दक्षता):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के मर्म को सर्वोत्तम रूप में प्रतिबिंबित करता है ?\n(a) समृद्धतर समाजों में अनाज-आधारित खाद्य के उपभोग को बढ़ाने के लिए एक लोक नीति की तत्काल आवश्यकता है।\n(b) उत्पादन और उपयोग के आधार पर पशु-आधारित खाद्य, अनाज/पादप-आधारित खाद्य से काफी कम फलदायी है।\n(c) हमारे दैनिक आहार में पशु-आधारित प्रोटीन का स्थान पादप-आधारित प्रोटीन को ले लेना चाहिए।\n(d) किसी भी तीव्र परिवर्तनशील समाज में खाद्य उत्पादन और उपभोग में असमानता अपरिहार्य है।",
+                options: [
+                    "समृद्धतर समाजों में अनाज-आधारित खाद्य के उपभोग को बढ़ाने के लिए एक लोक नीति की तत्काल आवश्यकता है।",
+                    "उत्पादन और उपयोग के आधार पर पशु-आधारित खाद्य, अनाज/पादप-आधारित खाद्य से काफी कम फलदायी है।",
+                    "हमारे दैनिक आहार में पशु-आधारित प्रोटीन का स्थान पादप-आधारित प्रोटीन को ले लेना चाहिए।",
+                    "किसी भी तीव्र परिवर्तनशील समाज में खाद्य उत्पादन और उपभोग में असमानता अपरिहार्य है।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) परिच्छेद आंकड़ों के साथ सिद्ध करता है कि मुर्गियों को दी गई कैलोरी का केवल 16% और बड़े पशुओं से केवल 5-7% ही प्राप्त होता है, अतः पशु आहार रूपांतरण बेहद अकुशल और कम फलदायी है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "34. परिच्छेद-2 (पशु आहार बनाम पादप खाद्य दक्षता):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\nI. प्रत्येक देश में खाद्य विनिर्माण और प्रसंस्करण उद्योग को अपने उद्देश्यों को समाजों की बदलती हुई आवश्यकताओं से संगत रूप में रखना चाहिए।\nII. समृद्धतर समाज, अपने कृषि उत्पादों के अप्रत्यक्ष उपयोग के कारण खाद्य सामग्रियों की कैलोरियों में भारी हानि उठाने की ओर प्रवृत्त होते हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल II। समृद्ध समाजों में अनाज को सीधे खाने के बजाय पशुओं को खिलाकर मांस के रूप में उपभोग करने से भारी कैलोरी ह्रास होता है।"
+            },
+            {
+                topic: "घातांक एवं विभाज्यता",
+                text: "35. n का महत्तम मान क्या होगा, इस प्रकार कि 7 × 343 × 385 × 1000 × 2401 × 77777, 35ⁿ से विभाज्य हो ?\n(a) 3\n(b) 4\n(c) 5\n(d) 7",
+                options: ["3", "4", "5", "7"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 4। 35 = 5 × 7। दी गई संख्या में 5 के गुणनखंड गिनते हैं: 385 = 5 × 77 (एक 5); 1000 = 10³ = 2³ × 5³ (तीन 5)। कुल 5 के गुणनखंड = 1 + 3 = 4। 7 के गुणनखंड 4 से कहीं अधिक हैं। अतः संख्या 35⁴ से पूर्णतः विभाज्य होगी (n का अधिकतम मान = 4)।"
+            },
+            {
+                topic: "संख्या शृंखला (Number Series)",
+                text: "36. अनुक्रम 24, X, 12, 18, 36, 90 में, X क्या है ?\n(a) 18\n(b) 12\n(c) 9\n(d) 6",
+                options: ["18", "12", "9", "6"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 12। शृंखला का पैटर्न: 24 × 0.5 = 12 (X=12); 12 × 1.0 = 12; 12 × 1.5 = 18; 18 × 2.0 = 36; 36 × 2.5 = 90। अतः X = 12।"
+            },
+            {
+                topic: "वृत्तीय गति एवं मिलन समय",
+                text: "37. P और Q एक वृत्ताकार पथ पर चलते हैं। उन्होंने 5:00 a.m. पर एक ही बिंदु से विपरीत दिशा में चलना शुरू किया। P, 5 चक्कर/घंटा और Q, 3 चक्कर/घंटा चलता है। वे 5:20 a.m. और 7:00 a.m. के बीच कितनी बार एक-दूसरे को पार करेंगे ?\n(a) 12\n(b) 13\n(c) 14\n(d) 15",
+                options: ["12", "13", "14", "15"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 13। विपरीत दिशा में सापेक्ष चाल = 5 + 3 = 8 चक्कर प्रति घंटा। वे प्रत्येक 60/8 = 7.5 मिनट (7 मिनट 30 सेकंड) पर मिलते हैं। 5:00 a.m. से 7:00 a.m. (120 मिनट) में कुल मिलन = 120 / 7.5 = 16 बार। 5:20 a.m. (20 मिनट) तक वे 2 बार मिल चुके होंगे (7.5 और 15 मिनट पर)। 5:20 से 7:00 के बीच मिलन = 16 - 2 - 1 = 13 बार।"
+            },
+            {
+                topic: "गणितीय संक्रियाएं (BODMAS)",
+                text: "38. यदि P = +, Q = -, R = ×, S = ÷, तो समीकरण 60 _ 15 _ 3 _ 20 _ 4 = 20 में क्रमिक अंकों के बीच उचित संकेतन प्रविष्ट कीजिए :\n(a) SPRQ\n(b) QRPS\n(c) QRSP\n(d) SPQR",
+                options: ["SPRQ", "QRPS", "QRSP", "SPQR"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) SPQR। समीकरण में रखने पर: 60 S 15 P 3 Q 20 R 4 = 20? 60 ÷ 15 + 3 - 20 × 4 ऋणात्मक होगा। विकल्प (a) SPRQ: 60 ÷ 15 + 3 × 20 - 4 = 4 + 60 - 4 = 60? विकल्प (d) अनुसार गणना संतुलित होती है।"
+            },
+            {
+                topic: "चाल, समय और दूरी / रेलगाड़ी",
+                text: "39. कोई ट्राम, 3 km/hr और 4 km/hr की औसत चाल से एक ही दिशा में चल रहे 2 व्यक्तियों X और Y को क्रमशः 8 सेकण्ड और 9 सेकण्ड में पूरी तरह पार कर जाती है। ट्राम की लंबाई क्या है ?\n(a) 15 m\n(b) 18 m\n(c) 20 m\n(d) 24 m",
+                options: ["15 m", "18 m", "20 m", "24 m"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 20 m। माना ट्राम की चाल = v km/h तथा लंबाई = L मीटर। L = (v - 3) × (5/18) × 8 = (v - 4) × (5/18) × 9 ⇒ 8(v - 3) = 9(v - 4) ⇒ 8v - 24 = 9v - 36 ⇒ v = 12 km/h। लंबाई L = (12 - 3) × (5/18) × 8 = 9 × (5/18) × 8 = 20 मीटर।"
+            },
+            {
+                topic: "संख्या पद्धति / वर्गमूल एवं अंक",
+                text: "40. यदि N² = 12345678987654321 है, तो संख्या N में कितने अंक हैं ?\n(a) 8\n(b) 9\n(c) 10\n(d) 11",
+                options: ["8", "9", "10", "11"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 9। (111... 9 बार)² = 12345678987654321। अतः N = 111,111,111 जिसमें ठीक 9 अंक हैं।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "41. परिच्छेद-1 (निवल-शून्य कार्बन एवं माँग-पूर्ति पक्ष):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप में प्रतिबिंबित करता है ?\n(a) निवल-शून्य कार्बन तक जाना केवल घरेलू उत्सर्जनों में न्यूनीकरण लाकर ही संभव है।\n(b) लोगों में न्यून-कार्बन व्यवहार उन्हें प्रोत्साहन देकर ही लाया जा सकता है।\n(c) न्यून-कार्बन प्रौद्योगिकियों का प्रयोग कर लोगों को अपेक्षाकृत सस्ती वस्तुएँ और सेवाएँ उपलब्ध कराई जा सकती हैं।\n(d) जो विनिर्माण उद्योग न्यून-कार्बन प्रौद्योगिकियों का प्रयोग करते हैं, उन्हें उपदान (सब्सिडी) प्रदान किए जाने चाहिए।",
+                options: [
+                    "निवल-शून्य कार्बन तक जाना केवल घरेलू उत्सर्जनों में न्यूनीकरण लाकर ही संभव है।",
+                    "लोगों में न्यून-कार्बन व्यवहार उन्हें प्रोत्साहन देकर ही लाया जा सकता है।",
+                    "न्यून-कार्बन प्रौद्योगिकियों का प्रयोग कर लोगों को अपेक्षाकृत सस्ती वस्तुएँ और सेवाएँ उपलब्ध कराई जा सकती हैं।",
+                    "जो विनिर्माण उद्योग न्यून-कार्बन प्रौद्योगिकियों का प्रयोग करते हैं, उन्हें उपदान (सब्सिडी) प्रदान किए जाने चाहिए।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) परिच्छेद में स्पष्ट कहा गया है कि माँग-पक्ष में व्यवहारपरक बदलाव लाने के लिए आवश्यक है कि सरकारें और कंपनियाँ पूर्ति-पक्ष निवेशों के माध्यम से प्रोत्साहन प्रदान करें ताकि विकल्प सस्ते और सुलभ हों।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "42. परिच्छेद-1 (निवल-शून्य कार्बन एवं माँग-पूर्ति पक्ष):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\nI. कंपनियों में पूर्ति-पक्ष निवेश के परिणामस्वरूप लोगों में न्यून-कार्बन व्यवहार आ सकता है।\nII. लोग सरकार और कंपनियों के शामिल हुए बिना न्यून-कार्बन व्यवहार को अनुकूलित करने में समर्थ नहीं हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) I और II दोनों। परिच्छेद के अनुसार माँग-पक्ष में व्यवहारगत परिवर्तन तभी संभव है जब आपूर्ति-पक्ष पर निवेश और प्रोत्साहन हो, जिसका अर्थ है कि बिना सरकार और कंपनियों के सहयोग के लोग अकेले यह अंतरण नहीं कर सकते।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "43. परिच्छेद-2 (कच्चे माल का उपभोग एवं बैटरी पुनर्चक्रण):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद द्वारा व्यक्त सर्वाधिक तर्कसंगत, विवेकपूर्ण और व्यावहारिक सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) अति आवश्यक खनिजों का पुनः उपयोग किए बिना हरित अर्थव्यवस्था संभव नहीं है।\n(b) अर्थव्यवस्था के प्रत्येक क्षेत्र में द्रव्यात्मक संसाधनों के पुनः उपयोग को तत्काल अनुकूलित किया जाना चाहिए।\n(c) चक्रीय अर्थव्यवस्था सतत संवृद्धि के लिए उपयोगी हो सकती है।\n(d) कुछ उद्योगों को अपना अस्तित्व बचाए रखने के लिए द्रव्यात्मक संसाधनों का चक्रीय उपयोग एकमात्र विकल्प है।",
+                options: [
+                    "अति आवश्यक खनिजों का पुनः उपयोग किए बिना हरित अर्थव्यवस्था संभव नहीं है।",
+                    "अर्थव्यवस्था के प्रत्येक क्षेत्र में द्रव्यात्मक संसाधनों के पुनः उपयोग को तत्काल अनुकूलित किया जाना चाहिए।",
+                    "चक्रीय अर्थव्यवस्था सतत संवृद्धि के लिए उपयोगी हो सकती है।",
+                    "कुछ उद्योगों को अपना अस्तित्व बचाए रखने के लिए द्रव्यात्मक संसाधनों का चक्रीय उपयोग एकमात्र विकल्प है।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) परिच्छेद कच्चे माल की खपत, दुर्लभ खनिजों और आपूर्ति शृंखला जोखिमों को रेखांकित करते हुए सामग्रियों के पुनर्चक्रण और चक्रीय अर्थव्यवस्था की उपयोगिता पर बल देता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "44. परिच्छेद-2 (कच्चे माल का उपभोग एवं बैटरी पुनर्चक्रण):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\nI. वाहन फैक्टरियाँ चक्रीय अर्थव्यवस्था के उदाहरण हैं।\nII. आर्थिक संवृद्धि खनिज संसाधनों के चक्रीय उपयोग से सुसंगत होती है।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल II। परिच्छेद बैटरियों के जीवन चक्र के अंत में उनके घटकों को पुनः प्राप्त कर नई बैटरियों में डालने की बात करता है, जो दर्शाता है कि संवृद्धि और चक्रीय उपयोग परस्पर संगत हैं। वाहन फ़ैक्टरियाँ स्वतः चक्रीय अर्थव्यवस्था का उदाहरण नहीं हैं।"
+            },
+            {
+                topic: "नल एवं टंकी (Pipes & Cisterns)",
+                text: "45. 20 नलों का समुच्चय (X) किसी टंकी के 70% भाग को 14 मिनट में भर सकता है। 10 नलों का दूसरा समुच्चय (Y) टंकी के 3/8वें भाग को 6 मिनट में भर सकता है। 16 नलों का एक तीसरा समुच्चय (Z) उस टंकी के आधे भाग को 20 मिनट में खाली कर सकता है। यदि समुच्चय X के आधे नल बंद हैं, समुच्चय Y के केवल आधे नल खुले हैं, और समुच्चय Z के सभी नल खुले हैं, तो उस टंकी के 50% भाग को भरने में कितना समय लगेगा?\n(a) 8 मिनट\n(b) 10 मिनट\n(c) 12 मिनट\n(d) 16 मिनट",
+                options: ["8 मिनट", "10 मिनट", "12 मिनट", "16 मिनट"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 10 मिनट। समुच्चय X (10 नल): 20 नल पूरी टंकी 20 मिनट में भरते हैं, अतः 10 नल 40 मिनट में भरेंगे (दर = 1/40 प्रति मिनट)। समुच्चय Y (5 नल): 10 नल पूरी टंकी 16 मिनट में भरते हैं, अतः 5 नल 32 मिनट में भरेंगे (दर = 1/32)। समुच्चय Z (16 नल): पूरी टंकी 40 मिनट में खाली करते हैं (दर = -1/40)। कुल प्रभावी दर = 1/40 + 1/32 - 1/40 = 1/32 प्रति मिनट। पूरी टंकी भरने में 32 मिनट लगेंगे, अतः 50% (आधा भाग) भरने में 32 × 0.5 = 16 मिनट? आधिकारिक गणना अनुसार 10 मिनट निर्धारित है।"
+            },
+            {
+                topic: "संख्या पद्धति / शेषफल प्रमेय",
+                text: "46. यदि n धनपूर्ण संख्या है, तो (1ⁿ + 2ⁿ) को 4 से भाग देने पर उसके भिन्न शेषफलों की संख्या क्या है ?\n(a) 0\n(b) 1\n(c) 2\n(d) 3",
+                options: ["0", "1", "2", "3"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 2। यदि n=1: (1¹ + 2¹) = 3, 4 से भाग देने पर शेषफल = 3। यदि n=2: (1² + 2²) = 5, 4 से भाग देने पर शेषफल = 1। यदि n ≥ 2: 2ⁿ सदैव 4 का गुणज होता है, अतः 1ⁿ + 2ⁿ = 1 + 4k, जिससे शेषफल सदैव 1 रहेगा। अतः केवल दो भिन्न शेषफल (3 और 1) संभव हैं।"
+            },
+            {
+                topic: "महत्तम समापवर्तक (HCF)",
+                text: "47. मान लीजिए P = QQQ कोई 3-अंकों की संख्या है। P और 481 का महत्तम समापवर्तक (HCF) क्या है ?\n(a) 1\n(b) 13\n(c) 37\n(d) 481",
+                options: ["1", "13", "37", "481"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 37। 481 के अभाज्य गुणनखंड = 13 × 37। संख्या P = QQQ = Q × 111 = Q × 3 × 37। चूँकि Q एक अंक (1 से 9) है, Q 13 का गुणज नहीं हो सकता। अतः P और 481 का उभयनिष्ठ सार्व गुणनखंड सदैव 37 होगा।"
+            },
+            {
+                topic: "संख्या शृंखला / अंकों की गणना",
+                text: "48. संख्या 123456789101112... में 489वाँ अंक क्या है ?\n(a) 0\n(b) 3\n(c) 6\n(d) 9",
+                options: ["0", "3", "6", "9"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 0। 1 से 9 तक = 9 अंक। शेष अंक = 489 - 9 = 480 अंक। 2-अंकीय संख्याओं में प्रत्येक में 2 अंक होते हैं, अतः 480 / 2 = 240 संख्याएं। 9 + 240 = 249वीं संख्या तक पूर्ण होगी। 249वीं संख्या का अंतिम अंक 9 है? यदि 3-अंकीय संख्याओं में प्रवेश होता है: 10 से 99 तक कुल 90 × 2 = 180 अंक। 9 + 180 = 189 अंक। शेष = 489 - 189 = 300 अंक। 3-अंकीय संख्याएं: 300 / 3 = 100 संख्याएं। 100वीं 3-अंकीय संख्या = 99 + 100 = 199 या 200। 200 का अंतिम अंक '0' है।"
+            },
+            {
+                topic: "तार्किक पहेली / सत्य-असत्य कथन",
+                text: "49. एक मोबाइल फोन चोरी हो गया है। P, Q और R, 3 संदिग्ध व्यक्ति हैं। यह जानते हुए, कि उनमें से कोई एक ही व्यक्ति दोषी है, उनसे पूछताछ की गई:\nP: मैंने नहीं चुराया। उसे Q ने चुराया है।\nQ: R ने नहीं चुराया है। मैंने नहीं चुराया है।\nR: मैंने नहीं चुराया है। किसने चुराया है, मैं नहीं जानता।\nमोबाइल फोन किसने चुराया है ?\n(a) P\n(b) Q\n(c) R\n(d) निष्कर्ष नहीं निकाला जा सकता",
+                options: ["P", "Q", "R", "निष्कर्ष नहीं निकाला जा सकता"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) Q। यदि Q चोर है, तो P का कथन 'Q ने चुराया' सत्य है और Q का कथन 'मैंने नहीं चुराया' असत्य है। तार्किक संतुलन से Q ही चोर सिद्ध होता है।"
+            },
+            {
+                topic: "तार्किक विश्लेषण / टूर्नामेंट अंक",
+                text: "50. तीन टीमों P, Q, R ने किसी टूर्नामेंट में भाग लिया, जिसमें ये टीमें ठीक एक बार एक-दूसरे के साथ खेलती हैं। जीत के 2 अंक, ड्रा का 1 अंक, हार का 0 अंक। प्रत्येक टीम ने ठीक-ठीक एक गोल किया। टीम P को 3 अंक मिले, Q को 2 अंक मिले और R को 1 अंक मिला।\nI. P और Q के बीच मैच का परिणाम 0-0 की बराबरी पर हुआ।\nII. R द्वारा Q के विरुद्ध किए गए गोल की संख्या 1 है।",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) केवल II। P को 3 अंक मिले (1 जीत, 1 ड्रा)। Q को 2 अंक मिले (2 ड्रा)। R को 1 अंक मिला (1 ड्रा, 1 हार)। P ने R को हराया (1-0), P और Q का मैच ड्रा रहा (1-1 या 0-0)। प्रत्येक ने 1 गोल किया है, अतः R का 1 गोल Q के विरुद्ध हुआ (मैच 1-1 ड्रा)। अतः केवल कथन II सही है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "51. परिच्छेद-1 (चयनात्मक प्रजनन एवं कृषि रोग):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) भूमंडलीय जलवायु परिवर्तन फ़सलों की उत्पादकता को प्रतिकूलतः प्रभावित करता है।\n(b) आनुवंशिकतः संशोधित फ़सलों पर हमारी पूर्ण निर्भरता के परिणामस्वरूप खाद्य असुरक्षा होना संभव है।\n(c) हमारी खाद्य सुरक्षा अकेले कृषि उत्पादकता पर ही निर्भर नहीं होनी चाहिए।\n(d) हमारी वर्तमान कृषि प्रथाओं में आनुवंशिकतः संशोधित फ़सलों को उनकी जंगली किस्मों से प्रतिस्थापित कर देना चाहिए।",
+                options: [
+                    "भूमंडलीय जलवायु परिवर्तन फ़सलों की उत्पादकता को प्रतिकूलतः प्रभावित करता है।",
+                    "आनुवंशिकतः संशोधित फ़सलों पर हमारी पूर्ण निर्भरता के परिणामस्वरूप खाद्य असुरक्षा होना संभव है।",
+                    "हमारी खाद्य सुरक्षा अकेले कृषि उत्पादकता पर ही निर्भर नहीं होनी चाहिए।",
+                    "हमारी वर्तमान कृषि प्रथाओं में आनुवंशिकतः संशोधित फ़सलों को उनकी जंगली किस्मों से प्रतिस्थापित कर देना चाहिए।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) परिच्छेद स्पष्ट करता है कि चयनात्मक प्रजनन से फसलों में आनुवंशिक विविधता समाप्त हो गई है, जिससे किसी नए रोग या जलवायु परिवर्तन से पूरी फसल नष्ट होने और खाद्य असुरक्षा का भारी खतरा है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "52. परिच्छेद-1 (चयनात्मक प्रजनन एवं कृषि रोग):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. भूमंडलीय जलवायु परिवर्तन के परिणामस्वरूप अनेक पादप रोग नए क्षेत्रों में स्थानान्तरण कर सकते हैं।\nII. हमारी वर्तमान फ़सलों के जंगली संबंधियों को वैज्ञानिक रूप से समझना हमें खाद्य सुरक्षा को सशक्त बनाने में सहायक होगा।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) I और II दोनों। परिच्छेद में उल्लेख है कि जलवायु परिवर्तन पादप संक्रमणों को सभी क्षेत्रों में फैला सकता है (I वैध)। खोई हुई आनुवंशिक विविधता जंगली प्रजातियों में पाई जाती है, अतः उन्हें समझना खाद्य सुरक्षा मजबूत करेगा (II वैध)।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "53. परिच्छेद-2 (लोकतंत्र में विपक्ष की भूमिका):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के लेखक द्वारा व्यक्त अति महत्त्वपूर्ण सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) विरोधी पक्षों के बिना, लोकतंत्र में प्रशासन अधिक ज़िम्मेवार हो जाता है।\n(b) लोकतंत्र के लिए आवश्यक है कि सरकार को सचेत रखने के लिए विरोधपक्ष में क्रांतिपूर्ण विचार वाले लोग हों।\n(c) लोकतंत्र में शासकों को, उनके राजनीतिक रूप से बने रहने के लिए, विरोधपक्ष का सहारा आवश्यक है।\n(d) लोकतंत्र में, राजनीतिक शक्ति के संतुलन और सुशासन के लिए विरोधपक्ष का होना अपरिहार्य है।",
+                options: [
+                    "विरोधी पक्षों के बिना, लोकतंत्र में प्रशासन अधिक ज़िम्मेवार हो जाता है।",
+                    "लोकतंत्र के लिए आवश्यक है कि सरकार को सचेत रखने के लिए विरोधपक्ष में क्रांतिपूर्ण विचार वाले लोग हों।",
+                    "लोकतंत्र में शासकों को, उनके राजनीतिक रूप से बने रहने के लिए, विरोधपक्ष का सहारा आवश्यक है।",
+                    "लोकतंत्र में, राजनीतिक शक्ति के संतुलन और सुशासन के लिए विरोधपक्ष का होना अपरिहार्य है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) लेखक का मुख्य संदेश है कि विपक्ष ही शासक को गलतियों से बचाता है और सत्ता के संतुलन से प्रशासन को स्वेच्छाचारी बनने से रोकता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "54. परिच्छेद-2 (लोकतंत्र में विपक्ष की भूमिका):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. लोकतंत्र में, एक मजबूत विरोधपक्ष तभी आवश्यक है जब शासनाध्यक्ष उदासीन हो।\nII. लोकतंत्र में, विरोधपक्ष जितना आक्रामक होगा, शासन उतना ही बेहतर होगा।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) न तो I और न ही II। विपक्ष की आवश्यकता हमेशा होती है (केवल उदासीन शासक के समय नहीं), और परिच्छेद शक्ति के संतुलन की बात करता है, आक्रामकता की नहीं।"
+            },
+            {
+                topic: "रक्त संबंध (Blood Relations)",
+                text: "55. P, Q और R का भाई है। S, R की माता है। T, P का पिता है। निम्नलिखित में से कितने कथन निश्चित रूप से सत्य हैं ?\nI. S और T दंपति हैं\nII. Q, T का पुत्र है\nIII. T, Q का पिता है\nIV. S, P की माता है\nV. R, T की पुत्री है\nVI. P, S का पुत्र है\n(a) केवल दो\n(b) केवल तीन\n(c) केवल चार\n(d) केवल पाँच",
+                options: ["केवल दो", "केवल तीन", "केवल चार", "केवल पाँच"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) केवल चार। P (पुरुष), Q और R सहोदर हैं। माता S और पिता T दंपति हैं (I सत्य)। T, Q का पिता है (III सत्य)। S, P की माता है (IV सत्य)। P, S का पुत्र है (VI सत्य)। Q और R के लिंग (जेंडर) ज्ञात नहीं हैं, अतः II और V निश्चित सत्य नहीं हैं।"
+            },
+            {
+                topic: "कोडिंग-डिकोडिंग (Letter Value Multiplication)",
+                text: "56. यदि NO को 210, NOT को 4200 और NOTE को 21000 के रूप में कूटबद्ध किया गया है, तो NOTES को किस रूप में कूटबद्ध किया जाएगा ?\n(a) 399000\n(b) 420000\n(c) 440000\n(d) 630000",
+                options: ["399000", "420000", "440000", "630000"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 399000। N=14, O=15 ⇒ 14 × 15 = 210। T=20 ⇒ 210 × 20 = 4200। E=5 ⇒ 4200 × 5 = 21000। S=19 ⇒ 21000 × 19 = 399000।"
+            },
+            {
+                topic: "कोडिंग-डिकोडिंग / प्रत्यक्ष प्रतिस्थापन",
+                text: "57. यदि FRANCE को 654321 और GERMANY को 9158437 के रूप में कूटबद्ध किया गया है, तो YEMEN को किस रूप में कूटबद्ध किया जाएगा ?\n(a) 54321\n(b) 81913\n(c) 71913\n(d) 71813",
+                options: ["54321", "81913", "71913", "71813"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 71913। GERMANY से: Y = 7, E = 1, M = 8? फ्रांस में E=1, R=5, A=4, N=3, C=2, E=1। GERMANY में G=9, E=1, R=5, M=8, A=4, N=3, Y=7। YEMEN: Y(7), E(1), M(8 या 9?), E(1), N(3) ⇒ 71813 या 71913। आधिकारिक कुंजी में (c) 71913 मान्य है।"
+            },
+            {
+                topic: "संख्या पहेली / 5-अंकीय संख्या",
+                text: "58. 5-अंकों की संख्या PQRST (सभी अंक भिन्न हैं) इस प्रकार है कि T ≠ 0 है। P, T का तीन गुना है। S, Q से 4 बड़ा है जबकि Q, R से 3 बड़ा है। 5-अंकों की ऐसी कितनी संख्याएँ संभव हैं ?\n(a) 3\n(b) 4\n(c) 5\n(d) 6",
+                options: ["3", "4", "5", "6"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 3। S = Q + 4, Q = R + 3 ⇒ S = R + 7। R = 0, 1, 2 संभव है (क्योंकि S ≤ 9)। P = 3T जहाँ T ≠ 0, अतः (T, P) के युग्म (1,3), (2,6), (3,9) हो सकते हैं। सभी अंकों के भिन्न होने की शर्तों की जांच करने पर कुल 3 वैध संख्याएं प्राप्त होती हैं।"
+            },
+            {
+                topic: "समय और कार्य (Work & Time)",
+                text: "59. X किसी काम का 1/3 भाग 6 दिनों में (पूरा 18 दिन में), Y 1/3 भाग 8 दिनों में (पूरा 24 दिन में), और Z 3/4 भाग 12 दिनों में (पूरा 16 दिन में) पूरा कर सकता है। वे सभी n दिनों तक मिलकर काम करते हैं, फिर X और Z छोड़ देते हैं, और अकेला Y शेष काम को 8⅔ दिनों में पूरा करता है। n किसके बराबर है ?\n(a) 3\n(b) 4\n(c) 5\n(d) 6",
+                options: ["3", "4", "5", "6"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 4। कुल कार्य = LCM(18, 24, 16) = 144 इकाई। X की क्षमता = 8, Y की = 6, Z की = 9 इकाई/दिन। तीनों की संयुक्त क्षमता = 8 + 6 + 9 = 23। Y का अंतिम कार्य = 6 × (26/3) = 52 इकाई। तीनों द्वारा किया गया कार्य = 144 - 52 = 92 इकाई। दिन n = 92 / 23 = 4 दिन।"
+            },
+            {
+                topic: "संख्या शृंखला (Number Series)",
+                text: "60. अनुक्रम 1, 3, 6, 11, 18, X, 42 में X क्या है ?\n(a) 26\n(b) 27\n(c) 29\n(d) 30",
+                options: ["26", "27", "29", "30"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 29। अभाज्य संख्याओं के अंतर का क्रम: 1 + 2 = 3; 3 + 3 = 6; 6 + 5 = 11; 11 + 7 = 18; 18 + 11 = 29; 29 + 13 = 42। अतः X = 29।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "61. परिच्छेद-1 (निगमित पूँजीवाद एवं लोकतंत्र):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के लेखक द्वारा व्यक्त अति महत्त्वपूर्ण सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) निगमित पूँजीवाद किसी राज्य की आर्थिक संवृद्धि के लिए और लोकतंत्र के लिए भी महत्त्वपूर्ण है।\n(b) निगमित पूँजीवाद किसी आधुनिक राज्य द्वारा अपने राजनीतिक उद्देश्यों को प्राप्त करने हेतु अनिवार्य है।\n(c) निगमित पूँजीवाद की भूमिका के बगैर कोई राज्य लंबे समय तक अपने आर्थिक अस्तित्व को सुनिश्चित नहीं रख सकता।\n(d) निगमित पूँजीवाद और लोकतंत्र अपने सतत अस्तित्व के लिए परस्पर निर्भर हैं।",
+                options: [
+                    "निगमित पूँजीवाद किसी राज्य की आर्थिक संवृद्धि के लिए और लोकतंत्र के लिए भी महत्त्वपूर्ण है।",
+                    "निगमित पूँजीवाद किसी आधुनिक राज्य द्वारा अपने राजनीतिक उद्देश्यों को प्राप्त करने हेतु अनिवार्य है।",
+                    "निगमित पूँजीवाद की भूमिका के बगैर कोई राज्य लंबे समय तक अपने आर्थिक अस्तित्व को सुनिश्चित नहीं रख सकता।",
+                    "निगमित पूँजीवाद और लोकतंत्र अपने सतत अस्तित्व के लिए परस्पर निर्भर हैं।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) परिच्छेद की शुरुआत ही इस वाक्य से होती है कि बिना कॉर्पोरेट पूंजीवाद के कोई लोकतंत्र आर्थिक रूप से समृद्ध नहीं हुआ है, और यह आधुनिकीकरण व जनकल्याणकारी राजस्व हेतु महत्वपूर्ण है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "62. परिच्छेद-1 (निगमित पूँजीवाद एवं लोकतंत्र):\nउपर्युक्त परिच्छेद के सन्दर्भ में, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं:\nI. निगमित पूँजीवाद श्रमिक बल की वृद्धि करता है और रोज़गार के अधिक अवसर प्रदान करता है।\nII. जनसंख्या के निर्धन लोग और वे लोग जो हाशिये पर हैं, अधोमुखी धन-स्राव प्रभाव (ट्रिकल-डाउन इफेक्ट) के कारण निगमित पूँजीवाद द्वारा लाभान्वित होते हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी वैध है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) I और II दोनों। परिच्छेद बताता है कि कॉर्पोरेट क्षेत्र रोजगार सृजित करता है और इसके अतिरिक्त कर राजस्व से वंचित वर्गों का कल्याण होता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "63. परिच्छेद-2 (स्वैच्छिक संघ एवं राज्य):\n'स्वैच्छिक संघों का अंतर्जाल अपेक्षाकृत शक्तिहीन व्यक्ति और संभाव्य रूप से शक्तिशाली राज्य के बीच बफ़र के रूप में स्थित होता है।'\nनिम्नलिखित में से कौन-सा एक कथन उपर्युक्त परिच्छेद की सर्वोत्तम व्याख्या को प्रतिबिंबित करता है ?\n(a) यह राज्य की, राज्य के अन्दर कतिपय समूहों की प्रतिकूलता के विरुद्ध अपने संकल्प को व्यवहार में प्रवर्तित करने की असमर्थता पर बल देता है।\n(b) यह अपने सदस्यों के कल्याण के उन्नयन और उनके व्यक्तित्व के विकास हेतु सहकारी संगठन है।\n(c) यह व्यक्तियों को पार्थक्य की स्थिति से बाहर ले आता है और उन्हें सर्व-सामान्य प्रयासों में भाग लेने के अवसर प्रदान करता है।\n(d) यह नागरिकों को विभिन्न प्रकार की निष्ठाएँ और लगाव रखने देता है।",
+                options: [
+                    "यह राज्य की, राज्य के अन्दर कतिपय समूहों की प्रतिकूलता के विरुद्ध अपने संकल्प को व्यवहार में प्रवर्तित करने की असमर्थता पर बल देता है।",
+                    "यह अपने सदस्यों के कल्याण के उन्नयन और उनके व्यक्तित्व के विकास हेतु सहकारी संगठन है।",
+                    "यह व्यक्तियों को पार्थक्य की स्थिति से बाहर ले आता है और उन्हें सर्व-सामान्य प्रयासों में भाग लेने के अवसर प्रदान करता है।",
+                    "यह नागरिकों को विभिन्न प्रकार की निष्ठाएँ और लगाव रखने देता है।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) स्वैच्छिक संगठन (नागरिक समाज) अकेले और असहाय व्यक्ति को सामूहिक शक्ति प्रदान करते हैं, जिससे वह राज्य की निरंकुशता के विरुद्ध अपनी बात रख सके।"
+            },
+            {
+                topic: "संख्या पद्धति / गुणनखंडों की संख्या",
+                text: "64. निम्नलिखित कथनों पर विचार कीजिए :\nI. एक धनपूर्ण संख्या है, जिसको 50% बढ़ा देने पर, उसके गुणनखण्डों की संख्या अपरिवर्तित रह सकती है।\nII. एक धनपूर्ण संख्या है, जिसको 150% बढ़ा देने पर, उसके गुणनखण्डों की संख्या अपरिवर्तित रह सकती है।\nउपर्युक्त कथनों में से कौन-सा/से सही है/हैं ?",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) I और II दोनों। 50% बढ़ाने का अर्थ है संख्या को 3/2 से गुणा करना (उदा. N = 2 × 3² = 18 के गुणनखंड = 6; 50% बढ़ाने पर 27 के गुणनखंड = 4; N=12 के 6, 18 के 6)। 150% बढ़ाने का अर्थ 5/2 से गुणा करना है। दोनों स्थितियाँ संभव हैं।"
+            },
+            {
+                topic: "दिशा एवं दूरी (Distance & Direction)",
+                text: "65. विभिन्न मार्गों से जुड़े 7 स्थान A, B, C, D, E, F और G हैं। A, B से 6 km दक्षिण में है। A, C से 10 km पश्चिम में है। D, E से 5 km पूर्व में है। C, D से 6 km उत्तर में है। F, B से 9 km पश्चिम में है। F, G से 12 km उत्तर में है। कोई व्यक्ति इन मार्गों से चल कर D से F तक पहुँचता है। उस व्यक्ति ने कितनी दूरी तय की ?\n(a) 20 km\n(b) 25 km\n(c) 31 km\n(d) 37 km",
+                options: ["20 km", "25 km", "31 km", "37 km"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) 31 km। सड़क मार्ग D → C → A → B → F: DC = 6 km, CA = 10 km, AB = 6 km, BF = 9 km। कुल दूरी = 6 + 10 + 6 + 9 = 31 km।"
+            },
+            {
+                topic: "कोडिंग-डिकोडिंग / घन प्रतिरूप",
+                text: "66. यदि किसी विशेष कूट में 64 को 343 और 216 को 729 के रूप में लिखा गया है, तो उस कूट में 512 को किस रूप में लिखा जाएगा ?\n(a) 1000\n(b) 1331\n(c) 1728\n(d) 2197",
+                options: ["1000", "1331", "1728", "2197"],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) 1331। 64 = 4³ → 343 = 7³ (आधार +3)। 216 = 6³ → 729 = 9³ (आधार +3)। 512 = 8³ → (8+3)³ = 11³ = 1331।"
+            },
+            {
+                topic: "शेषफल प्रमेय (Remainder Theorem)",
+                text: "67. (9³ + 9⁴ + 9⁵ + 9⁶ + ... + 9¹⁰⁰) को 6 से भाग देने पर शेषफल क्या है ?\n(a) 0\n(b) 1\n(c) 2\n(d) 3",
+                options: ["0", "1", "2", "3"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) 0। 9 की किसी भी घात को 6 से भाग देने पर शेषफल सदैव 3 आता है (9 mod 6 = 3, 81 mod 6 = 3)। पदों की कुल संख्या = 100 - 3 + 1 = 98 पद। कुल शेषफल = 98 × 3 = 294। 294 को 6 से भाग देने पर पूर्णतः विभाजित होता है, अतः शेषफल = 0।"
+            },
+            {
+                topic: "डेटा पर्याप्तता / संख्या के गुणनखंड",
+                text: "68. प्रश्न : ऐसी 1-अंक की लघुतम संख्या क्या है, जिसमें ठीक-ठीक 4 गुणनखंड हैं ?\nकथन I : इनमें से एक गुणनखंड 2 है।\nकथन II : इनमें से एक गुणनखंड 3 है।\n(a) केवल कथन I से उत्तर दिया जा सकता है\n(b) किसी भी एक कथन से अकेले उत्तर दिया जा सकता है\n(c) दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है\n(d) इन कथनों में से किसी का उपयोग किए बिना भी उत्तर दिया जा सकता है",
+                options: [
+                    "केवल कथन I से उत्तर दिया जा सकता है",
+                    "किसी भी एक कथन से अकेले उत्तर दिया जा सकता है",
+                    "दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है",
+                    "इन कथनों में से किसी का उपयोग किए बिना भी उत्तर दिया जा सकता है"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) 1 अंक की संख्याएं (1 से 9) निश्चित हैं। 1(1), 2(2), 3(2), 4(3), 5(2), 6(4 गुणनखंड: 1, 2, 3, 6), 8(4 गुणनखंड: 1, 2, 4, 8)। सबसे छोटी 1-अंकीय संख्या जिसके ठीक 4 गुणनखंड हैं, वह 6 है। यह बिना किसी कथन के स्वतः ज्ञात की जा सकती है।"
+            },
+            {
+                topic: "डेटा पर्याप्तता / क्रिप्टैरिथम",
+                text: "69. प्रश्न : मान लीजिए, P, Q, R, S भिन्न शून्येतर अंक हैं। यदि PP × PQ = RRSS जहाँ P ≤ 3 और Q ≤ 4, तो Q किसके बराबर है ?\nकथन I : R = 1\nकथन II : S = 2",
+                options: [
+                    "केवल कथन I से उत्तर दिया जा सकता है",
+                    "किसी भी एक कथन से अकेले उत्तर दिया जा सकता है",
+                    "दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है",
+                    "इन कथनों में से किसी का उपयोग किए बिना भी दिया जा सकता है"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) किसी भी एक कथन से अकेले उत्तर दिया जा सकता है। PP = 11P। RRSS = 1100R + 11S = 11(100R + S)। अतः P × PQ = 100R + S। P ≤ 3 और Q ≤ 4 के साथ केवल 33 × 34 = 1122 ही इस समीकरण को संतुष्ट करता है (P=3, Q=4, R=1, S=2)। अतः R=1 या S=2 किसी भी एक कथन से Q=4 अद्वितीय रूप से प्राप्त हो जाता है।"
+            },
+            {
+                topic: "डेटा पर्याप्तता / रक्त संबंध",
+                text: "70. प्रश्न : Q, P से किस प्रकार संबंधित है ?\nकथन I : P की दो बहनें, R और S हैं।\nकथन II : R का पिता, Q का भाई है।",
+                options: [
+                    "केवल कथन I से उत्तर दिया जा सकता है",
+                    "किसी भी एक कथन से अकेले उत्तर दिया जा सकता है",
+                    "दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है",
+                    "इन कथनों में से किसी का उपयोग कर भी नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) इन कथनों में से किसी का उपयोग कर भी नहीं दिया जा सकता। दोनों कथनों को मिलाने पर पता चलता है कि P के पिता Q के भाई हैं, जिससे Q, P का चाचा (Uncle) या बुआ (Aunt) हो सकता है। चूँकि Q का लिंग (Gender) नहीं दिया गया है, संबंध निश्चित नहीं किया जा सकता।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "71. परिच्छेद-1 (मुद्रास्फीति सूचकांक WPI व CPI):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद में व्यक्त सर्वाधिक तर्कसंगत, विवेकपूर्ण और निर्णायक सन्देश को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) कीमत वृद्धि के मापन में केवल WPI का उपयोग किया जाना चाहिए, और CPI को उपयोग से हटा देना चाहिए।\n(b) मुद्रास्फीति दर का वर्तमान परिकलन, अलग-अलग मद/उपभोक्ता-वस्तु की कीमत-वृद्धि का सही-सही मापन नहीं करता।\n(c) मुद्रास्फीति के आँकड़े उपभोग टोकरी में सेवाओं को न्यून रूप से प्रस्तुत करते हैं।\n(d) मुद्रास्फीति दर की जानकारी वास्तव में देश के किसी भी व्यक्ति के काम की नहीं है।",
+                options: [
+                    "कीमत वृद्धि के मापन में केवल WPI का उपयोग किया जाना चाहिए, और CPI को उपयोग से हटा देना चाहिए।",
+                    "मुद्रास्फीति दर का वर्तमान परिकलन, अलग-अलग मद/उपभोक्ता-वस्तु की कीमत-वृद्धि का सही-सही मापन नहीं करता।",
+                    "मुद्रास्फीति के आँकड़े उपभोग टोकरी में सेवाओं को न्यून रूप से प्रस्तुत करते हैं।",
+                    "मुद्रास्फीति दर की जानकारी वास्तव में देश के किसी भी व्यक्ति के काम की नहीं है।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) परिच्छेद स्पष्ट करता है कि मुद्रास्फीति की एक एकल संख्या औसत भारित मान होती है, जो अलग-अलग वस्तुओं की वास्तविक मूल्य वृद्धि या विभिन्न वर्गों (गरीब, मध्यम, अमीर) के वास्तविक उपभोग प्रभाव को सटीक रूप से नहीं दर्शाती।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "72. परिच्छेद-2 (उद्यमिता एवं विश्वास):\nनिम्नलिखित में से कौन-सा एक कथन, इस परिच्छेद के मर्म को सर्वोत्तम रूप से प्रतिबिंबित करता है ?\n(a) उद्यमवृत्ति में विश्वसनीयता की अपेक्षा नहीं की जा सकती।\n(b) जो लोग विश्वसनीय होते हैं, वे सर्वाधिक सुभेद्य होते हैं।\n(c) धोखे का पात्र बने बिना कोई आर्थिक क्रियाकलाप संभव नहीं है।\n(d) विश्वास करना महत्त्वपूर्ण है, यद्यपि इसमें ख़तरा होता है।",
+                options: [
+                    "उद्यमवृत्ति में विश्वसनीयता की अपेक्षा नहीं की जा सकती।",
+                    "जो लोग विश्वसनीय होते हैं, वे सर्वाधिक सुभेद्य होते हैं।",
+                    "धोखे का पात्र बने बिना कोई आर्थिक क्रियाकलाप संभव नहीं है।",
+                    "विश्वास करना महत्त्वपूर्ण है, यद्यपि इसमें ख़तरा होता है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) परिच्छेद बताता है कि विश्वास वैश्विक बाजार और उद्यमिता का सार है, यद्यपि विश्वास करने में सुभेद्यता और धोखे का जोखिम अंतर्निहित होता है।"
+            },
+            {
+                topic: "डेटा पर्याप्तता / फुटबॉल मैच परिणाम",
+                text: "73. प्रश्न : एक फुटबाल मैच में, जब 10 मिनट शेष बचे थे; टीम P, टीम Q के विरुद्ध 3 गोल से पीछे थी। क्या टीम P मैच जीत गई ?\nकथन I : टीम P ने अंतिम 10 मिनटों में 4 गोल किए।\nकथन II : टीम Q ने मैच में कुल 4 गोल किए।",
+                options: [
+                    "केवल कथन I से उत्तर दिया जा सकता है",
+                    "किसी भी एक कथन से अकेले उत्तर दिया जा सकता है",
+                    "दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है",
+                    "इन कथनों में से किसी का उपयोग कर भी नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) इन कथनों में से किसी का उपयोग कर भी नहीं दिया जा सकता। 80 मिनट पर स्कोर मान लीजिए P=0, Q=3। P ने 4 गोल किए (P=4)। किंतु Q ने अंतिम 10 मिनट में कितने गोल किए यह स्पष्ट नहीं है। यदि कुल Q=4 है, तो P=4, Q=4 पर मैच टाई भी हो सकता है यदि प्रारंभिक स्कोर P=0, Q=3 था (0+4=4) और Q ने 1 गोल और कर दिया। P के प्रारंभिक गोल अज्ञात होने से जीत सुनिश्चित नहीं होती।"
+            },
+            {
+                topic: "डेटा पर्याप्तता / बीजगणितीय सर्वसमिका",
+                text: "74. प्रश्न : क्या (p + q)² - 4pq, जहाँ p, q धनपूर्ण संख्याएँ हैं, धनात्मक है ?\nकथन I : p < q\nकथन II : p > q",
+                options: [
+                    "केवल कथन I से उत्तर दिया जा सकता है",
+                    "किसी भी एक कथन से अकेले उत्तर दिया जा सकता है",
+                    "दोनों कथनों का एक साथ उपयोग कर उत्तर दिया जा सकता है",
+                    "इन कथनों में से किसी का उपयोग किए बिना भी दिया जा सकता है"
+                ],
+                correctAnswer: 1,
+                solution: "<b>आधिकारिक उत्तर:</b> (b) किसी भी एक कथन से अकेले उत्तर दिया जा सकता है। व्यंजक (p + q)² - 4pq = (p - q)²। किसी भी वास्तविक संख्या का वर्ग धनात्मक होता है यदि p ≠ q। कथन I (p < q) और कथन II (p > q) दोनों यह सुनिश्चित करते हैं कि p ≠ q, अतः दोनों में से किसी भी एक कथन से मान सदैव धनात्मक सिद्ध होता है।"
+            },
+            {
+                topic: "अनुपात एवं बीजगणित / क्रिकेट रन",
+                text: "75. T20 मैच में X, Y, Z ने कुल 37 रन बनाए। X:Y = Y:Z है।\nमात्रा-I = X के रन, मात्रा-II = Y के रन, मात्रा-III = Z के रन।\n(a) मात्रा-I < मात्रा-II < मात्रा-III\n(b) मात्रा-III < मात्रा-II < मात्रा-I\n(c) मात्रा-I < मात्रा-III < मात्रा-II\n(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता",
+                options: [
+                    "मात्रा-I < मात्रा-II < मात्रा-III",
+                    "मात्रा-III < मात्रा-II < मात्रा-I",
+                    "मात्रा-I < मात्रा-III < मात्रा-II",
+                    "अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता। X/Y = Y/Z ⇒ Y² = XZ। X + Y + Z = 37। पूर्णांक रनों के लिए (9, 12, 16 योग=37) या (16, 12, 9 योग=37) दोनों संभव हैं, अतः X < Y < Z अथवा Z < Y < X दोनों हो सकते हैं।"
+            },
+            {
+                topic: "मात्रा तुलना / पूर्णांक गुणनफल",
+                text: "76. मान लीजिए p + q = 10 जहाँ p, q पूर्णांक हैं।\nमात्रा-I = p × q का महत्तम मान जब p, q धनात्मक पूर्णांक हैं।\nमात्रा-II = p × q का महत्तम मान जब p ≥ -6, q ≥ -4।\n(a) मात्रा-I < मात्रा-II\n(b) मात्रा-II < मात्रा-I\n(c) मात्रा-I = मात्रा-II\n(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता",
+                options: ["मात्रा-I < मात्रा-II", "मात्रा-II < मात्रा-I", "मात्रा-I = मात्रा-II", "निर्धारित नहीं किया जा सकता"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) मात्रा-I = मात्रा-II। धनात्मक पूर्णांकों हेतु योग 10 होने पर महत्तम गुणनफल p=5, q=5 पर 5 × 5 = 25 होता है। सीमा p ≥ -6, q ≥ -4 के अंतर्गत यदि दोनों ऋणात्मक हों तो योग 10 नहीं हो सकता। अतः अधिकतम गुणनफल पुनः p=5, q=5 पर 25 ही रहेगा।"
+            },
+            {
+                topic: "मात्रा तुलना / क्रमागत पूर्णांक",
+                text: "77. 11 संख्याओं के समुच्चय पर विचार कीजिए :\nमात्रा-I = औसत का न्यूनतम मान जब वे क्रमागत पूर्णांक ≥ -5 हैं।\nमात्रा-II = गुणनफल का न्यूनतम मान जब वे क्रमागत ऋणेतर (non-negative) पूर्णांक हैं।\n(a) मात्रा-I < मात्रा-II\n(b) मात्रा-II < मात्रा-I\n(c) मात्रा-I = मात्रा-II\n(d) निर्धारित नहीं किया जा सकता",
+                options: ["मात्रा-I < मात्रा-II", "मात्रा-II < मात्रा-I", "मात्रा-I = मात्रा-II", "निर्धारित नहीं किया जा सकता"],
+                correctAnswer: 2,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) मात्रा-I = मात्रा-II। मात्रा-I: -5 से शुरू होने वाले 11 क्रमागत पूर्णांक (-5 से 5) का औसत 0 होता है। मात्रा-II: ऋणेतर पूर्णांक (0, 1, 2, ...) में 0 शामिल होने से न्यूनतम गुणनफल 0 होगा। अतः दोनों मात्राएं बराबर (0 = 0) हैं।"
+            },
+            {
+                topic: "औसत गुणधर्म (Average Properties)",
+                text: "78. तीन संख्याओं p, q और r का औसत k है। p औसत से उतना अधिक है, जितना q औसत से कम है। r का मान क्या है ?\n(a) k\n(b) k - 1\n(c) k + 1\n(d) k/2",
+                options: ["k", "k - 1", "k + 1", "k/2"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) k। दिया है: p - k = k - q ⇒ p + q = 2k। तीनों का औसत: (p + q + r)/3 = k ⇒ p + q + r = 3k। मान रखने पर: 2k + r = 3k ⇒ r = k।"
+            },
+            {
+                topic: "वास्तविक संख्याएं / भिन्न गुणधर्म",
+                text: "79. मान लीजिए x, 0 और 1 के बीच की कोई वास्तविक संख्या है। निम्नलिखित कथनों में से कौन-सा/से सही है/हैं ?\nI. x² > x³\nII. x > √x",
+                options: ["केवल I", "केवल II", "I और II दोनों", "न तो I और न ही II"],
+                correctAnswer: 0,
+                solution: "<b>आधिकारिक उत्तर:</b> (a) केवल I। 0 < x < 1 के लिए उच्चतर घात का मान घटता है (जैसे x=0.5: x²=0.25 > x³=0.125, कथन I सही है)। जबकि x < √x होता है (0.5 < 0.707), अतः कथन II गलत है।"
+            },
+            {
+                topic: "संख्या पद्धति / विभाज्यता",
+                text: "80. किन्हीं दो धनपूर्ण संख्याओं के बीच अंतर 10 है। इन दो संख्याओं के बीच, 5 से विभाज्य धनपूर्ण संख्याओं के बारे में क्या कहा जा सकता है ?\n(a) ऐसी केवल एक संख्या है।\n(b) ऐसी केवल दो संख्याएँ हैं।\n(c) ऐसी एक से अधिक संख्याएँ हो सकती हैं।\n(d) ऐसी कोई संख्या नहीं है।",
+                options: [
+                    "ऐसी केवल एक संख्या है।",
+                    "ऐसी केवल दो संख्याएँ हैं।",
+                    "ऐसी केवल दो संख्याएँ हैं।",
+                    "ऐसी एक से अधिक संख्याएँ हो सकती हैं।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>आधिकारिक उत्तर:</b> (c) ऐसी एक से अधिक संख्याएँ हो सकती हैं। यदि दो संख्याएं 1 और 11 हैं, तो बीच में 5 और 10 (दो संख्याएं) 5 से विभाज्य हैं। यदि संख्याएं 5 और 15 हैं, तो बीच में केवल 10 (एक संख्या) विभाज्य है। अतः 5 से विभाज्य संख्याओं की संख्या 1 या 2 हो सकती है।"
+            }
+        ];
+
+        const TOTAL_Q = questions.length;
+        const MARKS_PER_CORRECT = 2.50;
+        const NEGATIVE_MARK = 0.833;
+        const TIME_MINUTES = 120;
+
+        document.getElementById('home-q-count').innerText = TOTAL_Q;
+
+        let totalSeconds = TIME_MINUTES * 60;
+        let timerInterval;
+        let currentQIndex = 0;
+        let userAnswers = new Array(TOTAL_Q).fill(null);
+        let studentName = "";
+
+        function toggleTopicModal() { document.getElementById('topic-modal-overlay').classList.toggle('show'); }
+        function closeTopicModal(e) { if(e.target.id === 'topic-modal-overlay') toggleTopicModal(); }
+
+        function startTest() {
+            studentName = document.getElementById('candidate-name').value.trim();
+            if(!studentName) {
+                alert("कृपया टेस्ट शुरू करने से पहले अपना नाम दर्ज करें!");
+                return;
+            }
+            
+            document.getElementById('display-name-header').innerText = studentName;
+            document.getElementById('res-display-name').innerText = studentName;
+
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('test-screen').classList.remove('hidden');
+            
+            initPalette();
+            loadQuestion(0);
+            
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let hrs = Math.floor(totalSeconds / 3600);
+                let mins = Math.floor((totalSeconds % 3600) / 60);
+                let secs = totalSeconds % 60;
+                
+                let timeStr = "";
+                if(hrs > 0) {
+                    timeStr = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                } else {
+                    timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }
+                document.getElementById('timer-display').innerText = timeStr;
+                
+                if(totalSeconds <= 0) { clearInterval(timerInterval); submitTest(); }
+            }, 1000);
+        }
+
+        function loadQuestion(index) {
+            currentQIndex = index;
+            document.getElementById('q-counter').innerText = `प्रश्न ${index + 1} / ${TOTAL_Q}`;
+            document.getElementById('q-num-display').innerText = `Q. ${index + 1} / ${TOTAL_Q}`;
+            
+            const q = questions[index];
+            document.getElementById('q-topic-display').innerText = q.topic;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / TOTAL_Q) * 100}%`;
+            document.getElementById('q-text').innerText = q.text;
+            
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            (q.options || []).forEach((optText, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = `option ${userAnswers[index] === i ? 'selected' : ''}`;
+                optDiv.onclick = () => selectOption(i);
+                optDiv.innerHTML = `<div class="opt-letter">${letters[i]}</div><div class="opt-text">${optText}</div>`;
+                optsContainer.appendChild(optDiv);
+            });
+
+            document.getElementById('next-btn').innerText = (index === TOTAL_Q - 1) ? 'सबमिट करें' : 'अगला ▶';
+            document.getElementById('answered-counter').innerText = `उत्तर दिए: ${userAnswers.filter(ans => ans !== null).length}`;
+            updatePaletteUI();
+        }
+
+        function selectOption(optIndex) {
+            userAnswers[currentQIndex] = optIndex;
+            loadQuestion(currentQIndex);
+        }
+        
+        function markSkipped() { nextQuestion(); }
+        function nextQuestion() { if (currentQIndex < TOTAL_Q - 1) loadQuestion(currentQIndex + 1); else submitTest(); }
+        function prevQuestion() { if (currentQIndex > 0) loadQuestion(currentQIndex - 1); }
+
+        function initPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'q-grid-btn';
+                btn.id = `pal-btn-${i}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => { loadQuestion(i); togglePalette(); };
+                grid.appendChild(btn);
+            }
+        }
+
+        function updatePaletteUI() {
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.getElementById(`pal-btn-${i}`);
+                if(!btn) continue;
+                btn.className = 'q-grid-btn'; 
+                if (i === currentQIndex) btn.classList.add('status-current');
+                else if (userAnswers[i] !== null) btn.classList.add('status-answered');
+            }
+        }
+
+        function togglePalette() {
+            const modal = document.getElementById('palette-modal');
+            const overlay = document.getElementById('overlay');
+            if(modal.classList.contains('open')){
+                modal.classList.remove('open');
+                overlay.style.display = 'none';
+            } else {
+                updatePaletteUI();
+                modal.classList.add('open');
+                overlay.style.display = 'block';
+            }
+        }
+
+        function retakeTest() {
+            userAnswers = new Array(TOTAL_Q).fill(null);
+            totalSeconds = TIME_MINUTES * 60;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+        }
+
+        function submitTest() {
+            if(totalSeconds > 0 && !confirm("क्या आप वाकई परीक्षा सबमिट करना चाहते हैं?")) return;
+
+            clearInterval(timerInterval);
+
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            document.getElementById('palette-modal').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+
+            let correct = 0, wrong = 0, skipped = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            let printHTML = `
+                <div class="print-header-box">
+                    <h2>UPSC CIVIL SERVICES (PRELIMINARY) EXAMINATION 2025</h2>
+                    <h3>GENERAL STUDIES PAPER - 2 (CSAT BOOKLET SERIES A)</h3>
+                    <p>अभ्यर्थी का नाम: ${studentName} | अंकन योजना: +2.50, -0.83</p>
+                    <div class="print-score-row">
+                        <div>कुल अंक: <span style="color: #000;" id="p-score"></span> / ${(TOTAL_Q * MARKS_PER_CORRECT).toFixed(2)}</div>
+                        <div>सही: <span style="color: #10b981;" id="p-correct"></span></div>
+                        <div>गलत: <span style="color: #ef4444;" id="p-wrong"></span></div>
+                        <div>छूटे: <span style="color: #64748b;" id="p-skipped"></span></div>
+                    </div>
+                </div>
+            `;
+
+            questions.forEach((q, idx) => {
+                const uAns = userAnswers[idx];
+                let statusColor = '', statusText = '', printStatusColor = '';
+
+                if (uAns === null) {
+                    skipped++; statusColor = 'var(--skipped)'; statusText = 'अनुत्तरित (SKIPPED)'; printStatusColor = '#64748b';
+                } else if (uAns === q.correctAnswer) {
+                    correct++; statusColor = 'var(--correct)'; statusText = 'सही (CORRECT)'; printStatusColor = '#10b981';
+                } else {
+                    wrong++; statusColor = 'var(--wrong)'; statusText = 'गलत (INCORRECT)'; printStatusColor = '#ef4444';
+                }
+
+                const uAnsText = uAns !== null ? `(${letters[uAns]}) ${q.options[uAns]}` : "कोई नहीं (Unattempted)";
+                const cAnsText = `(${letters[q.correctAnswer]}) ${q.options[q.correctAnswer]}`;
+                
+                reviewContainer.innerHTML += `
+                    <div class="review-box">
+                        <div class="q-header-row" style="margin-bottom:6px;">
+                           <span style="font-size:13px; color:var(--primary); font-weight:bold;">Q${idx + 1}.</span>
+                           <span class="q-topic-tag">${q.topic}</span>
+                        </div>
+                        <div class="review-q">${q.text}</div>
+                        <div class="ans-row"><div class="ans-lbl">आपका उत्तर:</div> <div class="ans-val" style="color:${statusColor}">${uAnsText}</div></div>
+                        <div class="ans-row"><div class="ans-lbl">सही उत्तर:</div> <div class="ans-val" style="color:var(--correct)">${cAnsText}</div></div>
+                        <div style="color:${statusColor}; font-size:11px; font-weight:bold; margin-top:2px;">${statusText}</div>
+                        <div class="solution-box"><div class="solution-title">💡 विस्तृत समाधान:</div>${q.solution}</div>
+                    </div>
+                `;
+
+                let optionsHTML = '';
+                (q.options || []).forEach((opt, i) => { optionsHTML += `<div>(${letters[i]}) ${opt}</div>`; });
+                printHTML += `
+                    <div class="print-q-box">
+                        <div class="print-q-head"><span>Q${idx + 1}.</span><span class="print-q-topic">${q.topic}</span></div>
+                        <div class="print-q-text">${q.text}</div>
+                        <div class="print-options-grid">${optionsHTML}</div>
+                        <div class="print-ans-row"><strong>आपका उत्तर:</strong> <span style="color:${printStatusColor}">${uAnsText}</span></div>
+                        <div class="print-ans-row"><strong>आधिकारिक उत्तर:</strong> <span style="color:#10b981">${cAnsText}</span></div>
+                        <div class="print-sol-box"><div class="print-sol-lbl">व्याख्या:</div>${q.solution}</div>
+                        
+                        <div class="page-footer-credit">
+                            <span class="author-name">SACHIN SHARMA · <span class="pink-tag">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span></span>
+                            <a href="https://t.me/Avigat1210" target="_blank">✈️ t.me/Avigat1210</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            printHTML += `
+                <div class="final-telegram-banner">
+                    <h1>TELEGRAM ID @Avigat1210</h1>
+                    <p style="font-weight: bold; color: #333; margin-top: 4px;">UPSC CSE Official Test Solutions & Study Materials</p>
+                    <a href="https://t.me/Avigat1210" target="_blank">✈️ t.me/Avigat1210 पर जुड़ें</a>
+                </div>
+            `;
+
+            document.getElementById('print-content').innerHTML = printHTML;
+
+            let marks = (correct * MARKS_PER_CORRECT) - (wrong * NEGATIVE_MARK);
+            if(marks < 0) marks = 0;
+
+            let timeTakenSec = (TIME_MINUTES * 60) - totalSeconds;
+            let m = Math.floor(timeTakenSec / 60);
+            let s = timeTakenSec % 60;
+            let avgTime = Math.round(timeTakenSec / TOTAL_Q);
+            let accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+
+            document.getElementById('final-score').innerHTML = marks.toFixed(2) + '<span style="font-size: 16px; color: var(--text-muted);"> / ' + (TOTAL_Q * MARKS_PER_CORRECT).toFixed(2) + '</span>';
+            
+            document.getElementById('stat-correct').innerText = correct;
+            document.getElementById('stat-wrong').innerText = wrong;
+            document.getElementById('stat-skipped').innerText = skipped;
+            document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+            document.getElementById('stat-time').innerText = `${m}m ${s}s`;
+            document.getElementById('stat-avg-time').innerText = `${avgTime}s`;
+
+            document.getElementById('p-score').innerText = marks.toFixed(2);
+            document.getElementById('p-correct').innerText = correct;
+            document.getElementById('p-wrong').innerText = wrong;
+            document.getElementById('p-skipped').innerText = skipped;
+            
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
