@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#030712">
 
-<!-- Supabase CDN Client -->
+<!-- Supabase Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -21,6 +21,7 @@
     --primary: #f59e0b;
     --text: #f8fafc;
     --border: #1e293b;
+    --err: #ef4444;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
   body {
@@ -29,16 +30,24 @@
   }
   .login-card {
     background: rgba(15, 23, 42, 0.95); border: 2px solid var(--gold); border-radius: 18px;
-    width: 100%; max-width: 420px; padding: 26px 22px; box-shadow: 0 20px 45px rgba(0,0,0,0.8);
-    text-align: center; backdrop-filter: blur(10px);
+    width: 100%; max-width: 420px; padding: 24px 20px; box-shadow: 0 20px 45px rgba(0,0,0,0.8);
+    text-align: center; backdrop-filter: blur(10px); position: relative;
   }
   .login-logo {
-    width: 85px; height: auto; border-radius: 12px; border: 2px solid var(--gold);
-    margin-bottom: 12px; background: #fff; padding: 2px;
+    width: 80px; height: auto; border-radius: 12px; border: 2px solid var(--gold);
+    margin-bottom: 10px; background: #fff; padding: 2px;
   }
   h2 { font-size: 19px; font-family: Georgia, serif; color: var(--gold); margin-bottom: 4px; }
-  .brand-sub { font-size: 11px; color: #ef4444; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 18px; }
+  .brand-sub { font-size: 11px; color: #ef4444; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 16px; }
   
+  .error-banner {
+    display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--err);
+    color: #fca5a5; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 14px;
+    text-align: left; font-weight: 600; line-height: 1.4;
+  }
+  .error-banner.show { display: block; animation: shake 0.3s ease; }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
   .auth-box { text-align: left; }
   .input-label { font-size: 11.5px; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; display: block; }
   .auth-input {
@@ -49,17 +58,16 @@
   .auth-input:focus { border-color: var(--gold); }
   
   .btn-submit {
-    width: 100%; padding: 13px; border-radius: 8px; background: linear-gradient(135deg, #d97706, #b45309);
+    width: 100%; padding: 14px; border-radius: 8px; background: linear-gradient(135deg, #d97706, #b45309);
     color: white; font-size: 14px; font-weight: bold; border: none; cursor: pointer;
     box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4); text-transform: uppercase; letter-spacing: 1px;
-    margin-top: 6px;
+    margin-top: 4px; display: block;
   }
   .btn-submit:active { transform: scale(0.97); }
 
   .toggle-text { margin-top: 16px; font-size: 12.5px; color: #94a3b8; text-align: center; }
   .toggle-text a { color: var(--gold); text-decoration: none; font-weight: bold; }
-  
-  .hidden { display: none; }
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -69,28 +77,32 @@
   <h2>UPSC ASPIRANT PORTAL</h2>
   <div class="brand-sub">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
 
-  <div class="auth-box">
+  <!-- ERROR NOTICE POPUP -->
+  <div class="error-banner" id="errorBox"></div>
+
+  <!-- HTML5 FORM FOR GUARANTEED SUBMISSION -->
+  <form id="authForm" class="auth-box" onsubmit="event.preventDefault(); handleAuthAction();">
     <div id="registerOnlyFields">
       <label class="input-label">पूरा नाम (Candidate Full Name):</label>
-      <input type="text" id="candName" class="auth-input" placeholder="उदा. सचिन शर्मा">
+      <input type="text" id="candName" class="auth-input" placeholder="उदा. सचिन शर्मा" autocomplete="name">
 
       <label class="input-label">लक्ष्य / संस्थान (Dream / Academy):</label>
       <input type="text" id="candDistrict" class="auth-input" placeholder="उदा. LBSNAA, Mussoorie">
     </div>
 
     <label class="input-label">मोबाइल नंबर (10-Digit Indian Mobile):</label>
-    <input type="tel" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10">
+    <input type="tel" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10" inputmode="numeric" autocomplete="tel">
 
     <label class="input-label">4-अंकों का गुप्त PIN (4-Digit PIN):</label>
-    <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" style="letter-spacing: 4px; font-size: 18px;">
+    <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" inputmode="numeric" style="letter-spacing: 4px; font-size: 18px;">
 
-    <button class="btn-submit" id="authBtn" onclick="handleAuthAction()">सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔</button>
+    <button type="submit" class="btn-submit" id="authBtn">सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔</button>
 
     <div class="toggle-text">
       <span id="toggleQuestion">पहले से रजिस्टर्ड हैं?</span> 
       <a href="javascript:void(0)" onclick="toggleMode()" id="toggleBtn">यहाँ लॉगिन करें</a>
     </div>
-  </div>
+  </form>
 </div>
 
 <script>
@@ -98,19 +110,36 @@
   const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
   
   let supabase = null;
-  try {
-    if (window.supabase && typeof window.supabase.createClient === 'function') {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-  } catch(e) {}
+  function getDbClient() {
+    try {
+      if (!supabase && window.supabase && typeof window.supabase.createClient === 'function') {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+    } catch(e) {}
+    return supabase;
+  }
 
   let isRegisterMode = true;
 
-  function isValidIndianMobile(mobile) {
-    return /^[6-9]\d{9}$/.test(mobile);
+  function showError(msg) {
+    const errBox = document.getElementById('errorBox');
+    errBox.innerText = "⚠️ " + msg;
+    errBox.classList.add('show');
+    errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function hideError() {
+    const errBox = document.getElementById('errorBox');
+    errBox.classList.remove('show');
+    errBox.innerText = "";
+  }
+
+  function isValidIndianMobile(num) {
+    return /^[6-9]\d{9}$/.test(num);
   }
 
   function toggleMode() {
+    hideError();
     isRegisterMode = !isRegisterMode;
     const regFields = document.getElementById('registerOnlyFields');
     const authBtn = document.getElementById('authBtn');
@@ -130,76 +159,76 @@
     }
   }
 
-  async function handleAuthAction() {
+  function handleAuthAction() {
+    hideError();
     const mobile = document.getElementById('candMobile').value.trim();
     const pin = document.getElementById('candPin').value.trim();
     const authBtn = document.getElementById('authBtn');
 
+    // 1. Empty Check
+    if (!mobile) {
+      showError("कृपया अपना 10-अंकों का मोबाइल नंबर दर्ज करें! यह फ़ील्ड खाली नहीं हो सकती।");
+      return;
+    }
+    // 2. Indian Mobile Validation
     if (!isValidIndianMobile(mobile)) {
-      alert("कृपया एक वैध 10-अंकों का भारतीय मोबाइल नंबर दर्ज करें (शुरुआत 6, 7, 8 या 9 से होनी चाहिए)!");
+      showError("अमान्य नंबर! कृपया एक वैध 10-अंकों का भारतीय मोबाइल नंबर दर्ज करें (शुरुआत 6, 7, 8 या 9 से होनी चाहिए)।");
+      return;
+    }
+    // 3. PIN Check
+    if (!pin) {
+      showError("कृपया 4-अंकों का गुप्त PIN दर्ज करें! यह फ़ील्ड खाली नहीं हो सकती।");
       return;
     }
     if (pin.length !== 4 || isNaN(pin)) {
-      alert("कृपया 4-अंकों का गुप्त PIN दर्ज करें!");
+      showError("PIN अमान्य है! PIN केवल 4 अंकों की संख्या (उदा. 1234) होनी चाहिए।");
       return;
     }
-
-    authBtn.innerText = "प्रमाणित किया जा रहा है...";
-    authBtn.disabled = true;
 
     if (isRegisterMode) {
       const name = document.getElementById('candName').value.trim();
       const district = document.getElementById('candDistrict').value.trim() || "LBSNAA, Mussoorie";
 
       if (!name) {
-        alert("कृपया अपना पूरा नाम दर्ज करें!");
-        authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
-        authBtn.disabled = false;
+        showError("कृपया अपना पूरा नाम दर्ज करें! यह फ़ील्ड खाली नहीं हो सकती।");
         return;
       }
+
+      authBtn.innerText = "सत्यापन हो रहा है...";
+      authBtn.disabled = true;
 
       const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
       const newUser = { mobile, pin, full_name: name, district, roll_id: rollId };
 
-      // Instant local persistence
+      // Local storage immediate save
       localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
 
-      // Background Supabase Sync (Non-blocking)
-      if (supabase) {
-        supabase.from('aspirants').insert([newUser]).then(() => {}).catch(() => {});
+      // Background Supabase Save
+      const client = getDbClient();
+      if (client) {
+        client.from('aspirants').insert([newUser]).then(() => {}).catch(() => {});
       }
 
-      window.location.replace("index.html");
+      // Instant Redirect
+      setTimeout(() => {
+        window.location.replace("index.html");
+      }, 300);
 
     } else {
       // Login Check
+      authBtn.innerText = "लॉगिन हो रहा है...";
+      authBtn.disabled = true;
+
       const saved = localStorage.getItem('upsc_logged_user');
       if (saved) {
-        const local = JSON.parse(saved);
-        if (local.mobile === mobile) {
-          if (local.pin === pin) {
-            window.location.replace("index.html");
-            return;
-          } else {
-            alert("गलत PIN दर्ज किया गया है!");
-            authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
-            authBtn.disabled = false;
-            return;
-          }
-        }
-      }
-
-      // Online DB check fallback
-      if (supabase) {
         try {
-          const { data: user } = await supabase.from('aspirants').select('*').eq('mobile', mobile).maybeSingle();
-          if (user) {
-            if (user.pin === pin) {
-              localStorage.setItem('upsc_logged_user', JSON.stringify(user));
+          const local = JSON.parse(saved);
+          if (local.mobile === mobile) {
+            if (local.pin === pin) {
               window.location.replace("index.html");
               return;
             } else {
-              alert("गलत PIN दर्ज किया गया है!");
+              showError("गलत PIN दर्ज किया गया है! कृपया सही पिन दर्ज करें।");
               authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
               authBtn.disabled = false;
               return;
@@ -208,10 +237,38 @@
         } catch(e) {}
       }
 
-      alert("उपयोगकर्ता नहीं मिला! कृपया पहले नया कार्ड बनाएँ।");
-      toggleMode();
-      authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
-      authBtn.disabled = false;
+      // Online DB Fallback
+      const client = getDbClient();
+      if (client) {
+        client.from('aspirants').select('*').eq('mobile', mobile).maybeSingle()
+          .then(({ data: user }) => {
+            if (user) {
+              if (user.pin === pin) {
+                localStorage.setItem('upsc_logged_user', JSON.stringify(user));
+                window.location.replace("index.html");
+              } else {
+                showError("गलत PIN दर्ज किया गया है!");
+                authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
+                authBtn.disabled = false;
+              }
+            } else {
+              showError("यह मोबाइल नंबर नहीं मिला! कृपया 'नया रजिस्ट्रेशन करें' पर जाकर कार्ड बनाएँ।");
+              toggleMode();
+              authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
+              authBtn.disabled = false;
+            }
+          })
+          .catch(() => {
+            showError("नेटवर्क में देरी हो रही है, कृपया दोबारा प्रयास करें!");
+            authBtn.innerText = "पोर्टल में लॉगिन करें ➔";
+            authBtn.disabled = false;
+          });
+      } else {
+        showError("उपयोगकर्ता नहीं मिला! कृपया पहले नया रजिस्ट्रेशन करें।");
+        toggleMode();
+        authBtn.innerText = "सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔";
+        authBtn.disabled = false;
+      }
     }
   }
 
