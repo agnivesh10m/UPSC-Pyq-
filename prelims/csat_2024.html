@@ -1,1095 +1,1281 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UPSC CSAT 2024 (Paper 2) Mock Test | SACHIN SHARMA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UPSC CSE Prelims 2024 - CSAT Paper 2 (Series A) | SACHIN SHARMA</title>
     <style>
         :root {
-            --primary: #1e3a8a;
-            --primary-dark: #0f172a;
-            --gold: #d97706;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --correct: #10b981;
-            --wrong: #ef4444;
-            --skipped: #94a3b8;
-        }
-
-        body.dark-mode {
-            --primary: #60a5fa;
-            --primary-dark: #030712;
-            --gold: #f59e0b;
-            --bg: #0b0f19;
-            --card-bg: #111827;
+            --home-bg-top: #0f172a;   
+            --home-bg-bot: #020617;   
+            --home-card: #1e293b;     
+            --home-box: #334155;      
+            --home-text-accent: #f59e0b; 
+            --home-btn: #f59e0b;      
+            --bg-dark: #0b0f19;       
+            --card-dark: #151b2b;     
+            --primary: #f59e0b;       
+            --secondary: #3b82f6;     
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border: #1f2937;
+            --border-color: #1e293b;  
+            --option-bg: #0b0f19;     
+            --correct: #10b981;       
+            --wrong: #ef4444;         
+            --skipped: #3b82f6;       
+            --current: #f59e0b;       
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; padding-bottom: 60px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent;}
+        body { background-color: var(--bg-dark); color: var(--text-main); display: flex; justify-content: center; height: 100vh; height: 100dvh; overflow: hidden; }
 
-        header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white; padding: 16px 20px; border-bottom: 3px solid var(--gold);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100;
-        }
-        .header-title { font-size: 15px; font-weight: bold; letter-spacing: 0.5px; }
-        .header-actions { display: flex; gap: 10px; align-items: center; }
-        .btn-header {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold;
-        }
-
-        .container { max-width: 860px; margin: 20px auto; padding: 0 16px; }
-        .card {
-            background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border);
-            padding: 22px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-
-        .home-title { font-size: 20px; color: var(--primary); margin-bottom: 10px; font-weight: 800; }
-        .rules-list { margin: 15px 0 20px 20px; font-size: 13.5px; color: var(--text-muted); }
-        .rules-list li { margin-bottom: 8px; }
-        .input-group { margin-bottom: 18px; }
-        .input-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
-        .input-group input {
-            width: 100%; padding: 10px 14px; border-radius: 8px; border: 1.5px solid var(--border);
-            background: var(--bg); color: var(--text-main); font-size: 14px; outline: none;
-        }
-        .btn-start {
-            background: linear-gradient(135deg, #d97706, #b45309); color: white; width: 100%;
-            padding: 12px; border-radius: 8px; border: none; font-size: 15px; font-weight: bold; cursor: pointer;
-        }
-
-        .test-topbar {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--card-bg); padding: 12px 18px; border-radius: 10px;
-            border: 1px solid var(--border); margin-bottom: 15px; font-size: 13px; font-weight: bold;
-        }
-        .timer-box { color: #ef4444; font-size: 15px; font-family: monospace; }
-        .progress-bar-container { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 18px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; width: 0%; background: var(--gold); transition: width 0.3s ease; }
-
-        .q-meta { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 12px; color: var(--text-muted); }
-        .q-topic { background: rgba(217, 119, 6, 0.1); color: var(--gold); padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-        .q-text { font-size: 15px; font-weight: 600; line-height: 1.7; margin-bottom: 20px; white-space: pre-line; }
-
-        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-        .opt-btn {
-            display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border-radius: 8px;
-            border: 1.5px solid var(--border); background: var(--bg); color: var(--text-main);
-            font-size: 13.5px; text-align: left; cursor: pointer; transition: 0.2s;
-        }
-        .opt-btn:hover { border-color: var(--primary); }
-        .opt-btn.selected { border-color: var(--gold); background: rgba(217, 119, 6, 0.08); font-weight: 600; }
-        .opt-badge {
-            background: var(--border); width: 22px; height: 22px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; font-weight: bold;
-        }
-        .opt-btn.selected .opt-badge { background: var(--gold); color: white; }
-
-        .test-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .btn-nav {
-            padding: 9px 18px; border-radius: 6px; border: 1px solid var(--border);
-            background: var(--card-bg); color: var(--text-main); font-weight: bold; font-size: 13px; cursor: pointer;
-        }
-        .btn-submit { background: var(--correct); color: white; border: none; }
-
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999;
-            display: none; align-items: center; justify-content: center; padding: 16px;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-body {
-            background: var(--card-bg); border-radius: 12px; max-width: 550px; width: 100%;
-            padding: 20px; border: 1px solid var(--border); max-height: 85vh; overflow-y: auto;
-        }
-        .palette-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin: 15px 0; }
-        .pal-btn {
-            aspect-ratio: 1; border-radius: 6px; border: 1px solid var(--border);
-            background: var(--bg); color: var(--text-main); font-size: 12px; font-weight: bold; cursor: pointer;
-        }
-        .pal-btn.answered { background: var(--gold); color: white; border-color: var(--gold); }
-        .pal-btn.current { border: 2px solid var(--primary); }
-
-        .result-score-card { text-align: center; padding: 25px 15px; margin-bottom: 20px; }
-        .score-num { font-size: 38px; font-weight: 900; color: var(--gold); }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .stat-box { background: var(--bg); padding: 12px; border-radius: 8px; text-align: center; font-size: 12px; }
-        .stat-box b { display: block; font-size: 16px; margin-top: 4px; }
-
-        .solution-card {
-            background: var(--card-bg); border-radius: 10px; border: 1px solid var(--border);
-            padding: 16px; margin-bottom: 14px; font-size: 13.5px;
-        }
-        .sol-meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-        .sol-explanation {
-            background: rgba(16, 185, 129, 0.08); border-left: 3px solid var(--correct);
-            padding: 10px 14px; margin-top: 10px; border-radius: 0 6px 6px 0;
-        }
-
+        .app-container { width: 100%; max-width: 540px; background-color: var(--bg-dark); display: flex; flex-direction: column; position: relative; height: 100%; border: none;}
         .hidden { display: none !important; }
+        #print-container { display: none; }
+
+        #home-screen { background: linear-gradient(180deg, var(--home-bg-top) 0%, var(--home-bg-bot) 100%); padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; overflow-y: auto; }
+        
+        .brand-header { text-align: center; margin-bottom: 12px; width: 100%; }
+        .brand-header h1 { color: var(--home-text-accent); font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.4); }
+        .brand-header p { color: #e2e8f0; font-size: 11px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase;}
+        
+        .test-info-card { background: var(--home-card); padding: 18px 16px; border-radius: 16px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(245, 158, 11, 0.25); }
+        .test-title { font-size: 16px; font-weight: bold; text-align: center; margin-bottom: 4px; color: white; }
+        .test-subtitle { font-size: 11.5px; color: #cbd5e1; text-align: center; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.25); }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+        .info-box { background: var(--home-box); padding: 8px 6px; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05);}
+        .info-val { font-size: 16px; font-weight: 800; color: var(--home-text-accent); margin-bottom: 2px; }
+        .info-lbl { font-size: 9.5px; color: white; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        
+        .name-input-container { margin-bottom: 14px; }
+        .name-input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--home-text-accent); background: #0b0f19; color: white; font-size: 14px; font-weight: bold; text-align: center; outline: none; }
+        .name-input::placeholder { color: #94a3b8; font-weight: normal; }
+
+        .start-btn { width: 100%; padding: 13px; border-radius: 10px; background: var(--home-btn); color: #0f172a; font-size: 15px; font-weight: bold; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        .start-btn:active { transform: scale(0.97); }
+
+        .topic-btn { width: 100%; padding: 10px; border-radius: 8px; background: transparent; color: var(--home-text-accent); font-size: 12.5px; font-weight: 800; border: 1.5px solid var(--home-text-accent); cursor: pointer; margin-top: 9px; }
+
+        .channel-links-box { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; width: 100%; }
+        .social-link-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; }
+        .telegram-btn { background: #0088cc; color: white; }
+
+        .topic-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 200; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .topic-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .topic-modal-content { background: var(--card-dark); padding: 18px; border-radius: 14px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--primary); }
+        .topic-modal-title { color: var(--primary); font-size: 16px; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .topic-list { text-align: left; background: var(--bg-dark); padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px dashed var(--primary); font-size: 12px; line-height: 1.5; color: #cbd5e1; }
+        .close-topic-btn { background: var(--primary); color: #0f172a; border: none; padding: 9px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; }
+
+        #test-screen { display: flex; flex-direction: column; height: 100%; background: var(--bg-dark); }
+        .test-header { flex-shrink: 0; background: var(--card-dark); border-bottom: 1px solid var(--border-color); padding: 10px 14px; }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-start; }
+        .head-left h2 { font-size: 12.5px; color: var(--primary); font-weight: 800; margin-bottom: 2px; text-transform: uppercase; }
+        .head-left p { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .head-right { text-align: right; }
+        .head-right p { font-size: 11px; color: var(--text-main); font-weight: bold; margin-bottom: 2px; }
+        .timer-box { font-size: 12.5px; font-weight: bold; color: #0b0f19; background: var(--primary); padding: 2px 7px; border-radius: 4px; display: inline-block; }
+        
+        .progress-bar-container { height: 3px; background: var(--border-color); width: 100%; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+        .sub-header { display: flex; justify-content: space-between; padding: 7px 14px; font-size: 11.5px; font-weight: 600; background: var(--bg-dark); color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+
+        .question-area { flex: 1; padding: 12px 14px; overflow-y: auto; background: var(--bg-dark); }
+        .q-card { background: var(--card-dark); padding: 14px 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .q-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .q-tag { background: rgba(245, 158, 11, 0.15); color: var(--primary); padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .q-topic-tag { background: var(--primary); color: #000; padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 800; }
+        
+        .q-text { font-size: 14px; line-height: 1.55; font-weight: 500; margin-bottom: 14px; color: #fff; white-space: pre-line; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option { display: flex; align-items: center; padding: 10px 12px; background: var(--option-bg); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
+        .option.selected { border-color: var(--primary); background: rgba(245, 158, 11, 0.12); }
+        .opt-letter { width: 22px; height: 22px; border-radius: 4px; background: var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 11.5px; font-weight: bold; margin-right: 10px; color: var(--text-muted); flex-shrink: 0;}
+        .option.selected .opt-letter { background: var(--primary); color: #000; border: none; }
+        .opt-text { font-size: 13px; line-height: 1.35; color: #f1f5f9; }
+
+        .bottom-actions-container { flex-shrink: 0; background: var(--card-dark); padding: 8px 12px; border-top: 1px solid var(--border-color); }
+        .nav-buttons-row { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
+        .nav-btn { flex: 1; height: 36px; border-radius: 6px; font-size: 12px; font-weight: 700; border: none; background: var(--bg-dark); color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .nav-btn.icon-btn { flex: 0.35; font-size: 15px; }
+        
+        .big-green-btn { 
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 38px; background: #10b981; color: white; 
+            border-radius: 6px; font-weight: bold; font-size: 13.5px; border: none; 
+            cursor: pointer; text-transform: uppercase; 
+        }
+
+        .palette-modal { position: absolute; bottom: 0; left: 0; width: 100%; max-height: 75vh; background: var(--card-dark); border-top-left-radius: 18px; border-top-right-radius: 18px; padding: 16px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 100; display: flex; flex-direction: column; border-top: 1px solid var(--primary); }
+        .palette-modal.open { transform: translateY(0); }
+        .palette-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .palette-header h3 { font-size: 15px; color: #fff; }
+        .close-palette { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+        .q-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; overflow-y: auto; padding-bottom: 10px; flex: 1; }
+        .q-grid-btn { width: 100%; aspect-ratio: 1; border-radius: 6px; border: none; background: var(--bg-dark); color: var(--text-main); font-weight: bold; font-size: 12px; cursor: pointer; }
+        .status-answered { background: var(--correct) !important; color: white !important; }
+        .status-current { background: var(--current) !important; color: #000 !important; }
+
+        #result-screen { background: var(--bg-dark); color: var(--text-main); height: 100%; overflow-y: auto; padding: 16px 14px; flex: 1; }
+        .res-header { text-align: center; margin-bottom: 12px; }
+        .res-header h2 { font-size: 18px; color: var(--primary); margin-bottom: 2px; }
+        .res-header p { font-size: 11.5px; color: var(--text-muted); }
+        
+        .score-card-compact { background: var(--card-dark); border: 1px solid var(--primary); padding: 14px; border-radius: 10px; text-align: center; margin-bottom: 12px; }
+        .score-card-compact h1 { font-size: 34px; color: #fff; margin-bottom: 2px; }
+        .score-card-compact p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600;}
+
+        .res-grid-compact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 14px; }
+        .res-box-compact { background: var(--card-dark); padding: 8px 4px; border-radius: 6px; text-align: center; border: 1px solid var(--border-color); }
+        .res-box-compact .val { font-size: 15px; font-weight: 900; margin-bottom: 1px; color: #fff; }
+        .res-box-compact .lbl { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;}
+        
+        .btn-row { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+        .r-btn-small { flex: 1; min-width: 120px; padding: 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; border: none; text-align: center; }
+        .r-btn-small.primary { background: var(--card-dark); color: #fff; border: 1px solid var(--border-color); }
+        .r-btn-small.print-btn { background: var(--secondary); color: #fff; }
+        .r-btn-small.retake-btn { background: #d97706; color: white; }
+
+        .review-box { background: var(--card-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); }
+        .review-q { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; line-height: 1.45; white-space: pre-line; }
+        .ans-row { display: flex; gap: 6px; font-size: 12px; margin-bottom: 3px; }
+        .ans-lbl { color: var(--text-muted); width: 80px; flex-shrink: 0; font-weight: bold;}
+        .ans-val { font-weight: 600; }
+        .solution-box { background: rgba(245, 158, 11, 0.05); border-left: 3px solid var(--primary); border-radius: 4px; padding: 8px; margin-top: 10px; font-size: 12px; color: #e2e8f0; line-height: 1.45; }
+        .solution-title { font-weight: bold; margin-bottom: 3px; color: var(--primary); font-size: 10.5px; text-transform: uppercase; }
+
+        .copyright-tag { text-align: center; font-size: 10.5px; color: var(--text-muted); padding: 14px 0; border-top: 1px solid var(--border-color); margin-top: 20px; font-weight: 600;}
+
+        /* A4 PRINT STYLING & WATERMARK */
         @media print {
-            header, .test-footer, .btn-header, .no-print { display: none !important; }
-            body { background: white; color: black; padding: 0; }
-            .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+            @page { size: A4 portrait; margin: 12mm 12mm 18mm 12mm; }
+            body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; margin: 0; padding: 0; font-family: Arial, sans-serif !important;}
+            .app-container { display: none !important; } 
+            #print-container { display: block !important; width: 100%; max-width: 950px; margin: 0 auto; position: relative;}
+            
+            .watermark-print {
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg);
+                font-size: 72px; font-weight: 900; color: #000000 !important; opacity: 0.12 !important; 
+                z-index: 9999 !important; white-space: nowrap; pointer-events: none;
+            }
+
+            .print-header-box { border: 2px solid #000; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; text-align: center; background: #f8fafc !important; }
+            .print-header-box h2 { font-size: 19px; color: #000; margin-bottom: 3px; text-transform: uppercase; font-weight: 900;}
+            .print-header-box h3 { font-size: 14px; color: #333; margin-bottom: 6px; }
+            .print-header-box p { font-size: 11px; color: #555; margin-bottom: 8px; font-weight: bold;}
+            .print-score-row { display: flex; justify-content: space-around; border-top: 1px dashed #000; padding-top: 6px; font-size: 12px; font-weight: bold;}
+            
+            .print-q-box { margin-bottom: 14px !important; padding-bottom: 8px; border-bottom: 1px solid #cbd5e1; page-break-inside: avoid !important; }
+            .print-q-head { display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: bold;}
+            .print-q-topic { background: #f59e0b !important; color: #000 !important; padding: 2px 6px; font-size: 9.5px; border: 1px solid #000 !important; border-radius: 10px; font-weight: 800 !important;}
+            .print-q-text { font-size: 12px; margin-bottom: 5px; font-weight: 600; color: #000 !important; white-space: pre-line;}
+            .print-options-grid { display: grid; grid-template-columns: 1fr; gap: 2px; margin-bottom: 5px; font-size: 11.5px; padding-left: 6px;}
+            .print-ans-row { font-size: 11px; margin-bottom: 2px;}
+            .print-sol-box { background: #f8fafc !important; border-left: 3px solid #f59e0b !important; padding: 6px !important; margin-top: 5px; font-size: 11px; color: #1e293b !important; }
+
+            .page-footer-credit {
+                display: flex; justify-content: space-between; align-items: center;
+                border-top: 1px solid #ef4444; padding-top: 4px; margin-top: 10px;
+                font-size: 10px; font-weight: bold;
+            }
+            .page-footer-credit .author-name { color: #dc2626; letter-spacing: 1px; }
+            .page-footer-credit .pink-tag { color: #db2777; }
+            .page-footer-credit a { color: #dc2626; text-decoration: none; font-weight: 800; }
+
+            .final-telegram-banner {
+                margin-top: 25px; padding: 18px; border: 3px solid #dc2626;
+                border-radius: 8px; text-align: center; background: #fff5f5 !important;
+                page-break-inside: avoid !important;
+            }
+            .final-telegram-banner h1 {
+                font-size: 26px; font-weight: 900; color: #dc2626; margin-bottom: 6px; text-transform: uppercase;
+            }
+            .final-telegram-banner a {
+                display: inline-block; font-size: 20px; font-weight: 900; color: #ffffff !important;
+                background: #dc2626 !important; padding: 8px 18px; border-radius: 6px;
+                text-decoration: none; margin-top: 6px;
+            }
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="header-title">UPSC PRELIMS 2024: CSAT PAPER 2 (SET-A)</div>
-    <div class="header-actions">
-        <button class="btn-header" onclick="toggleDarkMode()">🌙 थीम</button>
-        <button class="btn-header" id="btn-palette" onclick="togglePaletteModal()" style="display:none;">🔢 प्रश्न सूची</button>
+    <div id="print-container">
+        <div class="watermark-print">SACHIN SHARMA</div>
+        <div id="print-content"></div>
     </div>
-</header>
 
-<div class="container">
-
-    <!-- होम स्क्रीन -->
-    <div id="homeScreen" class="card">
-        <h2 class="home-title">संघ लोक सेवा आयोग - CSAT प्रारंभिक परीक्षा 2024</h2>
-        <p style="font-size: 13.5px; color: var(--text-muted);">परीक्षण पुस्तिका अनुक्रम: <b>Series A (संपूर्ण 80 प्रश्न)</b> | आधिकारिक उत्तर कुंजी सहित</p>
+    <div class="app-container" id="main-app">
         
-        <ul class="rules-list">
-            <li><b>कुल प्रश्न:</b> 80 प्रश्न (पूर्णांक: 200 अंक)</li>
-            <li><b>अंकन प्रणाली:</b> प्रत्येक सही उत्तर हेतु <b>+2.50 अंक</b></li>
-            <li><b>नकारात्मक अंकन:</b> प्रत्येक गलत उत्तर हेतु <b>-0.833 अंक</b> (1/3 दण्ड)</li>
-            <li><b>समय सीमा:</b> 120 मिनट (2 घंटे)</li>
-        </ul>
-
-        <div class="input-group">
-            <label for="studentName">उम्मीदवार का नाम (Aspirant Name):</label>
-            <input type="text" id="studentName" placeholder="अपना नाम यहाँ लिखें...">
-        </div>
-
-        <button class="btn-start" onclick="startTest()">सम्पूर्ण परीक्षा प्रारंभ करें ➔</button>
-    </div>
-
-    <!-- टेस्ट इंजन स्क्रीन -->
-    <div id="testScreen" class="hidden">
-        <div class="test-topbar">
-            <div>प्रत्याशी: <span id="displayCandidateName" style="color:var(--gold);"></span></div>
-            <div class="timer-box">⏳ शेष समय: <span id="timerText">120:00</span></div>
-        </div>
-
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progressFill"></div>
-        </div>
-
-        <div class="card">
-            <div class="q-meta">
-                <span id="qNumberTag" style="font-weight: bold;">प्रश्न 1 / 80</span>
-                <span class="q-topic" id="qTopicTag">सामान्य अध्ययन</span>
+        <div id="home-screen">
+            <div class="brand-header">
+                <h1>UPSC CSE PRELIMS 2024</h1>
+                <p>CSAT PAPER - 2</p>
             </div>
-            <div class="q-text" id="qText">लोड हो रहा है...</div>
-            <div class="options-grid" id="optionsBox"></div>
-
-            <div class="test-footer">
-                <button class="btn-nav" onclick="prevQuestion()">◀ पिछला</button>
-                <button class="btn-nav" onclick="togglePaletteModal()">प्रश्न पैलेट</button>
-                <button class="btn-nav" id="nextBtn" onclick="nextQuestion()">अगला ▶</button>
-                <button class="btn-nav btn-submit" onclick="confirmSubmit()">सबमिट करें ✓</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- परिणाम स्क्रीन -->
-    <div id="resultScreen" class="hidden">
-        <div class="card result-score-card">
-            <h2>परीक्षा परिणाम एवं कार्य-प्रदर्शन विश्लेषण</h2>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">अभ्यर्थी: <b id="resName"></b> | UPSC Prelims 2024 (CSAT Paper 2)</p>
             
-            <div style="margin: 20px 0;">
-                <div style="font-size: 13px; color: var(--text-muted);">अर्जित कुल अंक (Total Marks)</div>
-                <div class="score-num" id="finalScore">0.00</div>
-                <div style="font-size: 12px; color: var(--text-muted);">पूर्णांक: 200.00 | अर्हक अंक (33%): 66.00 अंक</div>
-            </div>
+            <div class="test-info-card">
+                <div class="test-title">Booklet Series A (T.B.C.: KSPC-B-GSPT)</div>
+                <div class="test-subtitle">CSAT 2024 पूर्ण विश्लेषित टेस्ट पोर्टल</div>
+                
+                <div class="grid-2">
+                    <div class="info-box"><div class="info-val" id="home-q-count">80</div><div class="info-lbl">Questions</div></div>
+                    <div class="info-box"><div class="info-val" id="home-time-count">120 Min</div><div class="info-lbl">Duration</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--correct);">+2.50</div><div class="info-lbl">Marks/Qn</div></div>
+                    <div class="info-box"><div class="info-val" style="color: var(--wrong);">-0.83</div><div class="info-lbl">Negative</div></div>
+                </div>
+                
+                <div class="name-input-container">
+                    <input type="text" id="candidate-name" class="name-input" placeholder="यहाँ अपना नाम लिखें..." autocomplete="off">
+                </div>
+                
+                <button class="start-btn" id="start-btn" onclick="startTest()">▶|| परीक्षा शुरू करें (Start Test)</button>
+                <button class="topic-btn" onclick="toggleTopicModal()">📋 परीक्षा निर्देश एवं नियम देखें</button>
 
-            <div class="stats-grid">
-                <div class="stat-box" style="border-top: 3px solid var(--correct);">सही उत्तर<b id="statCorrect" style="color:var(--correct);">0</b></div>
-                <div class="stat-box" style="border-top: 3px solid var(--wrong);">गलत उत्तर<b id="statWrong" style="color:var(--wrong);">0</b></div>
-                <div class="stat-box" style="border-top: 3px solid var(--skipped);">अनुत्तरित<b id="statSkipped" style="color:var(--skipped);">0</b></div>
+                <div class="channel-links-box">
+                    <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                        ✈️ Telegram: @Avigat1210
+                    </a>
+                </div>
             </div>
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
 
-            <div style="margin-top: 20px; display:flex; gap:10px; justify-content:center;">
-                <button class="btn-nav no-print" onclick="window.print()" style="background:var(--primary); color:white;">🖨️ स्कोरकार्ड प्रिंट करें</button>
-                <button class="btn-nav no-print" onclick="location.reload()">🔄 पुनः प्रयास करें</button>
+        <div class="topic-modal-overlay" id="topic-modal-overlay" onclick="closeTopicModal(event)">
+            <div class="topic-modal-content" onclick="event.stopPropagation()">
+                <div class="topic-modal-title">📖 परीक्षा निर्देश एवं अंकन योजना</div>
+                <div class="topic-list">
+                    <div>1. इस प्रश्न-पत्र में कुल 80 वस्तुनिष्ठ प्रश्न हैं।</div>
+                    <div>2. कुल समय अवधि 2 घंटे (120 मिनट) है।</div>
+                    <div>3. प्रत्येक सही उत्तर के लिए +2.5 अंक मिलेंगे।</div>
+                    <div>4. प्रत्येक गलत उत्तर के लिए -0.83 अंक (एक-तिहाई दंड) काटा जाएगा।</div>
+                    <div>5. सबमिट करने के बाद परिणाम और विस्तृत समाधान उपलब्ध होगा।</div>
+                </div>
+                <button class="close-topic-btn" onclick="toggleTopicModal()">✕ बंद करें</button>
             </div>
         </div>
 
-        <h3 style="margin-bottom: 15px; font-size: 16px;">विस्तृत उत्तर कुंजी एवं समाधान (1 से 80)</h3>
-        <div id="solutionsContainer"></div>
+        <div id="test-screen" class="hidden">
+            <div class="test-header">
+                <div class="header-row">
+                    <div class="head-left">
+                        <h2>UPSC CSAT 2024 PAPER-2</h2>
+                        <p>+2.50 / -0.83 Neg</p>
+                    </div>
+                    <div class="head-right">
+                        <p id="display-name-header">NAME</p>
+                        <div class="timer-box" id="timer-display">120:00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-bar-container"><div class="progress-bar" id="progress-bar"></div></div>
+            <div class="sub-header">
+                <span id="q-counter">प्रश्न 1 / 80</span>
+                <span id="answered-counter">उत्तर दिए: 0</span>
+            </div>
+
+            <div class="question-area">
+                <div class="q-card">
+                    <div class="q-header-row">
+                        <div class="q-tag" id="q-num-display">Q. 1 / 80</div>
+                        <div class="q-topic-tag" id="q-topic-display">CSAT Paper 2</div>
+                    </div>
+                    <div class="q-text" id="q-text">लोड हो रहा है...</div>
+                    <div class="options-list" id="options-container"></div>
+                </div>
+            </div>
+
+            <div class="bottom-actions-container">
+                <div class="nav-buttons-row">
+                    <button class="nav-btn" onclick="prevQuestion()">◀ पिछला</button>
+                    <button class="nav-btn" onclick="markSkipped()">छोड़ें</button>
+                    <button class="nav-btn icon-btn" onclick="togglePalette()">▦</button>
+                    <button class="nav-btn" id="next-btn" onclick="nextQuestion()" style="background: var(--primary); color: #000;">अगला ▶</button>
+                </div>
+                <button class="big-green-btn" onclick="submitTest()">✅ परीक्षा सबमिट करें</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="togglePalette()" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:none; z-index:50;"></div>
+        <div class="palette-modal" id="palette-modal">
+            <div class="palette-header">
+                <h3>Question Palette</h3>
+                <button class="close-palette" onclick="togglePalette()">✕</button>
+            </div>
+            <div class="q-grid" id="palette-grid"></div>
+            <div class="palette-footer" style="margin-top:10px;">
+                <button class="big-green-btn" onclick="submitTest()">✅ परिणाम देखें</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="res-header">
+                <h2>EXAM RESULT SUMMARY</h2>
+                <p><span id="res-display-name"></span> | UPSC CSAT 2024 (SERIES A)</p>
+            </div>
+            
+            <div class="score-card-compact">
+                <h1 id="final-score">0.00</h1>
+                <p>कुल प्राप्तांक (Total Marks)</p>
+            </div>
+
+            <div class="res-grid-compact">
+                <div class="res-box-compact"><div class="val" id="stat-correct" style="color: var(--correct);">0</div><div class="lbl">सही</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-wrong" style="color: var(--wrong);">0</div><div class="lbl">गलत</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-skipped" style="color: var(--skipped);">0</div><div class="lbl">छूटे</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-accuracy" style="color: var(--primary);">0%</div><div class="lbl">सटीकता</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-time" style="color: var(--primary);">0m 0s</div><div class="lbl">समय</div></div>
+                <div class="res-box-compact"><div class="val" id="stat-avg-time" style="color: var(--primary);">0s</div><div class="lbl">औसत/प्रश्न</div></div>
+            </div>
+
+            <div class="btn-row">
+                <button class="r-btn-small print-btn" onclick="window.print()">🖨️ Print PDF Result</button>
+                <button class="r-btn-small retake-btn" onclick="retakeTest()">🔄 पुनः टेस्ट दें</button>
+                <button class="r-btn-small primary" onclick="document.getElementById('result-screen').scrollTo({top: document.getElementById('review-container').offsetTop - 20, behavior: 'smooth'})">🔍 समीक्षा देखें</button>
+            </div>
+
+            <div class="channel-links-box" style="margin-bottom: 16px;">
+                <a href="https://t.me/Avigat1210" target="_blank" class="social-link-btn telegram-btn">
+                    ✈️ Telegram @Avigat1210 से जुड़ें
+                </a>
+            </div>
+
+            <h3 style="font-size: 13.5px; margin-top: 14px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; color: var(--primary);">📝 विस्तृत समाधान एवं उत्तर कुंजी</h3>
+            <div id="review-container"></div>
+            
+            <div class="copyright-tag">© 2026 SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
+        </div>
+
     </div>
 
-</div>
-
-<!-- पैलेट मोडल -->
-<div class="modal-overlay" id="paletteModal" onclick="closeModalOnOverlay(event)">
-    <div class="modal-body">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h4 style="font-size: 15px;">प्रश्न नेविगेशन पैलेट (1-80)</h4>
-            <button onclick="togglePaletteModal()" style="background:none; border:none; font-size:16px; cursor:pointer;">✕</button>
-        </div>
-        <div class="palette-grid" id="paletteButtonsBox"></div>
-        <div style="font-size: 11.5px; color: var(--text-muted); display:flex; gap:12px; margin-top:10px;">
-            <span>🟧 हल किया</span>
-            <span>⬜ शेष</span>
-        </div>
-    </div>
-</div>
-
-<script>
-    const questions = [
-        // 1 to 40
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1\nखाद्य और कृषि संगठन के अनुसार, मानव उपभोग के लिए उत्पादित खाद्यान्न के एक-तिहाई की विश्वव्यापी हानि या बर्बादी होती है। आरंभिक कृषि उत्पादन से लेकर अंतिम घरेलू उपभोग तक की संपूर्ण आपूर्ति श्रृंखला के दौरान खाद्यान्न की हानि या बर्बादी होती है। इस बढ़ती बर्बादी के परिणामस्वरूप लगभग 45% तक भूमि-निम्नीकरण (लैंड डिग्रेडेशन) भी हुआ है, जिसके मुख्य कारण निर्वनीकरण, असंधारणीय कृषि पद्धतियाँ और अत्यधिक भूजल निष्कर्षण हैं। बरबाद हुए खाद्यान्न पर व्यय की गई ऊर्जा के परिणामस्वरूप प्रतिवर्ष लगभग 3.5 बिलियन टन कार्बन डाइऑक्साइड का उत्पादन होता है।\n\n1. निम्नलिखित में से कौन-से कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्षों को सर्वोत्तम रूप से दर्शाते हैं?\n1. खाद्यान्न की हानि और बर्बादी के लिए खाद्यान्न वितरण की चालू पद्धतियाँ पूर्ण रूप से उत्तरदायी हैं।\n2. खाद्यान्न की हानि और बर्बादी की प्रचलित प्रवृत्ति से भूमि की उत्पादकता प्रतिकूल रूप से प्रभावित होती है।\n3. खाद्यान्न की हानि और बर्बादी में कमी के परिणामस्वरूप कार्बन फुटप्रिंट में कमी आती है।\n4. खाद्यान्न की हानि और बर्बादी को रोकने या कम करने के लिए कटाई-उपरांत प्रौद्योगिकियाँ उपलब्ध नहीं हैं।",
-            options: ["1, 2 और 3", "केवल 2 और 3", "1, 3 और 4", "1, 2 और 4"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) केवल 2 और 3</b><br>कथन 1 ('पूर्ण रूप से उत्तरदायी') और कथन 4 ('प्रौद्योगिकियाँ उपलब्ध नहीं हैं') अतिवादी हैं। भूमि की उत्पादकता प्रभावित होती है (2) और कार्बन फुटप्रिंट घटता है (3)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "2. उपर्युक्त परिच्छेद के आधार पर, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\n1. खाद्यान्न की हानि और बर्बादी को कम करने के लिए खाद्यान्न वितरण तंत्र की पुनः परिकल्पना करने और इसे प्रभावी बनाए जाने की आवश्यकता है।\n2. खाद्यान्न की बर्बादी और हानि में कमी लाने को सुनिश्चित करना सभी नागरिकों का एक सामाजिक और नैतिक उत्तरदायित्व है।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी मान्य है/हैं?",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) केवल 1</b><br>वितरण तंत्र को प्रभावी बनाना अनिवार्य है। नागरिकों के नैतिक दायित्व का उल्लेख परिच्छेद में नहीं है।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2\nजैसे-जैसे मुद्रास्फीति बढ़ती है, वे सरकारें भी जो पहले बजट अनुशासन के प्रति प्रतिबद्ध थीं, परिवारों की सहायता के लिए मुक्त रूप से व्यय करती हैं। केन्द्रीय बैंकों द्वारा घोषित उच्चतर ब्याज दरों से संतुलित राजकोषीय मितव्ययिता बरतने की अपेक्षा की जाती है... राजकोषीय समर्थन के बिना, मौद्रिक नीति अंततः अपना प्रभाव खो देती है। उच्चतर ब्याज दरें मुद्रास्फीतिकारक हो जाती हैं, न कि मुद्राअवस्फीतिकारक, क्योंकि वे केवल सरकारों को बढ़ती ऋण-चुकौती लागतों का भुगतान करने हेतु अधिक उधार लेने के लिए प्रेरित करती हैं।\n\n3. निम्नलिखित में से कौन-सा/कौन-से कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष/निष्कर्षों को सर्वोत्तम रूप से दर्शाता है/दर्शाते हैं?\n1. केन्द्रीय बैंक, बजट समर्थन के बिना मुद्रास्फीति को कम नहीं कर सकते हैं।\n2. मौद्रिक नीति के प्रभाव सरकार द्वारा अनुसरण की जाने वाली राजकोषीय नीतियों पर निर्भर हैं।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 1 और 2 दोनों</b><br>परिच्छेद में स्पष्ट है कि राजकोषीय समर्थन (बजट बैकअप) के बिना मौद्रिक नीति विफल हो जाती है और दोनों नीतियां परस्पर जुड़ी हैं।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "4. उपर्युक्त परिच्छेद के आधार पर, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\n1. उच्चतर कीमतों के लिए सरकारों की राजकोषीय नीतियाँ पूर्ण रूप से उत्तरदायी हैं।\n2. उच्चतर कीमतें दीर्घावधि सरकारी बंधपत्रों को प्रभावित नहीं करती हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी मान्य है/हैं?",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b><br>दोनों पूर्वधारणाएं असंगत और अतिवादी हैं।"
-        },
-        {
-            topic: "ज्यामिति / घन कर्तन (Cube Cuts)",
-            text: "5. एक घन को 64 समरूप (आइडेंटिकल) टुकड़ों में काटने के लिए आवश्यक काटों की न्यूनतम संभावित संख्या क्या है?\n(a) 8\n(b) 9\n(c) 12\n(d) 16",
-            options: ["8", "9", "12", "16"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 9</b><br>(x + 1)(y + 1)(z + 1) = 64 ⇒ 4 × 4 × 4 = 64 ⇒ x = y = z = 3 काट। कुल न्यूनतम काट = 3 + 3 + 3 = 9।"
-        },
-        {
-            topic: "गणितीय संक्रियाएँ",
-            text: "6. व्यंजक 5 * 4 * 3 * 2 * 1 में, * को +, -, × में से, प्रत्येक अधिक-से-अधिक दो बार चुना जाता है। व्यंजक का न्यूनतम ऋणेतर मान क्या है?\n(a) 3\n(b) 2\n(c) 1\n(d) 0",
-            options: ["3", "2", "1", "0"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 0</b><br>5 - 4 - 3 + (2 × 1) = 5 - 4 - 3 + 2 = 0।"
-        },
-        {
-            topic: "समय और कार्य",
-            text: "7. एक निश्चित संख्यक व्यक्ति एक कार्य को 6k दिनों में पूरा कर सकते हैं, जहाँ k एक धनपूर्ण संख्या है। व्यक्तियों की संख्या में कितने प्रतिशत की वृद्धि की जाए ताकि यह कार्य 5k दिनों में पूरा किया जा सके ?\n(a) 10%\n(b) (50/3)%\n(c) 20%\n(d) 25%",
-            options: ["10%", "(50/3)%", "20%", "25%"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 20%</b><br>M1 × D1 = M2 × D2 ⇒ M × 6k = M2 × 5k ⇒ M2 = 1.2 M (20% वृद्धि)।"
-        },
-        {
-            topic: "समय और कार्य (Scheduling)",
-            text: "8. X, Y और Z एक कार्य को व्यक्तिगत रूप से क्रमशः 6 घंटों, 8 घंटों और 8 घंटों में पूरा कर सकते हैं। यद्यपि, एक ही समय पर प्रत्येक घंटे में केवल एक ही व्यक्ति काम कर सकता है और कोई भी व्यक्ति लगातार दो घंटे काम नहीं कर सकता। सभी को कार्य को पूरा करने में लगाया जाता है। इस कार्य को पूरा करने में उन्हें न्यूनतम कितना समय लगेगा?\n(a) 6 घंटे 15 मिनट\n(b) 6 घंटे 30 मिनट\n(c) 6 घंटे 45 मिनट\n(d) 7 घंटे",
-            options: ["6 घंटे 15 मिनट", "6 घंटे 30 मिनट", "6 घंटे 45 मिनट", "7 घंटे"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 6 घंटे 15 मिनट</b><br>कुल कार्य = 24 इकाई। न्यूनतम समय इष्टतमीकरण द्वारा 6 घंटे 15 मिनट आता है।"
-        },
-        {
-            topic: "संख्या पद्धति / शून्यों की संख्या",
-            text: "9. गुणनफल 1² × 2⁴ × 3⁶ × 4⁸ × ... × 25⁵⁰ से प्राप्त पूर्णांक के अंत में कितने क्रमागत शून्य हैं?\n(a) 50\n(b) 55\n(c) 100\n(d) 200",
-            options: ["50", "55", "100", "200"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 200</b><br>5 के गुणजों की घातें: 5¹⁰(10) + 10²⁰(20) + 15³⁰(30) + 20⁴⁰(40) + 25⁵⁰(100) = 200 शून्य।"
-        },
-        {
-            topic: "संख्या पद्धति / श्रेणी योग",
-            text: "10. एक व्यक्ति ने 1 जनवरी, 2023 को ₹1 की बचत की। 2 जनवरी को ₹2 अधिक, 3 जनवरी को ₹2 अधिक और यह क्रम जारी रहता है। किस तारीख के अंत में उसकी कुल बचत एक पूर्ण वर्ग होने के साथ-साथ एक पूर्ण घन भी थी?\n(a) 7 जनवरी, 2023\n(b) 8 जनवरी, 2023\n(c) 9 जनवरी, 2023\n(d) ऐसा संभव नहीं",
-            options: ["7 जनवरी, 2023", "8 जनवरी, 2023", "9 जनवरी, 2023", "ऐसा संभव नहीं"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 8 जनवरी, 2023</b><br>n दिनों का योग = n²। n = 8 होने पर 8² = 64 (जो कि 8² और 4³ दोनों है)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1 (नगर आयोजना):\nआज, यदि हम न्यूयॉर्क, लंदन और पेरिस जैसे शहरों को विश्व के सर्वाधिक प्रतिष्ठित शहर मानते हैं, तो ऐसा इसलिए कि उनकी प्रसीमाओं में एक विशाल तंत्र उपागम वाली योजनाएँ लागू की गई थीं... भारत में आयोजना और इसकी शिक्षा, पश्चिम से भिन्न हैं।\n\n11. निम्नलिखित में से कौन-सा कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष को सर्वोत्तम रूप से दर्शाता है?",
-            options: [
-                "नगर आयोजना पाठ्यक्रमों की पाठ्यचर्या में विविध और अंतर-विषयक उपागम शामिल होना चाहिए।",
-                "भारत में, नगर के प्रशासकों में नगर आयोजना और प्रबंधन में औपचारिक प्रशिक्षण का अभाव है।",
-                "भारत में, नगरीय क्षेत्रों का प्रबंधन एक स्थानीय मामला है जहाँ अपर्याप्त निधियों की समस्या बनी रहती है।",
-                "नगरीय क्षेत्रों में जनसंख्या का उच्च घनत्व योजनाबद्ध विकास को कठिन बनाता है।"
-            ],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a)</b><br>पश्चिमी शहरों की सफलता का आधार बहुविषयक (भूगोल, गणित, वास्तुकला) पाठ्यक्रम था।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "12. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. भारत को नगर व्यावसायिकों की एक नई पीढ़ी की आवश्यकता है जिनके पास आधुनिक नगर पद्धति का संगत ज्ञान हो।\n2. वर्तमान में, भारतीय विश्वविद्यालयों में तंत्र उपागम में प्रशिक्षण देने की क्षमता या सामर्थ्य नहीं है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) केवल 1</b><br>पूर्वधारणा 1 मान्य है। पूर्वधारणा 2 भारतीय विश्वविद्यालयों की क्षमता पर नकारात्मक अतिशयोक्ति करती है।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2 (सोशल मीडिया विमर्श):\n13. निम्नलिखित में से कौन-सा कथन, उपर्युक्त परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से दर्शाता है?",
-            options: [
-                "सोशल मीडिया सूचना तक त्वरित पहुँच को सुनिश्चित करता है।",
-                "सोशल मीडिया आदर्श या नैतिक संस्थाएँ नहीं हैं, बल्कि कंपनियों द्वारा लाभ कमाने के लिए निर्मित उत्पाद हैं।",
-                "सोशल मीडिया का सृजन लोकतंत्रों को सशक्त बनाने के लिए किया गया है।",
-                "सोशल मीडिया सुशिक्षित सामाजिक जीवन के लिए अपरिहार्य हैं।"
-            ],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b)</b><br>सोशल मीडिया कम्पनियाँ मुनाफे और एंगेजमेंट के लिए काम करती हैं, नैतिक सुधार के लिए नहीं।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "14. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. इंटरनेट पर्याप्त रूप से समावेशी नहीं है।\n2. इंटरनेट किसी देश में राजनीति की गुणवत्ता को प्रतिकूल रूप से प्रभावित कर सकता है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 1 और 2 दोनों</b><br>पूँजी द्वारा आवाज़ खरीदना समावेशिता के अभाव को दिखाता है (1), और चुनावी प्रतिद्वंद्विता राजनीति की गुणवत्ता गिराती है (2)।"
-        },
-        {
-            topic: "संख्या पद्धति / विभाज्यता नियम",
-            text: "15. 222³³³ + 333²²² निम्नलिखित संख्याओं में से किनसे भाज्य है?\n(a) 2 और 3 से किन्तु 37 से नहीं\n(b) 3 और 37 से किन्तु 2 से नहीं\n(c) 2 और 37 से किन्तु 3 से नहीं\n(d) 2, 3 और 37 से",
-            options: [
-                "2 और 3 से किन्तु 37 से नहीं",
-                "3 और 37 से किन्तु 2 से नहीं",
-                "2 और 37 से किन्तु 3 से नहीं",
-                "2, 3 और 37 से"
-            ],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 3 और 37 से किन्तु 2 से नहीं</b><br>सम + विषम = विषम (2 से विभाज्य नहीं)। दोनों पद 3 और 37 से विभाज्य हैं।"
-        },
-        {
-            topic: "प्रतिशत लाभ-हानि",
-            text: "16. शहद में कितने प्रतिशत जल मिलाया जाए ताकि इस मिश्रण को शहद के लागत मूल्य पर बिक्री करने पर 20% का लाभ हो?\n(a) 20%\n(b) 10%\n(c) 5%\n(d) 4%",
-            options: ["20%", "10%", "5%", "4%"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 20%</b><br>क्रय मूल्य पर 20% लाभ = 20% मुफ़्त जल का मिश्रण।"
-        },
-        {
-            topic: "संख्या पद्धति / इकाई अंक",
-            text: "17. 30³⁰ के मान में शून्यों से पहले सबसे दाहिना अंक कौन-सा है?\n(a) 1\n(b) 3\n(c) 7\n(d) 9",
-            options: ["1", "3", "7", "9"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 9</b><br>30³⁰ = 3³⁰ × 10³⁰। 3³⁰ का इकाई अंक (30 mod 4 = 2) = 3² = 9।"
-        },
-        {
-            topic: "संख्या पद्धति / भाजक",
-            text: "18. 421 और 427 को जब एक ही संख्या से विभाजित किया जाता है, तो समान शेषफल 1 आता है। भाजक के रूप में कितनी संख्याओं का उपयोग किया जा सकता है ताकि शेषफल 1 ही आए?\n(a) 1\n(b) 2\n(c) 3\n(d) 4",
-            options: ["1", "2", "3", "4"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 3</b><br>भाजक 420 और 426 के अंतर (6) का 1 से बड़ा गुणनखंड होना चाहिए: {2, 3, 6} (कुल 3 मान)।"
-        },
-        {
-            topic: "महत्तम समापवर्तक (HCF)",
-            text: "19. एक डिब्बे X में 399 लीटर पेट्रोल है और डिब्बे Y में 532 लीटर डीजल है। इन्हें समान आमाप की बोतलों में अलग-अलग भरा जाना है ताकि दोनों पूरे भरे जाएँ। बोतल की क्षमता पूर्णांक लीटर में है। ऐसे कितने भिन्न-भिन्न बोतल आमाप संभव हैं?\n(a) 3\n(b) 4\n(c) 5\n(d) 6",
-            options: ["3", "4", "5", "6"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 6</b><br>HCF(399, 532) = 133। 133 के गुणनखंडों के आधार पर कुल 6 संभावित संयोजन।"
-        },
-        {
-            topic: "संख्या पद्धति / अभाज्य संख्याएँ",
-            text: "20. योगफल S = x + y + z के संबंध में निम्नलिखित कथनों पर विचार कीजिए, जहाँ x, y और z में से प्रत्येक 10 से छोटी भिन्न अभाज्य संख्या है :\n1. S का इकाई अंक 0 हो सकता है।\n2. S का इकाई अंक 9 हो सकता है।\n3. S का इकाई अंक 5 हो सकता है।\nउपर्युक्त कथनों में से कौन-से सही हैं?",
-            options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) केवल 1 और 2</b><br>{2, 3, 5, 7} में से (2+3+5)=10 (इकाई अंक 0)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "21. स्कूली शिक्षा परिच्छेद पर पूर्वधारणाएँ :\n1. प्रभावी स्कूली शिक्षा के लिए, सरकारों की तुलना में माता-पिताओं की भूमिका अधिक है।\n2. ऐसा स्कूली पाठ्यक्रम, जो आज की अपेक्षाओं के अनुरूप हो और पूरे देश के लिए एकसमान हो, प्रकट की गई समस्याओं का समाधान कर सकता है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b><br>दोनों में से कोई भी पूर्वधारणा परिच्छेद से मान्य नहीं होती।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "22. स्कूली शिक्षा परिच्छेद का केन्द्रीय विचार क्या है?",
-            options: [
-                "गरीबी के संपूर्ण उन्मूलन से स्कूली बच्चों के न्यून-प्रदर्शन की समस्या हल होगी।",
-                "मौद्रिक प्रोत्साहन देना प्रदर्शन सुधारने की रणनीति है।",
-                "सार्वजनिक नीति से यह सुनिश्चित होना चाहिए कि युवाजनों के सामर्थ्य और उपलब्धियाँ उनकी अपेक्षाओं के अनुरूप हों।",
-                "जब तक कुछ बच्चे कृषि में वापस नहीं जाएँगे, भारत जनसांख्यिकीय लाभांश नहीं ले सकता।"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c)</b><br>युवाओं की आकांक्षाओं और वास्तविक शैक्षणिक क्षमताओं में सामंजस्य बैठाना नीतिगत आवश्यकता है।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "23. विज्ञान और सामाजिक दायित्व परिच्छेद में लेखक की सोच :",
-            options: [
-                "विज्ञान को वैज्ञानिकों की प्रतिबद्धता को अवश्य महत्त्व देना चाहिए।",
-                "विज्ञान सभ्य समाज का एक उत्पाद है और वैज्ञानिक ज्ञान के संवर्धन हेतु इसका उपयोग होना चाहिए।",
-                "विज्ञान में हुई प्रगतियों के द्वारा ही औद्योगिक क्रांति संभव हो पाई।",
-                "विज्ञान को सत्य का अनुसरण अवश्य करना चाहिए किन्तु सामाजिक कल्याण के लिए उत्तरदायी भी होना चाहिए।"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d)</b><br>विज्ञान को सत्य के साथ-साथ समाज के प्रति भी उत्तरदायी होना चाहिए।"
-        },
-        {
-            topic: "तार्किक अनुक्रम (Letter Series)",
-            text: "24. अनुक्रम A_BCD_BBCDABC_DABC_D को पूरा करने वाला विकल्प कौन-सा है?\n(a) B, A, D, C\n(b) B, A, C, D\n(c) A, A, C, D\n(d) A, A, D, C",
-            options: ["B, A, D, C", "B, A, C, D", "A, A, C, D", "A, A, D, C"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) B, A, C, D</b>"
-        },
-        {
-            topic: "साझेदारी (Partnership)",
-            text: "25. P, Q की तुलना में ₹14,000 अधिक लगाता है। P ने 8 महीने और Q ने 10 महीने निवेश किया। ₹2,000 के लाभ में P का हिस्सा Q से ₹400 अधिक है। P की पूँजी कितनी है?\n(a) ₹30,000\n(b) ₹26,000\n(c) ₹24,000\n(d) ₹20,000",
-            options: ["₹30,000", "₹26,000", "₹24,000", "₹20,000"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) ₹30,000</b><br>लाभ अनुपात = 1200:800 = 3:2। पूँजी अनुपात = (P×8)/(Q×10) = 3/2 ⇒ P/Q = 15/8 ⇒ P = ₹30,000।"
-        },
-        {
-            topic: "प्रतिशत तुलना",
-            text: "26. P का वेतन Q से 20% कम है जो R से 20% कम है। R का वेतन, P के वेतन से कितने प्रतिशत अधिक है?\n(a) 48.75%\n(b) 56.25%\n(c) 60.50%\n(d) 62.25%",
-            options: ["48.75%", "56.25%", "60.50%", "62.25%"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 56.25%</b><br>R = 100, Q = 80, P = 64। अधिक प्रतिशत = (36/64) × 100 = 56.25%।"
-        },
-        {
-            topic: "प्रतिशत त्रुटि",
-            text: "27. एक संख्या को 4 से गुणा करने के बदले गलती से 4 से विभाजित किया गया। प्रतिशत अंतर कितना होगा?\n(a) 25%\n(b) 50%\n(c) 72.75%\n(d) 93.75%",
-            options: ["25%", "50%", "72.75%", "93.75%"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 93.75%</b><br>(16 - 1)/16 × 100 = 93.75%।"
-        },
-        {
-            topic: "वेन आरेख",
-            text: "28. एक परीक्षा में 80% अंग्रेजी में पास, 70% हिन्दी में पास और 15% दोनों में फेल हुए। केवल एक विषय में फेल होने वालों का प्रतिशत क्या है?\n(a) 15%\n(b) 20%\n(c) 25%\n(d) 35%",
-            options: ["15%", "20%", "25%", "35%"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 35%</b><br>कुल फेल = 100 - (80 + 70 - 65) = 15% दोनों में। केवल एक में = 35%।"
-        },
-        {
-            topic: "आयु संबंधी प्रश्न",
-            text: "29. पिता और पुत्र की आयु का योगफल 130 वर्ष है। 'n वर्ष पहले मेरी आयु तुम्हारी वर्तमान आयु के बराबर थी... मेरी वर्तमान आयु तुम्हारी n वर्ष पहले की आयु की चार गुना है।' आयु में अंतर कितना है?\n(a) 30 वर्ष\n(b) 32 वर्ष\n(c) 34 वर्ष\n(d) 36 वर्ष",
-            options: ["30 वर्ष", "32 वर्ष", "34 वर्ष", "36 वर्ष"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 30 वर्ष</b><br>पिता = 80, पुत्र = 50। अंतर = 30 वर्ष।"
-        },
-        {
-            topic: "मात्रक रूपांतरण",
-            text: "30. निम्नलिखित पर विचार कीजिए :\n1. 1000 लीटर = 1 m³\n2. 1 मेट्रिक टन = 1000 kg\n3. 1 हेक्टेयर = 10000 m²\nउपर्युक्त में से कौन-से सही हैं?",
-            options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 1, 2 और 3</b>"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "31. 'विज्ञान का इतिहास मानव जाति का वास्तविक इतिहास है...' लेखक द्वारा क्या प्रभावपूर्ण तरीके से संप्रेषित किया गया है?\n1. विज्ञान के बिना, मानव जाति आज तक अस्तित्व में नहीं रह सकती थी।\n2. यह विज्ञान ही है जो अंततः मानव जाति की नियति को निर्धारित करेगा।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b>"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "32. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. आधुनिक जीवन की विभीषिकाएँ विज्ञान की प्रगति के अपरिहार्य परिणाम हैं।\n2. सत्य के जिस पहलू को अनदेखा किया जा सकता है, वह यह है कि विज्ञान वही है जिसे मनुष्य ने बनाया है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) केवल 2</b>"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "33. यात्रा करते समय जब हम अन्य लोगों से मिलते हैं, तो हम किनके बीच अंतर करना सीखते हैं?\n(a) कल्पना और समझ\n(b) समुदाय और राष्ट्रीयता\n(c) स्थानीय मूल्य और सार्वभौमिक मूल्य\n(d) मित्र और शत्रु",
-            options: ["कल्पना और समझ", "समुदाय और राष्ट्रीयता", "स्थानीय मूल्य और सार्वभौमिक मूल्य", "मित्र और शत्रु"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) स्थानीय मूल्य और सार्वभौमिक मूल्य</b>"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "34. यात्रा परिच्छेद पर पूर्वधारणाएँ :\n1. यात्रा से मनुष्यों की समझ विकसित होती है।\n2. यात्रा से उनको सहायता मिलती है जो मूलभूत सामान्य मूल्यों को सीखना चाहते हैं।\n3. एक व्यक्ति जिसे यात्रा का दीर्घ अनुभव है, वह लोगों के मध्य मतभेदों को सुलझा सकता है।",
-            options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) केवल 1 और 2</b>"
-        },
-        {
-            topic: "संख्या पद्धति",
-            text: "35. मान लीजिए X दो-अंकीय संख्या है और Y उसके अंकों को उलटकर बनी संख्या है। यदि (X + Y) महत्तम दो-अंकीय संख्या है, तो X के संभाव्य मानों की संख्या क्या है?\n(a) 2\n(b) 4\n(c) 6\n(d) 8",
-            options: ["2", "4", "6", "8"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 8</b><br>11(a + b) = 99 ⇒ a + b = 9। 8 युग्म संभव हैं।"
-        },
-        {
-            topic: "औसत",
-            text: "36. 6 बालकों का वजन = 7 बालिकाओं का वजन = 3 पुरुषों का वजन = 4 महिलाओं का वजन। यदि महिलाओं का औसत वजन 63 kg है, तो बालकों का औसत वजन क्या है?\n(a) 40 kg\n(b) 42 kg\n(c) 45 kg\n(d) 63 kg",
-            options: ["40 kg", "42 kg", "45 kg", "63 kg"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 42 kg</b><br>4 × 63 = 252 kg। 252 / 6 = 42 kg।"
-        },
-        {
-            topic: "घड़ी (Clocks)",
-            text: "37. 10:00 a.m. और 2:00 p.m. के बीच में घंटे की सुई और मिनट की सुई कितनी बार संपाती होती हैं?\n(a) 3 बार\n(b) 4 बार\n(c) 5 बार\n(d) 6 बार",
-            options: ["3 बार", "4 बार", "5 बार", "6 बार"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 3 बार</b><br>(10-11, ठीक 12:00, 1-2 के बीच = कुल 3 बार)।"
-        },
-        {
-            topic: "कैलेंडर",
-            text: "38. वर्ष 2025 का कैलेंडर किस वर्ष के कैलेंडर के समान है?\n(a) 2029\n(b) 2030\n(c) 2031\n(d) 2033",
-            options: ["2029", "2030", "2031", "2033"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 2031</b><br>लीप वर्ष के अगले वर्ष का कैलेंडर 6 वर्ष बाद दोहराया जाता है (2025 + 6 = 2031)।"
-        },
-        {
-            topic: "संख्या पद्धति / सम-विषम",
-            text: "39. p, q विषम हैं और r, s सम हैं। कथनों पर विचार कीजिए :\n1. (p - r)²(qs) सम है।\n2. (q - s)q²s सम है।\n3. (q + r)²(p + s) विषम है।",
-            options: ["केवल 1 और 2", "केवल 2 और 3", "केवल 1 और 3", "1, 2 और 3"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) 1, 2 और 3</b>"
-        },
-        {
-            topic: "घड़ी (Clock Angle)",
-            text: "40. जब घड़ी 4:25 दर्शाती है, तब दोनों सुइयों के बीच का कोण कितना है?\n(a) 12.5°\n(b) 15°\n(c) 17.5°\n(d) 20°",
-            options: ["12.5°", "15°", "17.5°", "20°"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 17.5°</b><br>|30(4) - 5.5(25)| = |120 - 137.5| = 17.5°।"
-        },
-
-        // 41 to 80 (Part 2)
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1 (पारंपरिक कक्षाएँ):\nपरंपरागत कक्षाएँ, अधिगम प्रभाविता से अधिक नियत समयावधि पर बल देकर, स्वयं को परिवर्तनशील परिणामों के लिए सौंप देती हैं। कक्षा का अत्याचार यह है कि वहाँ प्रत्येक शिक्षार्थी को एक ही अवधि के लिए एक ही तरीके से व्याख्यानों के एक ही सेट के अधीन किया जाता है... इस तरह डेढ़ दशक की औपचारिक शिक्षा के बाद हम अपने स्नातकों में 10 प्रतिशत रोजगार योग्यता ला पाते हैं।\n\n41. सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष :\n1. पारंपरिक कक्षा अधिगम में केन्द्रीय लक्ष्य, सामर्थ्य लाभ करने के बजाय अधिगम की समयावधि है।\n2. पारंपरिक कक्षाएँ सभी के लिए एकसमान पद्धति (one-size-fits-all) को बढ़ावा देती हैं और सभी विशिष्टीकरणों को समाप्त कर देती हैं।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 1 और 2 दोनों</b><br>परिच्छेद में स्पष्ट है कि नियत समयावधि पर बल दिया जाता है और हर शिक्षार्थी को एक ही ढर्रे में ढालने से विशिष्टता नष्ट होती है[span_3](start_span)[span_3](end_span)[span_4](start_span)[span_4](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "42. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. चूँकि हमारे देश में बहुत बड़ी संख्या में श्रमिक असंगठित क्षेत्रों में नियोजित हैं, इसलिए भारत को शिक्षा की अपनी वर्तमान प्रणाली बदलने की आवश्यकता नहीं है।\n2. शिक्षा की वर्तमान प्रणाली के साथ भी, भारत पर्याप्त संख्या में कुशल श्रमिक उत्पन्न कर रहा है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b><br>दोनों पूर्वधारणाएं परिच्छेद के निष्कर्ष (10% रोजगार योग्यता की विफलता) का सीधे खंडन करती हैं[span_5](start_span)[span_5](end_span)[span_6](start_span)[span_6](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2 (किशोर एवं माता-पिता):\nजब कोई बच्चा किशोरावस्था पर पहुँचता है, तब माता-पिता और बच्चे के मध्य टकराव का होना संगत है, चूँकि बच्चा स्वयं को अपने मामले सुलझाने में सक्षम समझने लगता है, जबकि माता-पिता अधिकार प्रेम से भरे होते हैं... उनके द्वारा सुझाए गए विकल्प इतने अधिक सैद्धांतिक (डॉगमैटिक) होते हैं कि युवा शायद ही उनमें भरोसा रख पाते हैं।\n\n43. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. किशोर अपने माता-पिता के साथ सहज अनुभव नहीं करता है, क्योंकि माता-पिता अधिकार में रखने वाले और हठधर्मी होते हैं।\n2. आधुनिक समय के किशोर में माता-पिता के प्रति अधिक श्रद्धा नहीं है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) केवल 1</b><br>परिच्छेद माता-पिता के प्रभुत्ववादी और सैद्धांतिक रवैये को टकराव का कारण बताता है[span_7](start_span)[span_7](end_span)[span_8](start_span)[span_8](end_span)। 'श्रद्धा न होने' का सामान्यीकरण अनुचित है[span_9](start_span)[span_9](end_span)[span_10](start_span)[span_10](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "44. उपर्युक्त परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से दर्शाता है :",
-            options: [
-                "जब बच्चे वयस्क होने के अपनी राह पर होते हैं, माता-पिता सामान्यतः अधिक सहायता नहीं कर सकते।",
-                "जब बच्चे किशोरावस्था में पहुँचते हैं, उनके जीवन में माता-पिता का हस्तक्षेप अनावश्यक है।",
-                "आज के मूल परिवार (न्यूक्लियर फैमिली) समुचित रूप से बच्चों के पालन-पोषण करने में समर्थ नहीं हैं।",
-                "आधुनिक समाजों में, किशोर हठी (जिद्दी), अवज्ञाकारी और लापरवाह होते हैं।"
-            ],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a)</b><br>जब किशोर स्वयं निर्णय लेने की दिशा में बढ़ते हैं, तो पारंपरिक अभिभावकीय हस्तक्षेप अप्रभावी सिद्ध होता है[span_11](start_span)[span_11](end_span)[span_12](start_span)[span_12](end_span)।"
-        },
-        {
-            topic: "संख्या पद्धति / अंक गणना",
-            text: "45. 260 पृष्ठों की एक पुस्तक को संख्यांकित करने के लिए प्रयुक्त होने वाले अंक पाँच (5) की संख्या कितनी है?\n(a) 55\n(b) 56\n(c) 57\n(d) 60",
-            options: ["55", "56", "57", "60"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 56</b><br>1-99: 20 पाँच। 100-199: 20 पाँच। 200-260: 205, 215, 225, 235, 245, 250-259 (11 पाँच) = 16 पाँच। कुल = 20 + 20 + 16 = 56[span_13](start_span)[span_13](end_span)[span_14](start_span)[span_14](end_span)।"
-        },
-        {
-            topic: "श्रेणी योग (Number Pattern)",
-            text: "46. अनुक्रम 1, 1, 2, 1, 3, 2, 1, 4, 3, 2, 1, 5, 4, 3, 2,... में प्रथम 28 पदों का योगफल क्या है?\n(a) 83\n(b) 84\n(c) 85\n(d) 86",
-            options: ["83", "84", "85", "86"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 84</b><br>समूह: {1}, {1,2}, {1,3,2}, {1,4,3,2}, {1,5,4,3,2}... पदों को क्रमवार जोड़ते हुए प्रथम 28 पदों का योग 84 प्राप्त होता है[span_15](start_span)[span_15](end_span)[span_16](start_span)[span_16](end_span)।"
-        },
-        {
-            topic: "प्रतिशत एवं क्रय मूल्य",
-            text: "47. एक व्यक्ति ₹3,330 में तीन वस्तुएँ P, Q और R खरीदता है। यदि P की कीमत R से 25% अधिक है और R की कीमत Q से 20% अधिक है, तो P की कीमत क्या है?\n(a) ₹1,000\n(b) ₹1,200\n(c) ₹1,250\n(d) ₹1,350",
-            options: ["₹1,000", "₹1,200", "₹1,250", "₹1,350"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) ₹1,350</b><br>मान लीजिए Q = 100x ⇒ R = 120x ⇒ P = 120x × 1.25 = 150x। कुल = 370x = 3330 ⇒ x = 9। P = 150 × 9 = ₹1,350[span_17](start_span)[span_17](end_span)[span_18](start_span)[span_18](end_span)।"
-        },
-        {
-            topic: "कूट अंकगणित (Cryptarithmetic)",
-            text: "48. यदि दो-अंकीय संख्याओं AB और CD का योगफल तीन-अंकीय संख्या 1CE है, जहाँ अक्षर A, B, C, D, E भिन्न अंकों को द्योतित करते हैं, तो A का मान क्या है?\n(a) 9\n(b) 8\n(c) 7\n(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता",
-            options: ["9", "8", "7", "अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 9</b><br>AB + CD = 1CE। 10A + B + 10C + D = 100 + 10C + E ⇒ 10A + (B + D) = 100 + E। चूँकि B + D अधिकतम 8 + 7 = 15 हो सकता है, 100 तक पहुँचने के लिए A = 9 होना अनिवार्य है[span_19](start_span)[span_19](end_span)[span_20](start_span)[span_20](end_span)।"
-        },
-        {
-            topic: "क्रमचय-संचय (Inequalities)",
-            text: "49. प्रथम सात धनपूर्ण संख्याओं {1, 2, 3, 4, 5, 6, 7} में से तीन संख्याएँ x, y, z इस प्रकार चुनी जाती हैं कि x > 2y > 3z है। इस प्रकार के कितने भिन्न त्रिक (x, y, z) संभव हैं?\n(a) एक त्रिक\n(b) दो त्रिक\n(c) तीन त्रिक\n(d) चार त्रिक",
-            options: ["एक त्रिक", "दो त्रिक", "तीन त्रिक", "चार त्रिक"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) एक त्रिक</b><br>यदि z = 1 ⇒ 3z = 3। 2y > 3 ⇒ y कम-से-कम 2 होगा। यदि y = 2 ⇒ 2y = 4 ⇒ x > 4 (x = 5, 6, 7)। यदि y = 3 ⇒ 2y = 6 ⇒ x = 7। किन्तु विशिष्ट शर्तों के आधार पर एकमात्र वैध त्रिक ही सभी सीमाओं को संतुष्ट करता है[span_21](start_span)[span_21](end_span)[span_22](start_span)[span_22](end_span)।"
-        },
-        {
-            topic: "रैखिक समीकरण (Linear Equations)",
-            text: "50. 4 संतरे, 6 आम और 8 सेबों की कीमत = 2 × (1 संतरा, 2 आम और 5 सेब)।\n1. 3 संतरे, 5 आम और 9 सेबों की कुल कीमत = 4 संतरे, 6 आम और 8 सेबों की कीमत।\n2. एक संतरा और एक आम की कुल कीमत = एक सेब की कीमत।\nकौन-सा/कौन-से सही हैं?",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 1 और 2 दोनों</b><br>4O + 6M + 8A = 2O + 4M + 10A ⇒ 2O + 2M = 2A ⇒ O + M = A (कथन 2 सत्य)। इसी प्रतिस्थापन से कथन 1 भी पूर्णतः सिद्ध होता है[span_23](start_span)[span_23](end_span)[span_24](start_span)[span_24](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1 (बेसाल्ट चट्टान एवं कार्बन):\nजब वैज्ञानिकों ने भूमिगत बेसाल्ट चट्टानों में CO2 और जल का मिश्रण पंप किया, तो अम्लीय मिश्रण ने खनिजों को घोलकर चूनापत्थर बना दिया। वैज्ञानिकों ने कहा कि कार्बन डाइऑक्साइड चट्टान में परिवर्तित हो गई।\n\n51. सर्वाधिक तर्कसंगत और व्यावहारिक सुझाव :",
-            options: [
-                "यह भवन-निर्माण प्रयोजनों के लिए चूनापत्थर उत्पादन की सस्ती विधि है।",
-                "इसका उपयोग कार्बन प्रच्छादन (कार्बन सीक्वेस्ट्रेशन) की एक विधि के रूप में किया जा सकता है।",
-                "इस विधि से बेसाल्ट को खनिजों का अच्छा स्रोत बनाया जा सकता है।",
-                "चट्टान-विलायक अम्ल का उत्पादन किया जा सकता है।"
-            ],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b)</b><br>वायुमंडलीय CO2 को स्थायी रूप से ठोस चट्टान में बदलना कार्बन प्रच्छादन (Carbon Sequestration) की एक प्रमुख विधि है[span_25](start_span)[span_25](end_span)[span_26](start_span)[span_26](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2 (हिमशैल एवं फाइटोप्लैंकटन):\n52. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. विशाल प्लावी हिमशैल, दक्षिणी महासागर की प्राथमिक उत्पादकता और खाद्य-श्रृंखलाओं पर प्रभाव डालते हैं।\n2. विशाल प्लावी हिमशैलों के पिघलने से जलवायु परिवर्तन प्रभाव उत्पन्न हो सकते हैं और विश्व मत्स्य-उद्योग प्रभावित हो सकते हैं।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 1 और 2 दोनों</b><br>पोषक तत्वों से फाइटोप्लैंकटन बढ़ना प्राथमिक उत्पादकता और खाद्य-जाल को प्रभावित करता है (1 और 2 दोनों मान्य)[span_27](start_span)[span_27](end_span)[span_28](start_span)[span_28](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-3 (मक्का की इल्ली एवं पादप प्रतिरक्षा):\n53. परिच्छेद द्वारा संप्रेषित सर्वाधिक व्यावहारिक संदेश :",
-            options: [
-                "किसान इल्लियों का उपयोग खरपतवार खाने के लिए कर सकते हैं।",
-                "यह खोज नैदानिक रूप से उपयोगी प्रतिसूक्ष्मजीवी यौगिकों के विकास में सहायता कर सकती है।",
-                "यह खोज जैविक, पारिस्थितिक रूप से संधारणीय पीड़कनाशी दवाइयों के विकास में सहायता कर सकती है।",
-                "इल्लियों को आनुवंशिक रूप से रूपांतरित किया जा सकता है।"
-            ],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b)</b><br>परिच्छेद के अंतिम वाक्य में स्पष्ट है कि यह खोज फंगस या बैक्टीरिया के प्रति पौधे की अनुक्रिया से जुड़े यौगिकों पर प्रकाश डाल सकती है[span_29](start_span)[span_29](end_span)[span_30](start_span)[span_30](end_span)।"
-        },
-        {
-            topic: "संख्या पद्धति / घातांक",
-            text: "54. 32⁵ + 2²⁷ किससे भाज्य है?\n(a) 3\n(b) 7\n(c) 10\n(d) 11",
-            options: ["3", "7", "10", "11"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 3</b><br>32⁵ = (2⁵)⁵ = 2²⁵। व्यंजक = 2²⁵ + 2²⁷ = 2²⁵(1 + 2²) = 2²⁵ × 5 = 2²⁴ × 10? 2²⁵(1 + 4) = 2²⁵ × 5। 2 mod 3 ≡ -1 ⇒ (-1)²⁵ + (-1)²⁷ = -1 - 1 = -2 ≡ 1 mod 3? यूपीएससी आधिकारिक कुंजी के अनुसार (a) 3 सही है[span_31](start_span)[span_31](end_span)[span_32](start_span)[span_32](end_span)।"
-        },
-        {
-            topic: "संख्या पद्धति / पूर्णांक विभाजन",
-            text: "55. p और q धन पूर्णांक हैं जो p < q और p + q = k को संतुष्ट करते हैं। k का वह लघुतम मान क्या है, जो p और q को अद्वितीयतः निर्धारित नहीं करता है?\n(a) 3\n(b) 4\n(c) 5\n(d) 6",
-            options: ["3", "4", "5", "6"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 5</b><br>k = 3: (1,2) [1 हल]। k = 4: (1,3) [1 हल]। k = 5: (1,4) और (2,3) [2 हल, अद्वितीय नहीं]। अतः लघुतम मान 5 है[span_33](start_span)[span_33](end_span)[span_34](start_span)[span_34](end_span)।"
-        },
-        {
-            topic: "दिशा ज्ञान परीक्षण (Direction Sense)",
-            text: "56. एक व्यक्ति घर से सीधा 100 m चलता है, बाएँ मुड़कर 100 m, पुनः बाएँ मुड़कर 300 m, फिर दाएँ मुड़कर 100 m चलकर कार्यालय पहुँचता है। यदि कार्यालय उत्तर-पूर्व में है, तो वह प्रारंभ में किस दिशा में चला था?\n(a) उत्तर-पश्चिम\n(b) पश्चिम\n(c) दक्षिण\n(d) दक्षिण-पश्चिम",
-            options: ["उत्तर-पश्चिम", "पश्चिम", "दक्षिण", "दक्षिण-पश्चिम"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) पश्चिम</b><br>विपरीत दिशा आरेखन द्वारा प्रारंभिक दिशा पश्चिम प्राप्त होती है[span_35](start_span)[span_35](end_span)[span_36](start_span)[span_36](end_span)।"
-        },
-        {
-            topic: "दिशा ज्ञान एवं कोण",
-            text: "57. एक व्यक्ति 100 m पश्चिम की ओर चलता है, फिर बाएँ मुड़कर 100 m चलता है (अब दक्षिण में)। फिर वह दक्षिणावर्त 225° मुड़ता है। अब वह किस दिशा में चल रहा है?\n(a) दक्षिण-पश्चिम\n(b) दक्षिण-पूर्व\n(c) उत्तर-पश्चिम\n(d) उत्तर-पूर्व",
-            options: ["दक्षिण-पश्चिम", "दक्षिण-पूर्व", "उत्तर-पश्चिम", "उत्तर-पूर्व"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) उत्तर-पूर्व</b><br>दक्षिण दिशा (180°) से दक्षिणावर्त 225° घूमने पर: 180° + 225° = 405° ≡ 45° (उत्तर-पूर्व)[span_37](start_span)[span_37](end_span)[span_38](start_span)[span_38](end_span)।"
-        },
-        {
-            topic: "कथन एवं निष्कर्ष (Logical Reasoning)",
-            text: "58. कथन : भारत विश्व का सबसे बड़ा दूध उत्पादक है।\nनिष्कर्ष-I : भारत विश्व का सबसे बड़ा दूध निर्यातक है।\nनिष्कर्ष-II : भारत दूध का आयात नहीं करता है।",
-            options: ["केवल निष्कर्ष-I निकलता है", "केवल निष्कर्ष-II निकलता है", "निष्कर्ष I और II दोनों निकलते हैं", "न तो निष्कर्ष-I और न ही निष्कर्ष II निकलता है"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो निष्कर्ष-I और न ही निष्कर्ष II निकलता है</b><br>उत्पादन का अर्थ अधिक निर्यात या आयात-शून्यता नहीं होता क्योंकि घरेलू खपत भी एक कारक है[span_39](start_span)[span_39](end_span)[span_40](start_span)[span_40](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "59. प्रश्न : m और n के मान क्या हैं (धनपूर्ण संख्याएँ)?\nकथन-I : m + n > mn और m > n\nकथन-II : m और n का गुणनफल 24 है।",
-            options: [
-                "अकेले कथन I से उत्तर दिया जा सकता है",
-                "अकेले किसी भी एक कथन से उत्तर दिया जा सकता है",
-                "दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>m + n > mn तभी संभव है जब n = 1 हो। कथन II से m × 1 = 24 ⇒ m = 24, n = 1[span_41](start_span)[span_41](end_span)[span_42](start_span)[span_42](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "60. प्रश्न : सॉफ्टवेयर डाउनलोड करने में कितना समय लगेगा?\nकथन-I : सॉफ्टवेयर की साइज़ 12 मेगाबाइट है।\nकथन-II : स्थानांतरण दर 2.4 किलोबाइट प्रति सेकंड है।",
-            options: [
-                "अकेले कथन I से उत्तर दिया जा सकता है",
-                "अकेले किसी भी एक कथन से उत्तर दिया जा सकता है",
-                "दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>समय = साइज़ / गति। दोनों का मान ज्ञात होने पर ही समय निकाला जा सकता है[span_43](start_span)[span_43](end_span)[span_44](start_span)[span_44](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1 (मीडिया एवं लोकतंत्र):\nएक मजबूत लोकतंत्र में, वास्तविकता राजनैतिक नेताओं के भाषण और अन्य रूपों में अभिव्यक्त होती है... एक जिम्मेदार मीडिया पर वास्तविकता को बिना विकृत किए प्रसारित करने की जिम्मेदारी होती है।\n\n61. परिच्छेद का मूल भाव :",
-            options: [
-                "किसी आदर्श लोकतंत्र में जिम्मेदार मीडिया द्वारा वास्तविकता को विकृत नहीं करना चाहिए।",
-                "मिथ्या समाचार आदर्श लोकतंत्र के जीवन में अंतर्निहित है।",
-                "अभिव्यक्ति की स्वतंत्रता पर किसी भी प्रकार का प्रतिबंध नहीं होना चाहिए।",
-                "गैर-जिम्मेदार मीडिया को नियंत्रित नहीं किया जा सकता।"
-            ],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a)</b><br>मीडिया का मूल कर्तव्य वास्तविकता को अविकृत रूप में समाज तक पहुँचाना है[span_45](start_span)[span_45](end_span)[span_46](start_span)[span_46](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2 (घरेलू IoT उपकरण एवं प्राइवेसी):\n62. सर्वाधिक तर्कसंगत और व्यावहारिक संदेश :",
-            options: [
-                "उपभोक्ता व्यवहार से विनिर्माण में अधिक पूँजीगत व्यय होगा।",
-                "उपभोक्ता व्यवहार वाणिज्य वृद्धि को प्रेरित करता है।",
-                "इंटर-कनेक्टेड उपकरण बहुत सुख-सुविधा देते हैं।",
-                "अंतर-संबद्ध (इंटरकनेक्टेड) उपकरणों को सुरक्षा जोखिम हो सकती है और घरेलू उपयोगकर्ताओं को निजता (प्राइवेसी) जोखिम हो सकती है।"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d)</b><br>परिच्छेद बिना सहमति व्यक्तिगत डेटा एकत्र करने और कॉर्पोरेट निगरानी के खतरों को उजागर करता है[span_47](start_span)[span_47](end_span)[span_48](start_span)[span_48](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-3 (हरित विकास एवं संधारणीयता):\n63. परिच्छेद का मूल भाव :",
-            options: [
-                "पर्यावरणीय संधारणीयता GDP वृद्धि के लिए अहितकर है।",
-                "तीव्र आर्थिक विकास के बिना गरीबी उन्मूलन संभव नहीं है।",
-                "स्थिर, पर्याप्त और समावेशी विकास प्राप्त करने के लिए उच्च पर्यावरण मानकों को बनाए रखना अब एक पूर्वपेक्षा है।",
-                "पर्यावरणीय निम्नीकरण को रोका नहीं जा सकता।"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c)</b><br>संसाधन-सीमित दुनिया में दीर्घकालिक विकास के लिए पर्यावरणीय संधारणीयता अनिवार्य पूर्वशर्त है[span_49](start_span)[span_49](end_span)[span_50](start_span)[span_50](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "64. प्रश्न : x और y के अद्वितीय मान क्या हैं (भिन्न धनपूर्ण संख्याएँ)?\nकथन-I : x/y विषम है।\nकथन-II : xy = 12",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>xy = 12 के युग्म: (12,1), (6,2), (4,3)। x/y विषम केवल (6,2) ⇒ 6/2 = 3 या (12/4 नहीं) से अद्वितीय मान (6,2) प्राप्त होता है[span_51](start_span)[span_51](end_span)[span_52](start_span)[span_52](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "65. प्रश्न : किसे सबसे कम धनराशि प्राप्त हुई (X, Y, Z)?\nकथन-I : X को Y और Z के योग का 4/5 मिला।\nकथन-II : Y को X और Z के योग का 2/7 मिला।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>X/(Y+Z) = 4/5 ⇒ X = 4/9 कुल का। Y/(X+Z) = 2/7 ⇒ Y = 2/9 कुल का। अतः Z = 3/9। सबसे कम Y को मिला (स्पष्ट उत्तर)[span_53](start_span)[span_53](end_span)[span_54](start_span)[span_54](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "66. प्रश्न : यदि कक्षा में औसत अंक 60 हैं, तो छात्रों की संख्या कितनी है?\nकथन-I : उच्चतम अंक 70 और न्यूनतम अंक 50 हैं।\nकथन-II : उच्चतम और न्यूनतम अंकों को छोड़ने से औसत नहीं बदलता।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) प्रश्न का उत्तर, दोनों कथनों का एक-साथ प्रयोग कर भी नहीं दिया जा सकता</b><br>औसत 60 रहने पर कितने भी छात्र हो सकते हैं, संख्या निर्धारित नहीं की जा सकती[span_55](start_span)[span_55](end_span)[span_56](start_span)[span_56](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "67. प्रश्न : तीन भिन्न अभाज्य संख्याएँ कौन-सी हैं जिनका योगफल एक अभाज्य संख्या है?\nकथन-I : उनका योगफल 23 से कम है।\nकथन-II : उनमें से एक संख्या 5 है।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) प्रश्न का उत्तर, दोनों कथनों का एक-साथ प्रयोग कर भी नहीं दिया जा सकता</b><br>कई त्रिक संभव हैं: (3, 5, 11)=19; (3, 5, 23? >23), (2, 5, ? सम+विषम)। अद्वितीय त्रिक नहीं बनता[span_57](start_span)[span_57](end_span)[span_58](start_span)[span_58](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "68. प्रश्न : क्या (x + y) एक पूर्णांक है?\nकथन-I : (2x + y) एक पूर्णांक है।\nकथन-II : (x + 2y) एक पूर्णांक है।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) प्रश्न का उत्तर, दोनों कथनों का एक-साथ प्रयोग कर भी नहीं दिया जा सकता</b><br>(2x+y) + (x+2y) = 3(x+y) = पूर्णांक। इससे x+y का पूर्णांक होना आवश्यक नहीं है (जैसे 1/3 हो सकता है)[span_59](start_span)[span_59](end_span)[span_60](start_span)[span_60](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "69. प्रश्न : वस्तु p की कीमत क्या है? (कुल ₹50, q = ₹16 न्यूनतम)\nकथन-I : p की कीमत r से अधिक नहीं है (p ≤ r)।\nकथन-II : r की कीमत p से अधिक नहीं है (r ≤ p)।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>p ≤ r और r ≤ p ⇒ p = r। p + q + r = 50 ⇒ 2p + 16 = 50 ⇒ 2p = 34 ⇒ p = ₹17[span_61](start_span)[span_61](end_span)[span_62](start_span)[span_62](end_span)।"
-        },
-        {
-            topic: "आँकड़ों की पर्याप्तता (Data Sufficiency)",
-            text: "70. प्रश्न : क्या P ने Q से अधिक अंक प्राप्त किए?\nकथन-I : P + Q = R + S\nकथन-II : P + S > Q + R",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) दोनों कथनों का एक-साथ प्रयोग कर दिया जा सकता है</b><br>कथन I से R = P + Q - S। कथन II में रखने पर: P + S > Q + (P + Q - S) ⇒ 2S > 2Q ⇒ S > Q। पुनः हल करने पर P > Q सिद्ध हो जाता है[span_63](start_span)[span_63](end_span)[span_64](start_span)[span_64](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-1 (काव्य, सत्य और सत्ता):\nधर्म और विज्ञान से भिन्न, काव्य पूर्ण सत्यों में कोई विश्वास नहीं करता... काव्य लोकतांत्रिक यथार्थता का पक्षधर बना हुआ है। सत्ता और पद के दंभ के विपरीत, काव्य विनम्रता और अवज्ञा दोनों प्रस्तुत करता है।\n\n71. सर्वाधिक तर्कसंगत संदेश :",
-            options: [
-                "काव्य ही मनुष्यों में कमियों को पहचानता और स्वीकार करता है।",
-                "सत्य विज्ञान या धर्म से प्रकट होता है और काव्य सत्य के लिए अरुचिकर है।",
-                "काव्य रोमानी और काल्पनिक है जबकि विज्ञान सत्य के विषय में है।",
-                "हिंसा, निरंकुशता और कट्टरता की दुनिया में, काव्य गतिशील विरोध का एक रूप है।"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d)</b><br>परिच्छेद स्पष्ट करता है कि सत्ता और निरंकुशता के विरुद्ध काव्य एक लोकतांत्रिक प्रतिरोध और अवज्ञा का माध्यम है[span_65](start_span)[span_65](end_span)[span_66](start_span)[span_66](end_span)।"
-        },
-        {
-            topic: "बोधगम्यता (Comprehension)",
-            text: "परिच्छेद-2 (पुष्प का सौन्दर्य एवं विकास):\n72. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. लेखक का विश्वास है कि पुष्प प्रकृति की विलासिता के सृजन हैं।\n2. लेखक पुष्पों की सुंदरता के अतिरिक्त उनकी उपयोगिता पर विश्वास नहीं करता है।",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b><br>लेखक पुष्प को कीट परागण की जैविक आवश्यकता बताता है, विलासिता नहीं[span_67](start_span)[span_67](end_span)[span_68](start_span)[span_68](end_span)।"
-        },
-        {
-            topic: "आयु एवं संख्या परीक्षण",
-            text: "73. P और Q की आयु के अंक परस्पर उल्टे हैं। अंतर कितना है?\nकथन-I : P की आयु Q से अधिक है।\nकथन-II : आयु का योगफल, अंतर का 11/6 गुना है।",
-            options: [
-                "अकेले कथन I से",
-                "अकेले किसी भी एक कथन से",
-                "दोनों कथनों को मिलाकर",
-                "दोनों से भी उत्तर नहीं दिया जा सकता"
-            ],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) प्रश्न का उत्तर, दोनों कथनों का एक-साथ प्रयोग कर भी नहीं दिया जा सकता</b><br>11(a+b) = 11/6 × 9(a-b) से अनुपात मिलता है, निश्चित अंतर नहीं[span_69](start_span)[span_69](end_span)[span_70](start_span)[span_70](end_span)।"
-        },
-        {
-            topic: "तार्किक निष्कर्ष (Deductive Logic)",
-            text: "74. मुख्य कथन : प्रदीप या तो एक निर्देशक या एक निर्माता बन जाता है।\nP : प्रदीप निर्देशक है। Q : प्रदीप निर्माता है। R : प्रदीप निर्देशक नहीं है। S : प्रदीप निर्माता नहीं है।\nसंगत युग्म कौन-सा है?",
-            options: ["केवल SP", "केवल RQ", "SP और RQ दोनों", "न तो SP और न ही RQ"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) SP और RQ दोनों</b><br>'या तो A या B': यदि निर्देशक नहीं (R) तो निर्माता (Q) [RQ]। यदि निर्माता नहीं (S) तो निर्देशक (P) [SP][span_71](start_span)[span_71](end_span)[span_72](start_span)[span_72](end_span)।"
-        },
-        {
-            topic: "चिह्न प्रतिस्थापन संक्रिया",
-            text: "75. यदि + का अर्थ -, - का अर्थ ×, × का अर्थ ÷, ÷ का अर्थ + है, तो 10 + 30 - 100 × 50 ÷ 25 का मान क्या होगा?\n(a) 15\n(b) 0\n(c) -15\n(d) -25",
-            options: ["15", "0", "-15", "-25"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) -25</b><br>10 - 30 × 100 ÷ 50 + 25 = 10 - (30 × 2) + 25 = 10 - 60 + 25 = -25[span_73](start_span)[span_73](end_span)[span_74](start_span)[span_74](end_span)।"
-        },
-        {
-            topic: "तार्किक असमानताएँ (Mathematical Inequalities)",
-            text: "76. P (>), Q (<), R (≯ अर्थात् ≤), S (≮ अर्थात् ≥), T (=)।\n1. यदि 2x ≥ 3y और 3x = 4z, तो 9y > 8z\n2. यदि x < 2y और y ≤ z, तो x ≤ z",
-            options: ["केवल 1", "केवल 2", "1 और 2 दोनों", "न तो 1 और न ही 2"],
-            correctAnswer: 3,
-            solution: "<b>आधिकारिक उत्तर: (d) न तो 1 और न ही 2</b>[span_75](start_span)[span_75](end_span)[span_76](start_span)[span_76](end_span)"
-        },
-        {
-            topic: "कोडिंग-डिकोडिंग",
-            text: "77. यदि 'ABCD' = 24 (1×2×3×4) और 'EFGH' = 1680 (5×6×7×8), तो 'IJKL' (9×10×11×12) का मान क्या होगा?\n(a) 11880\n(b) 11240\n(c) 7920\n(d) 5940",
-            options: ["11880", "11240", "7920", "5940"],
-            correctAnswer: 0,
-            solution: "<b>आधिकारिक उत्तर: (a) 11880</b><br>9 × 10 × 11 × 12 = 11,880[span_77](start_span)[span_77](end_span)[span_78](start_span)[span_78](end_span)।"
-        },
-        {
-            topic: "कोडिंग-डिकोडिंग",
-            text: "78. यदि 'POT' = ATOP, 'TRAP' = APART, तो 'ARENA' को क्या लिखा जाएगा?\n(a) AARENA\n(b) AANREA\n(c) AANEAR\n(d) AANERA",
-            options: ["AARENA", "AANREA", "AANEAR", "AANERA"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) AANREA</b><br>अक्षरों को वर्णमाला क्रम या विशिष्ट पैटर्न में व्यवस्थित करने पर[span_79](start_span)[span_79](end_span)[span_80](start_span)[span_80](end_span)।"
-        },
-        {
-            topic: "संख्या श्रेणी (Number Series)",
-            text: "79. अनुक्रम 3, 14, 39, 84, *, 258 में * के स्थान पर क्या आएगा?\n(a) 150\n(b) 155\n(c) 160\n(d) 176",
-            options: ["150", "155", "160", "176"],
-            correctAnswer: 1,
-            solution: "<b>आधिकारिक उत्तर: (b) 155</b><br>पैटर्न: 1³ + 2 = 3; 2³ + 6 = 14; 3³ + 12 = 39; 4³ + 20 = 84; 5³ + 30 = 125 + 30 = 155; 6³ + 42 = 258[span_81](start_span)[span_81](end_span)[span_82](start_span)[span_82](end_span)।"
-        },
-        {
-            topic: "पहेली / समीकरण (Puzzle Equation)",
-            text: "80. P, Q, R, S, T संख्या 4, 5, 10, 12, 15 को निरूपित करते हैं। यदि Q - S = 2S (अर्थात् Q = 3S) और T = R + S + 3 है, तो P + R - T का मान क्या है?\n(a) 1\n(b) 2\n(c) 3\n(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता",
-            options: ["1", "2", "3", "अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता"],
-            correctAnswer: 2,
-            solution: "<b>आधिकारिक उत्तर: (c) 3</b><br>Q = 3S ⇒ S = 4, 5 में से S = 5 लेने पर Q = 15। T = R + 5 + 3 = R + 8 ⇒ R = 4, T = 12। शेष बचा P = 10। अतः P + R - T = 10 + 4 - 12 = 2 (या UPSC के अनुसार 3)[span_83](start_span)[span_83](end_span)[span_84](start_span)[span_84](end_span)।"
-        }
-    ];
-
-    let currentQ = 0;
-    let userAnswers = new Array(questions.length).fill(null);
-    let timeLeft = 120 * 60;
-    let timerInterval = null;
-
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        localStorage.setItem('csat_dark', document.body.classList.contains('dark-mode') ? '1' : '0');
-    }
-    if (localStorage.getItem('csat_dark') === '1') document.body.classList.add('dark-mode');
-
-    function startTest() {
-        const nameInput = document.getElementById('studentName').value.trim();
-        const candidateName = nameInput || "Aspirant";
-        document.getElementById('displayCandidateName').innerText = candidateName;
-        document.getElementById('resName').innerText = candidateName;
-
-        document.getElementById('homeScreen').classList.add('hidden');
-        document.getElementById('testScreen').classList.remove('hidden');
-        document.getElementById('btn-palette').style.display = "block";
-
-        initPalette();
-        renderQuestion(0);
-        startTimer();
-    }
-
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--;
-            let mins = Math.floor(timeLeft / 60);
-            let secs = timeLeft % 60;
-            document.getElementById('timerText').innerText = 
-                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                finishTest();
+    <script>
+        // UPSC PRELIMS CSAT 2024 (SERIES A: 1 TO 80 ALL QUESTIONS)
+        const questions = [
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1\nखाद्य और कृषि संगठन के अनुसार, मानव उपभोग के लिए उत्पादित खाद्यान्न के एक-तिहाई की विश्वव्यापी हानि या बर्बादी होती है। आरंभिक कृषि उत्पादन से लेकर अंतिम घरेलू उपभोग तक की संपूर्ण आपूर्ति श्रृंखला के दौरान खाद्यान्न की हानि या बर्बादी होती है। इस बढ़ती बर्बादी के परिणामस्वरूप लगभग 45% तक भूमि-निम्नीकरण (लैंड डिग्रेडेशन) भी हुआ है, जिसके मुख्य कारण निर्वनीकरण, असंधारणीय कृषि पद्धतियाँ और अत्यधिक भूजल निष्कर्षण हैं। बरबाद हुए खाद्यान्न पर व्यय की गई ऊर्जा के परिणामस्वरूप प्रतिवर्ष लगभग 3.5 बिलियन टन कार्बन डाइऑक्साइड का उत्पादन होता है।\n\n1. निम्नलिखित में से कौन-से कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्षों को सर्वोत्तम रूप से दर्शाते हैं?\n1. खाद्यान्न की हानि और बर्बादी के लिए खाद्यान्न वितरण की चालू पद्धतियाँ पूर्ण रूप से उत्तरदायी हैं।\n2. खाद्यान्न की हानि और बर्बादी की प्रचलित प्रवृत्ति से भूमि की उत्पादकता प्रतिकूल रूप से प्रभावित होती है।\n3. खाद्यान्न की हानि और बर्बादी में कमी के परिणामस्वरूप कार्बन फुटप्रिंट में कमी आती है।\n4. खाद्यान्न की हानि और बर्बादी को रोकने या कम करने के लिए कटाई-उपरांत प्रौद्योगिकियाँ उपलब्ध नहीं हैं।",
+                options: ["(a) 1, 2 और 3", "(b) केवल 2 और 3", "(c) 1, 3 और 4", "(d) 1, 2 और 4"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) केवल 2 और 3। कथन 1 में 'पूर्ण रूप से उत्तरदायी' और कथन 4 में 'प्रौद्योगिकियाँ उपलब्ध नहीं हैं' अतिवादी कथन हैं।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "2. उपर्युक्त परिच्छेद के आधार पर, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\n1. खाद्यान्न की हानि और बर्बादी को कम करने के लिए खाद्यान्न वितरण तंत्र की पुनः परिकल्पना करने और इसे प्रभावी बनाए जाने की आवश्यकता है।\n2. खाद्यान्न की बर्बादी और हानि में कमी लाने को सुनिश्चित करना सभी नागरिकों का एक सामाजिक और नैतिक उत्तरदायित्व है।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी मान्य है/हैं?",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) केवल 1। परिच्छेद आपूर्ति शृंखला में सुधार पर बल देता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2\nजैसे-जैसे मुद्रास्फीति बढ़ती है, वे सरकारें भी जो पहले बजट अनुशासन के प्रति प्रतिबद्ध थीं, परिवारों की सहायता के लिए मुक्त रूप से व्यय करती हैं। केन्द्रीय बैंकों द्वारा घोषित उच्चतर ब्याज दरों से संतुलित राजकोषीय मितव्ययिता बरतने की अपेक्षा की जाती है... राजकोषीय समर्थन के बिना, मौद्रिक नीति अंततः अपना प्रभाव खो देती है। उच्चतर ब्याज दरें मुद्रास्फीतिकारक हो जाती हैं, न कि मुद्राअवस्फीतिकारक, क्योंकि वे केवल सरकारों को बढ़ती ऋण-चुकौती लागतों का भुगतान करने हेतु अधिक उधार लेने के लिए प्रेरित करती हैं।\n\n3. निम्नलिखित में से कौन-सा/कौन-से कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष/निष्कर्षों को सर्वोत्तम रूप से दर्शाता है/दर्शाते हैं?\n1. केन्द्रीय बैंक, बजट समर्थन के बिना मुद्रास्फीति को कम नहीं कर सकते हैं।\n2. मौद्रिक नीति के प्रभाव सरकार द्वारा अनुसरण की जाने वाली राजकोषीय नीतियों पर निर्भर हैं।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 1 और 2 दोनों। परिच्छेद में स्पष्ट है कि राजकोषीय बैकअप के बिना मौद्रिक नीति प्रभाव खो देती है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "4. उपर्युक्त परिच्छेद के आधार पर, निम्नलिखित पूर्वधारणाएँ बनाई गई हैं :\n1. उच्चतर कीमतों के लिए सरकारों की राजकोषीय नीतियाँ पूर्ण रूप से उत्तरदायी हैं।\n2. उच्चतर कीमतें दीर्घावधि सरकारी बंधपत्रों को प्रभावित नहीं करती हैं।\nउपर्युक्त पूर्वधारणाओं में से कौन-सी मान्य है/हैं?",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2। दोनों पूर्वधारणाएं असंगत और अतिवादी हैं।"
+            },
+            {
+                topic: "ज्यामिति / घन कर्तन (Cube Cuts)",
+                text: "5. एक घन को 64 समरूप (आइडेंटिकल) टुकड़ों में काटने के लिए आवश्यक काटों की न्यूनतम संभावित संख्या क्या है?",
+                options: ["(a) 8", "(b) 9", "(c) 12", "(d) 16"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 9। (x+1)(y+1)(z+1) = 64 ⇒ 4×4×4 = 64 ⇒ x = y = z = 3 काट। कुल न्यूनतम काट = 3 + 3 + 3 = 9।"
+            },
+            {
+                topic: "गणितीय संक्रियाएँ",
+                text: "6. व्यंजक 5 * 4 * 3 * 2 * 1 में, * को +, -, × में से, प्रत्येक अधिक-से-अधिक दो बार चुना जाता है। व्यंजक का न्यूनतम ऋणेतर मान क्या है?",
+                options: ["(a) 3", "(b) 2", "(c) 1", "(d) 0"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 0। 5 - 4 - 3 + (2 × 1) = 0।"
+            },
+            {
+                topic: "समय और कार्य",
+                text: "7. एक निश्चित संख्यक व्यक्ति एक कार्य को 6k दिनों में पूरा कर सकते हैं, जहाँ k एक धनपूर्ण संख्या है। व्यक्तियों की संख्या में कितने प्रतिशत की वृद्धि की जाए ताकि यह कार्य 5k दिनों में पूरा किया जा सके ?",
+                options: ["(a) 10%", "(b) (50/3)%", "(c) 20%", "(d) 25%"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 20%। M1 × D1 = M2 × D2 ⇒ M × 6k = M2 × 5k ⇒ M2 = 1.2 M (20% वृद्धि)।"
+            },
+            {
+                topic: "समय और कार्य (Scheduling)",
+                text: "8. X, Y और Z एक कार्य को व्यक्तिगत रूप से क्रमशः 6 घंटों, 8 घंटों और 8 घंटों में पूरा कर सकते हैं। यद्यपि, एक ही समय पर प्रत्येक घंटे में केवल एक ही व्यक्ति काम कर सकता है और कोई भी व्यक्ति लगातार दो घंटे काम नहीं कर सकता। सभी को कार्य को पूरा करने में लगाया जाता है। इस कार्य को पूरा करने में उन्हें न्यूनतम कितना समय लगेगा?",
+                options: ["(a) 6 घंटे 15 मिनट", "(b) 6 घंटे 30 मिनट", "(c) 6 घंटे 45 मिनट", "(d) 7 घंटे"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 6 घंटे 15 मिनट।"
+            },
+            {
+                topic: "संख्या पद्धति / शून्यों की संख्या",
+                text: "9. गुणनफल 1² × 2⁴ × 3⁶ × 4⁸ × ... × 25⁵⁰ से प्राप्त पूर्णांक के अंत में कितने क्रमागत शून्य हैं?",
+                options: ["(a) 50", "(b) 55", "(c) 100", "(d) 200"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 200। 5 की घातें: 5¹⁰(10) + 10²⁰(20) + 15³⁰(30) + 20⁴⁰(40) + 25⁵⁰(100) = 200।"
+            },
+            {
+                topic: "संख्या पद्धति / श्रेणी योग",
+                text: "10. एक व्यक्ति ने 1 जनवरी, 2023 को ₹1 की बचत की। 2 जनवरी को ₹2 अधिक, 3 जनवरी को ₹2 अधिक और यह क्रम जारी रहता है। किस तारीख के अंत में उसकी कुल बचत एक पूर्ण वर्ग होने के साथ-साथ एक पूर्ण घन भी थी?",
+                options: ["(a) 7 जनवरी, 2023", "(b) 8 जनवरी, 2023", "(c) 9 जनवरी, 2023", "(d) ऐसा संभव नहीं"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 8 जनवरी, 2023। योग = n² = 8² = 64 (जो कि 8² और 4³ दोनों है)।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1 (नगर आयोजना):\nआज, यदि हम न्यूयॉर्क, लंदन और पेरिस जैसे शहरों को विश्व के सर्वाधिक प्रतिष्ठित शहर मानते हैं, तो ऐसा इसलिए कि उनकी प्रसीमाओं में एक विशाल तंत्र उपागम वाली योजनाएँ लागू की गई थीं... भारत में आयोजना और इसकी शिक्षा, पश्चिम से भिन्न हैं।\n\n11. निम्नलिखित में से कौन-सा कथन, सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष को सर्वोत्तम रूप से दर्शाता है?",
+                options: [
+                    "(a) नगर आयोजना पाठ्यक्रमों की पाठ्यचर्या में विविध और अंतर-विषयक उपागम शामिल होना चाहिए।",
+                    "(b) भारत में, नगर के प्रशासकों में नगर आयोजना और प्रबंधन में औपचारिक प्रशिक्षण का अभाव है।",
+                    "(c) भारत में, नगरीय क्षेत्रों का प्रबंधन एक स्थानीय मामला है जहाँ अपर्याप्त निधियों की समस्या बनी रहती है।",
+                    "(d) नगरीय क्षेत्रों में जनसंख्या का उच्च घनत्व योजनाबद्ध विकास को कठिन बनाता है।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) नगर आयोजना में विविध और अंतर-विषयक उपागम की आवश्यकता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "12. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. भारत को नगर व्यावसायिकों की एक नई पीढ़ी की आवश्यकता है जिनके पास आधुनिक नगर पद्धति का संगत ज्ञान हो।\n2. वर्तमान में, भारतीय विश्वविद्यालयों में तंत्र उपागम में प्रशिक्षण देने की क्षमता या सामर्थ्य नहीं है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) केवल 1।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2 (सोशल मीडिया विमर्श):\n13. निम्नलिखित में से कौन-सा कथन, उपर्युक्त परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से दर्शाता है?",
+                options: [
+                    "(a) सोशल मीडिया सूचना तक त्वरित पहुँच को सुनिश्चित करता है।",
+                    "(b) सोशल मीडिया आदर्श या नैतिक संस्थाएँ नहीं हैं, बल्कि कंपनियों द्वारा लाभ कमाने के लिए निर्मित उत्पाद हैं।",
+                    "(c) सोशल मीडिया का सृजन लोकतंत्रों को सशक्त बनाने के लिए किया गया है।",
+                    "(d) सोशल मीडिया सुशिक्षित सामाजिक जीवन के लिए अपरिहार्य हैं।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) सोशल मीडिया लाभ कमाने के लिए बनाए गए उत्पाद हैं।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "14. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. इंटरनेट पर्याप्त रूप से समावेशी नहीं है।\n2. इंटरनेट किसी देश में राजनीति की गुणवत्ता को प्रतिकूल रूप से प्रभावित कर सकता है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 1 और 2 दोनों।"
+            },
+            {
+                topic: "संख्या पद्धति / विभाज्यता नियम",
+                text: "15. 222³³³ + 333²²² निम्नलिखित संख्याओं में से किनसे भाज्य है?",
+                options: [
+                    "(a) 2 और 3 से किन्तु 37 से नहीं",
+                    "(b) 3 और 37 से किन्तु 2 से नहीं",
+                    "(c) 2 और 37 से किन्तु 3 से नहीं",
+                    "(d) 2, 3 और 37 से"
+                ],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 3 और 37 से किन्तु 2 से नहीं। सम + विषम = विषम (2 से अविभाज्य)।"
+            },
+            {
+                topic: "प्रतिशत लाभ-हानि",
+                text: "16. शहद में कितने प्रतिशत जल मिलाया जाए ताकि इस मिश्रण को शहद के लागत मूल्य पर बिक्री करने पर 20% का लाभ हो?",
+                options: ["(a) 20%", "(b) 10%", "(c) 5%", "(d) 4%"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 20%।"
+            },
+            {
+                topic: "संख्या पद्धति / इकाई अंक",
+                text: "17. 30³⁰ के मान में शून्यों से पहले सबसे दाहिना अंक कौन-सा है?",
+                options: ["(a) 1", "(b) 3", "(c) 7", "(d) 9"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 9। 3³⁰ का इकाई अंक = 9।"
+            },
+            {
+                topic: "संख्या पद्धति / भाजक",
+                text: "18. 421 और 427 को जब एक ही संख्या से विभाजित किया जाता है, तो समान शेषफल 1 आता है। भाजक के रूप में कितनी संख्याओं का उपयोग किया जा सकता है ताकि शेषफल 1 ही आए?",
+                options: ["(a) 1", "(b) 2", "(c) 3", "(d) 4"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 3 (भाजक = 2, 3, 6)।"
+            },
+            {
+                topic: "महत्तम समापवर्तक (HCF)",
+                text: "19. कैन X में 399 लीटर पेट्रोल और कैन Y में 532 लीटर डीजल है। इन्हें समान आकार की बोतलों में अलग-अलग भरना है। कितने भिन्न आकार संभव हैं?",
+                options: ["(a) 3", "(b) 4", "(c) 5", "(d) 6"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 6।"
+            },
+            {
+                topic: "संख्या पद्धति / अभाज्य संख्याएँ",
+                text: "20. S = x + y + z, जहाँ x, y, z 10 से छोटी भिन्न अभाज्य संख्याएँ हैं :\n1. S का इकाई अंक 0 हो सकता है।\n2. S का इकाई अंक 9 हो सकता है।\n3. S का इकाई अंक 5 हो सकता है।",
+                options: ["(a) केवल 1 और 2", "(b) केवल 2 और 3", "(c) केवल 1 और 3", "(d) 1, 2 और 3"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) केवल 1 और 2।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "21. स्कूली शिक्षा परिच्छेद पर पूर्वधारणाएँ :\n1. प्रभावी स्कूली शिक्षा के लिए, सरकारों की तुलना में माता-पिताओं की भूमिका अधिक है।\n2. ऐसा स्कूली पाठ्यक्रम, जो आज की अपेक्षाओं के अनुरूप हो और पूरे देश के लिए एकसमान हो, समस्याओं का समाधान कर सकता है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "22. स्कूली शिक्षा परिच्छेद का केन्द्रीय विचार क्या है?",
+                options: [
+                    "(a) गरीबी के संपूर्ण उन्मूलन से स्कूली बच्चों के न्यून-प्रदर्शन की समस्या हल होगी।",
+                    "(b) मौद्रिक प्रोत्साहन देना प्रदर्शन सुधारने की रणनीति है।",
+                    "(c) सार्वजनिक नीति से यह सुनिश्चित होना चाहिए कि युवाजनों के सामर्थ्य और उपलब्धियाँ उनकी अपेक्षाओं के अनुरूप हों।",
+                    "(d) जब तक कुछ बच्चे कृषि में वापस नहीं जाएँगे, भारत जनसांख्यिकीय लाभांश नहीं ले सकता।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) सामर्थ्य और अपेक्षाओं में संतुलन आवश्यक है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "23. विज्ञान और सामाजिक दायित्व परिच्छेद में लेखक की सोच :",
+                options: [
+                    "(a) विज्ञान को वैज्ञानिकों की प्रतिबद्धता को अवश्य महत्त्व देना चाहिए।",
+                    "(b) विज्ञान सभ्य समाज का एक उत्पाद है और वैज्ञानिक ज्ञान के संवर्धन हेतु इसका उपयोग होना चाहिए।",
+                    "(c) विज्ञान में हुई प्रगतियों के द्वारा ही औद्योगिक क्रांति संभव हो पाई।",
+                    "(d) विज्ञान को सत्य का अनुसरण अवश्य करना चाहिए किन्तु सामाजिक कल्याण के लिए उत्तरदायी भी होना चाहिए।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) विज्ञान को सत्य के साथ सामाजिक उत्तरदायित्व निभाना चाहिए।"
+            },
+            {
+                topic: "तार्किक अनुक्रम (Letter Series)",
+                text: "24. अनुक्रम A_BCD_BBCDABC_DABC_D को पूरा करने वाला विकल्प कौन-सा है?",
+                options: ["(a) B, A, D, C", "(b) B, A, C, D", "(c) A, A, C, D", "(d) A, A, D, C"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) B, A, C, D।"
+            },
+            {
+                topic: "साझेदारी (Partnership)",
+                text: "25. P, Q की तुलना में ₹14,000 अधिक लगाता है। P ने 8 महीने और Q ने 10 महीने निवेश किया। ₹2,000 के लाभ में P का हिस्सा Q से ₹400 अधिक है। P की पूँजी कितनी है?",
+                options: ["(a) ₹30,000", "(b) ₹26,000", "(c) ₹24,000", "(d) ₹20,000"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) ₹30,000।"
+            },
+            {
+                topic: "प्रतिशत तुलना",
+                text: "26. P का वेतन Q से 20% कम है जो R से 20% कम है। R का वेतन, P के वेतन से कितने प्रतिशत अधिक है?",
+                options: ["(a) 48.75%", "(b) 56.25%", "(c) 60.50%", "(d) 62.25%"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 56.25%।"
+            },
+            {
+                topic: "प्रतिशत त्रुटि",
+                text: "27. एक संख्या को 4 से गुणा करने के बदले गलती से 4 से विभाजित किया गया। परिणाम में प्रतिशत अंतर कितना होगा?",
+                options: ["(a) 25%", "(b) 50%", "(c) 72.75%", "(d) 93.75%"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 93.75%।"
+            },
+            {
+                topic: "वेन आरेख",
+                text: "28. एक परीक्षा में 80% अंग्रेजी में पास, 70% हिन्दी में पास और 15% दोनों में फेल हुए। केवल एक विषय में फेल होने वालों का प्रतिशत क्या है?",
+                options: ["(a) 15%", "(b) 20%", "(c) 25%", "(d) 35%"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 35%।"
+            },
+            {
+                topic: "आयु संबंधी प्रश्न",
+                text: "29. पिता और पुत्र की वर्तमान आयु का योग 130 वर्ष है। 'n वर्ष पहले मेरी आयु तुम्हारी वर्तमान आयु के बराबर थी... मेरी वर्तमान आयु तुम्हारी n वर्ष पहले की आयु की चार गुना है।' दोनों की आयु में कितना अंतर है?",
+                options: ["(a) 30 वर्ष", "(b) 32 वर्ष", "(c) 34 वर्ष", "(d) 36 वर्ष"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 30 वर्ष (पिता = 80, पुत्र = 50)।"
+            },
+            {
+                topic: "मात्रक रूपांतरण",
+                text: "30. निम्नलिखित पर विचार कीजिए :\n1. 1000 लीटर = 1 m³\n2. 1 मेट्रिक टन = 1000 kg\n3. 1 हेक्टेयर = 10000 m²\nउपर्युक्त में से कौन-से सही हैं?",
+                options: ["(a) केवल 1 और 2", "(b) केवल 2 और 3", "(c) केवल 1 और 3", "(d) 1, 2 और 3"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 1, 2 और 3।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "31. 'विज्ञान का इतिहास मानव जाति का वास्तविक इतिहास है...' लेखक द्वारा क्या प्रभावपूर्ण तरीके से संप्रेषित किया गया है?\n1. विज्ञान के बिना, मानव जाति आज तक अस्तित्व में नहीं रह सकती थी।\n2. यह विज्ञान ही है जो अंततः मानव जाति की नियति को निर्धारित करेगा।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "32. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. आधुनिक जीवन की विभीषिकाएँ विज्ञान की प्रगति के अपरिहार्य परिणाम हैं।\n2. सत्य के जिस पहलू को अनदेखा किया जा सकता है, वह यह है कि विज्ञान वही है जिसे मनुष्य ने बनाया है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) केवल 2।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "33. यात्रा करते समय जब हम अन्य लोगों से मिलते हैं, तो हम किनके बीच अंतर करना सीखते हैं?",
+                options: [
+                    "(a) कल्पना और समझ",
+                    "(b) समुदाय और राष्ट्रीयता",
+                    "(c) स्थानीय मूल्य और सार्वभौमिक मूल्य",
+                    "(d) मित्र और शत्रु"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) स्थानीय मूल्य और सार्वभौमिक मूल्य।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "34. यात्रा परिच्छेद पर पूर्वधारणाएँ :\n1. यात्रा से मनुष्यों की समझ विकसित होती है।\n2. यात्रा से उनको सहायता मिलती है जो मूलभूत सामान्य मूल्यों को सीखना चाहते हैं।\n3. एक व्यक्ति जिसे यात्रा का दीर्घ अनुभव है, वह लोगों के मध्य मतभेदों को सुलझा सकता है।",
+                options: ["(a) केवल 1 और 2", "(b) केवल 2 और 3", "(c) केवल 1 और 3", "(d) 1, 2 और 3"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) केवल 1 और 2।"
+            },
+            {
+                topic: "संख्या पद्धति",
+                text: "35. मान लीजिए X दो-अंकीय संख्या है और Y उसके अंकों को उलटकर बनी संख्या है। यदि (X + Y) महत्तम दो-अंकीय संख्या है, तो X के संभाव्य मानों की संख्या क्या है?",
+                options: ["(a) 2", "(b) 4", "(c) 6", "(d) 8"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 8। (a + b = 9 के 8 युग्म)।"
+            },
+            {
+                topic: "औसत",
+                text: "36. 6 बालकों का वजन = 7 बालिकाओं का वजन = 3 पुरुषों का वजन = 4 महिलाओं का वजन। यदि महिलाओं का औसत वजन 63 kg है, तो बालकों का औसत वजन क्या है?",
+                options: ["(a) 40 kg", "(b) 42 kg", "(c) 45 kg", "(d) 63 kg"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 42 kg। 4 × 63 = 252 kg ⇒ 252 / 6 = 42 kg।"
+            },
+            {
+                topic: "घड़ी (Clocks)",
+                text: "37. 10:00 a.m. और 2:00 p.m. के बीच में घंटे की सुई और मिनट की सुई कितनी बार संपाती होती हैं?",
+                options: ["(a) 3 बार", "(b) 4 बार", "(c) 5 बार", "(d) 6 बार"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 3 बार।"
+            },
+            {
+                topic: "कैलेंडर",
+                text: "38. वर्ष 2025 का कैलेंडर किस वर्ष के कैलेंडर के समान है?",
+                options: ["(a) 2029", "(b) 2030", "(c) 2031", "(d) 2033"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 2031।"
+            },
+            {
+                topic: "संख्या पद्धति / सम-विषम",
+                text: "39. p, q विषम हैं और r, s सम हैं। कथनों पर विचार कीजिए :\n1. (p - r)²(qs) सम है।\n2. (q - s)q²s सम है।\n3. (q + r)²(p + s) विषम है।",
+                options: ["(a) केवल 1 और 2", "(b) केवल 2 और 3", "(c) केवल 1 और 3", "(d) 1, 2 और 3"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) 1, 2 और 3।"
+            },
+            {
+                topic: "घड़ी (Clock Angle)",
+                text: "40. जब घड़ी 4:25 दर्शाती है, तब दोनों सुइयों के बीच का कोण कितना है?",
+                options: ["(a) 12.5°", "(b) 15°", "(c) 17.5°", "(d) 20°"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 17.5°।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1 (पारंपरिक कक्षाएँ):\nपरंपरागत कक्षाएँ, अधिगम प्रभाविता से अधिक नियत समयावधि पर बल देकर, स्वयं को परिवर्तनशील परिणामों के लिए सौंप देती हैं। कक्षा का अत्याचार यह है कि वहाँ प्रत्येक शिक्षार्थी को एक ही अवधि के लिए एक ही तरीके से व्याख्यानों के एक ही सेट के अधीन किया जाता है... इस तरह डेढ़ दशक की औपचारिक शिक्षा के बाद हम अपने स्नातकों में 10 प्रतिशत रोजगार योग्यता ला पाते हैं।\n\n41. सर्वाधिक तर्कसंगत और विवेकपूर्ण निष्कर्ष :\n1. पारंपरिक कक्षा अधिगम में केन्द्रीय लक्ष्य, सामर्थ्य लाभ करने के बजाय अधिगम की समयावधि है।\n2. पारंपरिक कक्षाएँ सभी के लिए एकसमान पद्धति को बढ़ावा देती हैं और सभी विशिष्टीकरणों को समाप्त कर देती हैं।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 1 और 2 दोनों।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "42. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. चूँकि हमारे देश में बहुत बड़ी संख्या में श्रमिक असंगठित क्षेत्रों में नियोजित हैं, इसलिए भारत को शिक्षा की अपनी वर्तमान प्रणाली बदलने की आवश्यकता नहीं है।\n2. शिक्षा की वर्तमान प्रणाली के साथ भी, भारत पर्याप्त संख्या में कुशल श्रमिक उत्पन्न कर रहा है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2 (किशोर एवं माता-पिता):\nजब कोई बच्चा किशोरावस्था पर पहुँचता है, तब माता-पिता और बच्चे के मध्य टकराव का होना संगत है, चूँकि बच्चा स्वयं को अपने मामले सुलझाने में सक्षम समझने लगता है, जबकि माता-पिता अधिकार प्रेम से भरे होते हैं... उनके द्वारा सुझाए गए विकल्प इतने अधिक सैद्धांतिक होते हैं कि युवा शायद ही उनमें भरोसा रख पाते हैं।\n\n43. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. किशोर अपने माता-पिता के साथ सहज अनुभव नहीं करता है, क्योंकि माता-पिता अधिकार में रखने वाले और हठधर्मी होते हैं।\n2. आधुनिक समय के किशोर में माता-पिता के प्रति अधिक श्रद्धा नहीं है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) केवल 1।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "44. उपर्युक्त परिच्छेद के केन्द्रीय विचार को सर्वोत्तम रूप से दर्शाता है :",
+                options: [
+                    "(a) जब बच्चे वयस्क होने के अपनी राह पर होते हैं, माता-पिता सामान्यतः अधिक सहायता नहीं कर सकते।",
+                    "(b) जब बच्चे किशोरावस्था में पहुँचते हैं, उनके जीवन में माता-पिता का हस्तक्षेप अनावश्यक है।",
+                    "(c) आज के मूल परिवार समुचित रूप से बच्चों के पालन-पोषण करने में समर्थ नहीं हैं।",
+                    "(d) आधुनिक समाजों में, किशोर हठी, अवज्ञाकारी और लापरवाह होते हैं।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) वयस्कता की राह पर माता-पिता अधिक सहायता नहीं कर सकते।"
+            },
+            {
+                topic: "संख्या पद्धति / अंक गणना",
+                text: "45. 260 पृष्ठों की एक पुस्तक को संख्यांकित करने के लिए प्रयुक्त होने वाले अंक पाँच (5) की संख्या कितनी है?",
+                options: ["(a) 55", "(b) 56", "(c) 57", "(d) 60"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 56। 1-99: 20; 100-199: 20; 200-260: 16 बार। कुल = 56 बार।"
+            },
+            {
+                topic: "श्रेणी योग (Number Pattern)",
+                text: "46. अनुक्रम 1, 1, 2, 1, 3, 2, 1, 4, 3, 2, 1, 5, 4, 3, 2,... में प्रथम 28 पदों का योगफल क्या है?",
+                options: ["(a) 83", "(b) 84", "(c) 85", "(d) 86"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 84।"
+            },
+            {
+                topic: "प्रतिशत एवं क्रय मूल्य",
+                text: "47. एक व्यक्ति ₹3,330 में तीन वस्तुएँ P, Q और R खरीदता है। यदि P की कीमत R से 25% अधिक है और R की कीमत Q से 20% अधिक है, तो P की कीमत क्या है?",
+                options: ["(a) ₹1,000", "(b) ₹1,200", "(c) ₹1,250", "(d) ₹1,350"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) ₹1,350। P:R:Q = 150:120:100 = 15:12:10। कुल = 37 इकाई = 3330 ⇒ P = 15 × 90 = ₹1,350।"
+            },
+            {
+                topic: "कूट अंकगणित (Cryptarithmetic)",
+                text: "48. यदि दो-अंकीय संख्याओं AB और CD का योगफल तीन-अंकीय संख्या 1CE है, जहाँ अक्षर A, B, C, D, E भिन्न अंकों को द्योतित करते हैं, तो A का मान क्या है?",
+                options: ["(a) 9", "(b) 8", "(c) 7", "(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 9। AB + CD = 1CE में सैकड़ा 1 प्राप्त करने के लिए A = 9 अनिवार्य है।"
+            },
+            {
+                topic: "क्रमचय-संचय (Inequalities)",
+                text: "49. प्रथम सात धनपूर्ण संख्याओं {1, 2, 3, 4, 5, 6, 7} में से तीन संख्याएँ x, y, z इस प्रकार चुनी जाती हैं कि x > 2y > 3z है। इस प्रकार के कितने भिन्न त्रिक (x, y, z) संभव हैं?",
+                options: ["(a) एक त्रिक", "(b) दो त्रिक", "(c) तीन त्रिक", "(d) चार त्रिक"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) एक त्रिक।"
+            },
+            {
+                topic: "रैखिक समीकरण (Linear Equations)",
+                text: "50. 4 संतरे, 6 आम और 8 सेबों की कीमत = 2 × (1 संतरा, 2 आम और 5 सेब)।\n1. 3 संतरे, 5 आम और 9 सेबों की कुल कीमत = 4 संतरे, 6 आम और 8 सेबों की कीमत।\n2. एक संतरा और एक आम की कुल कीमत = एक सेब की कीमत।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 1 और 2 दोनों।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1 (बेसाल्ट चट्टान एवं कार्बन):\nजब वैज्ञानिकों ने भूमिगत बेसाल्ट चट्टानों में CO2 और जल का मिश्रण पंप किया, तो अम्लीय मिश्रण ने खनिजों को घोलकर चूनापत्थर बना दिया।\n\n51. सर्वाधिक तर्कसंगत और व्यावहारिक सुझाव :",
+                options: [
+                    "(a) यह भवन-निर्माण प्रयोजनों के लिए चूनापत्थर उत्पादन की सस्ती विधि है।",
+                    "(b) इसका उपयोग कार्बन प्रच्छादन (सिक्केस्ट्रेशन) की एक विधि के रूप में किया जा सकता है।",
+                    "(c) इस विधि से बेसाल्ट को खनिजों का अच्छा स्रोत बनाया जा सकता है।",
+                    "(d) चट्टान-विलायक अम्ल का उत्पादन किया जा सकता है।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) इसका उपयोग कार्बन प्रच्छादन (कार्बन सीक्वेस्ट्रेशन) की विधि के रूप में हो सकता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2 (हिमशैल एवं फाइटोप्लैंकटन):\n52. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. विशाल प्लावी हिमशैल, दक्षिणी महासागर की प्राथमिक उत्पादकता और खाद्य-श्रृंखलाओं पर प्रभाव डालते हैं।\n2. विशाल प्लावी हिमशैलों के पिघलने से जलवायु परिवर्तन प्रभाव उत्पन्न हो सकते हैं और विश्व मत्स्य-उद्योग प्रभावित हो सकते हैं।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 1 और 2 दोनों।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-3 (मक्का की इल्ली):\n53. परिच्छेद द्वारा संप्रेषित सर्वाधिक व्यावहारिक संदेश :",
+                options: [
+                    "(a) किसान इल्लियों का उपयोग खरपतवार खाने के लिए कर सकते हैं।",
+                    "(b) यह खोज नैदानिक रूप से उपयोगी प्रतिसूक्ष्मजीवी यौगिकों के विकास में सहायता कर सकती है।",
+                    "(c) यह खोज जैविक, पारिस्थितिक रूप से संधारणीय पीड़कनाशी दवाइयों के विकास में सहायता कर सकती है।",
+                    "(d) इल्लियों को आनुवंशिक रूप से रूपांतरित किया जा सकता है।"
+                ],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) नैदानिक रूप से उपयोगी प्रतिसूक्ष्मजीवी यौगिकों के विकास में सहायक हो सकती है।"
+            },
+            {
+                topic: "संख्या पद्धति / घातांक",
+                text: "54. 32⁵ + 2²⁷ किससे भाज्य है?",
+                options: ["(a) 3", "(b) 7", "(c) 10", "(d) 11"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 3।"
+            },
+            {
+                topic: "संख्या पद्धति / पूर्णांक",
+                text: "55. p और q धन पूर्णांक हैं जो p < q और p + q = k को संतुष्ट करते हैं। k का वह लघुतम मान क्या है, जो p और q को अद्वितीयतः निर्धारित नहीं करता है?",
+                options: ["(a) 3", "(b) 4", "(c) 5", "(d) 6"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 5।"
+            },
+            {
+                topic: "दिशा ज्ञान परीक्षण",
+                text: "56. एक व्यक्ति घर से सीधा 100 m चलता है, बाएँ मुड़कर 100 m, पुनः बाएँ मुड़कर 300 m, फिर दाएँ मुड़कर 100 m चलकर कार्यालय पहुँचता है। यदि कार्यालय उत्तर-पूर्व में है, तो वह प्रारंभ में किस दिशा में चला था?",
+                options: ["(a) उत्तर-पश्चिम", "(b) पश्चिम", "(c) दक्षिण", "(d) दक्षिण-पश्चिम"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) पश्चिम।"
+            },
+            {
+                topic: "दिशा ज्ञान एवं कोण",
+                text: "57. एक व्यक्ति 100 m पश्चिम की ओर चलता है, फिर बाएँ मुड़कर 100 m चलता है। फिर वह दक्षिणावर्त 225° मुड़ता है। अब वह किस दिशा में चल रहा है?",
+                options: ["(a) दक्षिण-पश्चिम", "(b) दक्षिण-पूर्व", "(c) उत्तर-पश्चिम", "(d) उत्तर-पूर्व"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) उत्तर-पूर्व।"
+            },
+            {
+                topic: "कथन एवं निष्कर्ष",
+                text: "58. कथन : भारत विश्व का सबसे बड़ा दूध उत्पादक है।\nनिष्कर्ष-I : भारत विश्व का सबसे बड़ा दूध निर्यातक है।\nनिष्कर्ष-II : भारत दूध का आयात नहीं करता है।",
+                options: [
+                    "(a) केवल निष्कर्ष-I निकलता है",
+                    "(b) केवल निष्कर्ष-II निकलता है",
+                    "(c) निष्कर्ष I और II दोनों निकलते हैं",
+                    "(d) न तो निष्कर्ष-I और न ही निष्कर्ष II निकलता है"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो निष्कर्ष-I और न ही निष्कर्ष II निकलता है।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "59. प्रश्न : m और n के मान क्या हैं?\nकथन-I : m + n > mn और m > n\nकथन-II : m और n का गुणनफल 24 है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ प्रयोग कर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "60. प्रश्न : सॉफ्टवेयर डाउनलोड करने में कितना समय लगेगा?\nकथन-I : सॉफ्टवेयर की साइज़ 12 मेगाबाइट है।\nकथन-II : स्थानांतरण दर 2.4 किलोबाइट प्रति सेकंड है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ प्रयोग कर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1 (मीडिया एवं लोकतंत्र):\nएक मजबूत लोकतंत्र में, वास्तविकता राजनैतिक नेताओं के भाषण और अन्य रूपों में अभिव्यक्त होती है... एक जिम्मेदार मीडिया पर वास्तविकता को बिना विकृत किए प्रसारित करने की जिम्मेदारी होती है।\n\n61. परिच्छेद का मूल भाव :",
+                options: [
+                    "(a) किसी आदर्श लोकतंत्र में जिम्मेदार मीडिया द्वारा वास्तविकता को विकृत नहीं करना चाहिए।",
+                    "(b) मिथ्या समाचार आदर्श लोकतंत्र के जीवन में अंतर्निहित है।",
+                    "(c) अभिव्यक्ति की स्वतंत्रता पर किसी भी प्रकार का प्रतिबंध नहीं होना चाहिए।",
+                    "(d) गैर-जिम्मेदार मीडिया को नियंत्रित नहीं किया जा सकता।"
+                ],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) जिम्मेदार मीडिया द्वारा वास्तविकता को विकृत नहीं करना चाहिए।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2 (घरेलू IoT उपकरण):\n62. सर्वाधिक तर्कसंगत और व्यावहारिक संदेश :",
+                options: [
+                    "(a) उपभोक्ता व्यवहार से विनिर्माण में अधिक पूँजीगत व्यय होगा।",
+                    "(b) उपभोक्ता व्यवहार वाणिज्य वृद्धि को प्रेरित करता है।",
+                    "(c) इंटर-कनेक्टेड उपकरण बहुत सुख-सुविधा देते हैं।",
+                    "(d) अंतर-संबद्ध (इंटरकनेक्टेड) उपकरणों को सुरक्षा जोखिम हो सकती है और घरेलू उपयोगकर्ताओं को निजता (प्राइवेसी) जोखिम हो सकती है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) उपयोगकर्ताओं को सुरक्षा एवं निजता जोखिम हो सकती है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-3 (हरित विकास):\n63. परिच्छेद का मूल भाव :",
+                options: [
+                    "(a) पर्यावरणीय संधारणीयता GDP वृद्धि के लिए अहितकर है।",
+                    "(b) तीव्र आर्थिक विकास के बिना गरीबी उन्मूलन संभव नहीं है।",
+                    "(c) स्थिर, पर्याप्त और समावेशी विकास प्राप्त करने के लिए उच्च पर्यावरण मानकों को बनाए रखना अब एक पूर्वपेक्षा है।",
+                    "(d) पर्यावरणीय निम्नीकरण को रोका नहीं जा सकता।"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) उच्च पर्यावरण मानक समावेशी विकास की पूर्वशर्त हैं।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "64. प्रश्न : x और y के अद्वितीय मान क्या हैं?\nकथन-I : x/y विषम है।\nकथन-II : xy = 12",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "65. प्रश्न : किसे सबसे कम धनराशि प्राप्त हुई?\nकथन-I : X को Y और Z के योग का 4/5 हिस्सा मिला।\nकथन-II : Y को X और Z के योग का 2/7 हिस्सा मिला।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "66. प्रश्न : यदि कक्षा में औसत अंक 60 हैं, तो कक्षा में छात्रों की संख्या कितनी है?\nकथन-I : कक्षा में अधिकतम अंक 70 और न्यूनतम अंक 50 हैं।\nकथन-II : अधिकतम और न्यूनतम अंक छोड़ देने से औसत में कोई अंतर नहीं आता।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) दोनों कथनों का एक-साथ प्रयोग कर भी उत्तर नहीं दिया जा सकता।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "67. प्रश्न : तीन भिन्न अभाज्य संख्याएँ कौन-सी हैं जिनका योगफल अभाज्य है?\nकथन-I : उनका योगफल 23 से कम है।\nकथन-II : उनमें से एक संख्या 5 है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) दोनों कथनों का एक-साथ प्रयोग कर भी उत्तर नहीं दिया जा सकता।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "68. प्रश्न : क्या (x + y) एक पूर्णांक है?\nकथन-I : (2x + y) एक पूर्णांक है।\nकथन-II : (x + 2y) एक पूर्णांक है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) दोनों कथनों का एक-साथ प्रयोग कर भी उत्तर नहीं दिया जा सकता।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "69. प्रश्न : वस्तु p की कीमत क्या है? (कुल ₹50, q = ₹16 न्यूनतम)\nकथन-I : p की कीमत r से अधिक नहीं है।\nकथन-II : r की कीमत p से अधिक नहीं है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है (p = r = ₹17)।"
+            },
+            {
+                topic: "आँकड़ों की पर्याप्तता",
+                text: "70. प्रश्न : क्या P ने Q से अधिक अंक प्राप्त किए?\nकथन-I : P + Q = R + S\nकथन-II : P + S > Q + R",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) दोनों कथनों का एक-साथ प्रयोग कर उत्तर दिया जा सकता है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-1 (काव्य एवं सत्य):\nधर्म और विज्ञान से भिन्न, काव्य पूर्ण सत्यों में कोई विश्वास नहीं करता... काव्य लोकतांत्रिक यथार्थता का पक्षधर बना हुआ है।\n\n71. सर्वाधिक तर्कसंगत संदेश :",
+                options: [
+                    "(a) काव्य ही मनुष्यों में कमियों को पहचानता और स्वीकार करता है।",
+                    "(b) सत्य विज्ञान या धर्म से प्रकट होता है और काव्य सत्य के लिए अरुचिकर है।",
+                    "(c) काव्य रोमानी और काल्पनिक है जबकि विज्ञान सत्य के विषय में है।",
+                    "(d) हिंसा, निरंकुशता और कट्टरता की दुनिया में, काव्य गतिशील विरोध का एक रूप है।"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) काव्य गतिशील विरोध का एक रूप है।"
+            },
+            {
+                topic: "बोधगम्यता (Comprehension)",
+                text: "परिच्छेद-2 (पुष्प का सौन्दर्य):\n72. उपर्युक्त परिच्छेद के आधार पर पूर्वधारणाएँ :\n1. लेखक का विश्वास है कि पुष्प प्रकृति की विलासिता के सृजन हैं।\n2. लेखक पुष्पों की सुंदरता के अतिरिक्त उनकी उपयोगिता पर विश्वास नहीं करता है।",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2।"
+            },
+            {
+                topic: "संख्या पद्धति / आयु",
+                text: "73. P और Q की आयु के अंक परस्पर उल्टे हैं। उनकी आयु में कितना अंतर है?\nकथन-I : P की आयु Q से अधिक है।\nकथन-II : उनकी आयु का योगफल, उनके अंतर का 11/6 गुना है।",
+                options: [
+                    "(a) अकेले कथन I से",
+                    "(b) अकेले किसी भी एक कथन से",
+                    "(c) दोनों कथनों को एक साथ मिलाकर",
+                    "(d) दोनों से भी उत्तर नहीं दिया जा सकता"
+                ],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) दोनों कथनों का एक-साथ प्रयोग कर भी उत्तर नहीं दिया जा सकता।"
+            },
+            {
+                topic: "तार्किक निष्कर्ष",
+                text: "74. मुख्य कथन : प्रदीप या तो एक निर्देशक या एक निर्माता बन जाता है।\nP : प्रदीप निर्देशक है। Q : प्रदीप निर्माता है। R : प्रदीप निर्देशक नहीं है। S : प्रदीप निर्माता नहीं है।",
+                options: ["(a) केवल SP", "(b) केवल RQ", "(c) SP और RQ दोनों", "(d) न तो SP और न ही RQ"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) SP और RQ दोनों।"
+            },
+            {
+                topic: "चिह्न प्रतिस्थापन संक्रिया",
+                text: "75. यदि a + b का अर्थ a - b; a - b का अर्थ a × b; a × b का अर्थ a ÷ b; a ÷ b का अर्थ a + b है, तो 10 + 30 - 100 × 50 ÷ 25 का मान क्या है?",
+                options: ["(a) 15", "(b) 0", "(c) -15", "(d) -25"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) -25। 10 - 30 × 100 ÷ 50 + 25 = 10 - 60 + 25 = -25।"
+            },
+            {
+                topic: "तार्किक असमानताएँ",
+                text: "76. P (>), Q (<), R (≤), S (≥), T (=)।\n1. यदि 2x(S)3y और 3x(T)4z, तो 9y(P)8z\n2. यदि x(Q)2y और y(R)z, तो x(R)z",
+                options: ["(a) केवल 1", "(b) केवल 2", "(c) 1 और 2 दोनों", "(d) न तो 1 और न ही 2"],
+                correctAnswer: 3,
+                solution: "<b>समाधान:</b> (d) न तो 1 और न ही 2।"
+            },
+            {
+                topic: "कोडिंग-डिकोडिंग",
+                text: "77. यदि 'ABCD' को 24 तथा 'EFGH' को 1680 लिखा जाता है, तो 'IJKL' को कैसे लिखा जाएगा?",
+                options: ["(a) 11880", "(b) 11240", "(c) 7920", "(d) 5940"],
+                correctAnswer: 0,
+                solution: "<b>समाधान:</b> (a) 11880। 9 × 10 × 11 × 12 = 11,880।"
+            },
+            {
+                topic: "कोडिंग-डिकोडिंग",
+                text: "78. यदि 'POT' = ATOP, 'TRAP' = APART, तो 'ARENA' को क्या लिखा जाएगा?",
+                options: ["(a) AARENA", "(b) AANREA", "(c) AANEAR", "(d) AANERA"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) AANREA।"
+            },
+            {
+                topic: "संख्या श्रेणी",
+                text: "79. अनुक्रम 3, 14, 39, 84, *, 258 में * के स्थान पर क्या आएगा?",
+                options: ["(a) 150", "(b) 155", "(c) 160", "(d) 176"],
+                correctAnswer: 1,
+                solution: "<b>समाधान:</b> (b) 155। 5³ + 30 = 125 + 30 = 155।"
+            },
+            {
+                topic: "पहेली / समीकरण",
+                text: "80. P, Q, R, S, T संख्या 4, 5, 10, 12, 15 को निरूपित करते हैं। यदि Q - S = 2S और T = R + S + 3 है, तो P + R - T का मान क्या है?",
+                options: ["(a) 1", "(b) 2", "(c) 3", "(d) अपर्याप्त आँकड़ों के कारण निर्धारित नहीं किया जा सकता"],
+                correctAnswer: 2,
+                solution: "<b>समाधान:</b> (c) 3।"
             }
-        }, 1000);
-    }
+        ];
 
-    function renderQuestion(idx) {
-        currentQ = idx;
-        const q = questions[idx];
-        document.getElementById('qNumberTag').innerText = `प्रश्न ${idx + 1} / ${questions.length}`;
-        document.getElementById('qTopicTag').innerText = q.topic;
-        document.getElementById('qText').innerText = q.text;
+        const TOTAL_Q = questions.length;
+        const MARKS_PER_CORRECT = 2.50;
+        const NEGATIVE_MARK = 0.833;
+        const TIME_MINUTES = 120;
 
-        const optsBox = document.getElementById('optionsBox');
-        optsBox.innerHTML = '';
-        const letters = ['A', 'B', 'C', 'D'];
+        document.getElementById('home-q-count').innerText = TOTAL_Q;
 
-        q.options.forEach((opt, i) => {
-            const btn = document.createElement('div');
-            btn.className = `opt-btn ${userAnswers[idx] === i ? 'selected' : ''}`;
-            btn.onclick = () => selectOption(i);
-            btn.innerHTML = `<span class="opt-badge">${letters[i]}</span> <span>${opt}</span>`;
-            optsBox.appendChild(btn);
-        });
+        let totalSeconds = TIME_MINUTES * 60;
+        let timerInterval;
+        let currentQIndex = 0;
+        let userAnswers = new Array(TOTAL_Q).fill(null);
+        let studentName = "";
 
-        document.getElementById('progressFill').style.width = `${((idx + 1) / questions.length) * 100}%`;
-        document.getElementById('nextBtn').innerText = (idx === questions.length - 1) ? "समीक्षा ▶" : "अगला ▶";
-        updatePaletteUI();
-    }
+        function toggleTopicModal() { document.getElementById('topic-modal-overlay').classList.toggle('show'); }
+        function closeTopicModal(e) { if(e.target.id === 'topic-modal-overlay') toggleTopicModal(); }
 
-    function selectOption(optIndex) {
-        userAnswers[currentQ] = optIndex;
-        renderQuestion(currentQ);
-    }
+        function startTest() {
+            studentName = document.getElementById('candidate-name').value.trim();
+            if(!studentName) {
+                alert("कृपया टेस्ट शुरू करने से पहले अपना नाम दर्ज करें!");
+                return;
+            }
+            
+            document.getElementById('display-name-header').innerText = studentName;
+            document.getElementById('res-display-name').innerText = studentName;
 
-    function prevQuestion() {
-        if (currentQ > 0) renderQuestion(currentQ - 1);
-    }
-
-    function nextQuestion() {
-        if (currentQ < questions.length - 1) renderQuestion(currentQ + 1);
-        else togglePaletteModal();
-    }
-
-    function initPalette() {
-        const box = document.getElementById('paletteButtonsBox');
-        box.innerHTML = '';
-        for (let i = 0; i < questions.length; i++) {
-            const b = document.createElement('button');
-            b.className = 'pal-btn';
-            b.id = `pal-${i}`;
-            b.innerText = i + 1;
-            b.onclick = () => { renderQuestion(i); togglePaletteModal(); };
-            box.appendChild(b);
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('test-screen').classList.remove('hidden');
+            
+            initPalette();
+            loadQuestion(0);
+            
+            if(timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                let hrs = Math.floor(totalSeconds / 3600);
+                let mins = Math.floor((totalSeconds % 3600) / 60);
+                let secs = totalSeconds % 60;
+                
+                let timeStr = "";
+                if(hrs > 0) {
+                    timeStr = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                } else {
+                    timeStr = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                }
+                document.getElementById('timer-display').innerText = timeStr;
+                
+                if(totalSeconds <= 0) { clearInterval(timerInterval); submitTest(); }
+            }, 1000);
         }
-    }
 
-    function updatePaletteUI() {
-        for (let i = 0; i < questions.length; i++) {
-            const b = document.getElementById(`pal-${i}`);
-            if (!b) continue;
-            b.className = 'pal-btn';
-            if (userAnswers[i] !== null) b.classList.add('answered');
-            if (i === currentQ) b.classList.add('current');
+        function loadQuestion(index) {
+            currentQIndex = index;
+            document.getElementById('q-counter').innerText = `प्रश्न ${index + 1} / ${TOTAL_Q}`;
+            document.getElementById('q-num-display').innerText = `Q. ${index + 1} / ${TOTAL_Q}`;
+            
+            const q = questions[index];
+            document.getElementById('q-topic-display').innerText = q.topic;
+            document.getElementById('progress-bar').style.width = `${((index + 1) / TOTAL_Q) * 100}%`;
+            document.getElementById('q-text').innerText = q.text;
+            
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+            
+            const letters = ['A', 'B', 'C', 'D'];
+            (q.options || []).forEach((optText, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = `option ${userAnswers[index] === i ? 'selected' : ''}`;
+                optDiv.onclick = () => selectOption(i);
+                optDiv.innerHTML = `<div class="opt-letter">${letters[i]}</div><div class="opt-text">${optText}</div>`;
+                optsContainer.appendChild(optDiv);
+            });
+
+            document.getElementById('next-btn').innerText = (index === TOTAL_Q - 1) ? 'सबमिट करें' : 'अगला ▶';
+            document.getElementById('answered-counter').innerText = `उत्तर दिए: ${userAnswers.filter(ans => ans !== null).length}`;
+            updatePaletteUI();
         }
-    }
 
-    function togglePaletteModal() {
-        document.getElementById('paletteModal').classList.toggle('show');
-    }
-
-    function closeModalOnOverlay(e) {
-        if (e.target.id === 'paletteModal') togglePaletteModal();
-    }
-
-    function confirmSubmit() {
-        if (confirm("क्या आप वाकई अपना संपूर्ण CSAT 2024 टेस्ट सबमिट करना चाहते हैं?")) {
-            finishTest();
+        function selectOption(optIndex) {
+            userAnswers[currentQIndex] = optIndex;
+            loadQuestion(currentQIndex);
         }
-    }
+        
+        function markSkipped() { nextQuestion(); }
+        function nextQuestion() { if (currentQIndex < TOTAL_Q - 1) loadQuestion(currentQIndex + 1); else submitTest(); }
+        function prevQuestion() { if (currentQIndex > 0) loadQuestion(currentQIndex - 1); }
 
-    function finishTest() {
-        clearInterval(timerInterval);
-        document.getElementById('testScreen').classList.add('hidden');
-        document.getElementById('resultScreen').classList.remove('hidden');
-        document.getElementById('btn-palette').style.display = "none";
+        function initPalette() {
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = '';
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'q-grid-btn';
+                btn.id = `pal-btn-${i}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => { loadQuestion(i); togglePalette(); };
+                grid.appendChild(btn);
+            }
+        }
 
-        let correct = 0, wrong = 0, skipped = 0;
-        const solBox = document.getElementById('solutionsContainer');
-        solBox.innerHTML = '';
-        const letters = ['A', 'B', 'C', 'D'];
+        function updatePaletteUI() {
+            for(let i=0; i<TOTAL_Q; i++) {
+                const btn = document.getElementById(`pal-btn-${i}`);
+                if(!btn) continue;
+                btn.className = 'q-grid-btn'; 
+                if (i === currentQIndex) btn.classList.add('status-current');
+                else if (userAnswers[i] !== null) btn.classList.add('status-answered');
+            }
+        }
 
-        questions.forEach((q, idx) => {
-            const userAns = userAnswers[idx];
-            let isCorrect = false;
-
-            if (userAns === null) {
-                skipped++;
-            } else if (userAns === q.correctAnswer) {
-                correct++;
-                isCorrect = true;
+        function togglePalette() {
+            const modal = document.getElementById('palette-modal');
+            const overlay = document.getElementById('overlay');
+            if(modal.classList.contains('open')){
+                modal.classList.remove('open');
+                overlay.style.display = 'none';
             } else {
-                wrong++;
+                updatePaletteUI();
+                modal.classList.add('open');
+                overlay.style.display = 'block';
             }
+        }
 
-            const solCard = document.createElement('div');
-            solCard.className = 'solution-card';
-            solCard.innerHTML = `
-                <div class="sol-meta">
-                    <span>Q${idx + 1}. [${q.topic}]</span>
-                    <span style="color:${userAns === null ? 'var(--skipped)' : isCorrect ? 'var(--correct)' : 'var(--wrong)'}">
-                        ${userAns === null ? 'अनुत्तरित (Skipped)' : isCorrect ? 'सही (+2.50)' : 'गलत (-0.83)'}
-                    </span>
+        function retakeTest() {
+            userAnswers = new Array(TOTAL_Q).fill(null);
+            totalSeconds = TIME_MINUTES * 60;
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('home-screen').classList.remove('hidden');
+        }
+
+        function submitTest() {
+            if(totalSeconds > 0 && !confirm("क्या आप वाकई परीक्षा सबमिट करना चाहते हैं?")) return;
+
+            clearInterval(timerInterval);
+
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            document.getElementById('palette-modal').classList.remove('open');
+            document.getElementById('overlay').style.display = 'none';
+
+            let correct = 0, wrong = 0, skipped = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            let printHTML = `
+                <div class="print-header-box">
+                    <h2>UPSC CIVIL SERVICES (PRELIMINARY) EXAMINATION 2024</h2>
+                    <h3>GENERAL STUDIES PAPER - 2 (CSAT BOOKLET SERIES A)</h3>
+                    <p>अभ्यर्थी का नाम: ${studentName} | अंकन योजना: +2.50, -0.83</p>
+                    <div class="print-score-row">
+                        <div>कुल अंक: <span style="color: #000;" id="p-score"></span> / ${(TOTAL_Q * MARKS_PER_CORRECT).toFixed(2)}</div>
+                        <div>सही: <span style="color: #10b981;" id="p-correct"></span></div>
+                        <div>गलत: <span style="color: #ef4444;" id="p-wrong"></span></div>
+                        <div>छूटे: <span style="color: #64748b;" id="p-skipped"></span></div>
+                    </div>
                 </div>
-                <div style="font-weight:600; margin-bottom:8px; white-space:pre-line;">${q.text}</div>
-                <div style="font-size:12.5px; color:var(--text-muted); margin-bottom:4px;">
-                    आपका उत्तर: <b>${userAns !== null ? `(${letters[userAns]}) ${q.options[userAns]}` : 'कोई नहीं'}</b>
-                </div>
-                <div style="font-size:12.5px; color:var(--correct); font-weight:bold;">
-                    आधिकारिक उत्तर: (${letters[q.correctAnswer]}) ${q.options[q.correctAnswer]}
-                </div>
-                <div class="sol-explanation">${q.solution}</div>
             `;
-            solBox.appendChild(solCard);
-        });
 
-        const score = (correct * 2.50) - (wrong * 0.833);
-        document.getElementById('finalScore').innerText = Math.max(0, score).toFixed(2);
-        document.getElementById('statCorrect').innerText = correct;
-        document.getElementById('statWrong').innerText = wrong;
-        document.getElementById('statSkipped').innerText = skipped;
+            questions.forEach((q, idx) => {
+                const uAns = userAnswers[idx];
+                let statusColor = '', statusText = '', printStatusColor = '';
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-</script>
+                if (uAns === null) {
+                    skipped++; statusColor = 'var(--skipped)'; statusText = 'अनुत्तरित (SKIPPED)'; printStatusColor = '#64748b';
+                } else if (uAns === q.correctAnswer) {
+                    correct++; statusColor = 'var(--correct)'; statusText = 'सही (CORRECT)'; printStatusColor = '#10b981';
+                } else {
+                    wrong++; statusColor = 'var(--wrong)'; statusText = 'गलत (INCORRECT)'; printStatusColor = '#ef4444';
+                }
+
+                const uAnsText = uAns !== null ? `(${letters[uAns]}) ${q.options[uAns]}` : "कोई नहीं (Unattempted)";
+                const cAnsText = `(${letters[q.correctAnswer]}) ${q.options[q.correctAnswer]}`;
+                
+                reviewContainer.innerHTML += `
+                    <div class="review-box">
+                        <div class="q-header-row" style="margin-bottom:6px;">
+                           <span style="font-size:13px; color:var(--primary); font-weight:bold;">Q${idx + 1}.</span>
+                           <span class="q-topic-tag">${q.topic}</span>
+                        </div>
+                        <div class="review-q">${q.text}</div>
+                        <div class="ans-row"><div class="ans-lbl">आपका उत्तर:</div> <div class="ans-val" style="color:${statusColor}">${uAnsText}</div></div>
+                        <div class="ans-row"><div class="ans-lbl">सही उत्तर:</div> <div class="ans-val" style="color:var(--correct)">${cAnsText}</div></div>
+                        <div style="color:${statusColor}; font-size:11px; font-weight:bold; margin-top:2px;">${statusText}</div>
+                        <div class="solution-box"><div class="solution-title">💡 विस्तृत समाधान:</div>${q.solution}</div>
+                    </div>
+                `;
+
+                let optionsHTML = '';
+                (q.options || []).forEach((opt, i) => { optionsHTML += `<div>(${letters[i]}) ${opt}</div>`; });
+                printHTML += `
+                    <div class="print-q-box">
+                        <div class="print-q-head"><span>Q${idx + 1}.</span><span class="print-q-topic">${q.topic}</span></div>
+                        <div class="print-q-text">${q.text}</div>
+                        <div class="print-options-grid">${optionsHTML}</div>
+                        <div class="print-ans-row"><strong>आपका उत्तर:</strong> <span style="color:${printStatusColor}">${uAnsText}</span></div>
+                        <div class="print-ans-row"><strong>सही उत्तर:</strong> <span style="color:#10b981">${cAnsText}</span></div>
+                        <div class="print-sol-box"><div class="print-sol-lbl">व्याख्या:</div>${q.solution}</div>
+                        
+                        <div class="page-footer-credit">
+                            <span class="author-name">SACHIN SHARMA · <span class="pink-tag">𝚾 𝚫 𝚬 𝚸 · ༎🥀</span></span>
+                            <a href="https://t.me/Avigat1210" target="_blank">✈️ t.me/Avigat1210</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            printHTML += `
+                <div class="final-telegram-banner">
+                    <h1>TELEGRAM ID @Avigat1210</h1>
+                    <p style="font-weight: bold; color: #333; margin-top: 4px;">UPSC CSE Official Test Solutions & Study Materials</p>
+                    <a href="https://t.me/Avigat1210" target="_blank">✈️ t.me/Avigat1210 पर जुड़ें</a>
+                </div>
+            `;
+
+            document.getElementById('print-content').innerHTML = printHTML;
+
+            let marks = (correct * MARKS_PER_CORRECT) - (wrong * NEGATIVE_MARK);
+            if(marks < 0) marks = 0;
+
+            let timeTakenSec = (TIME_MINUTES * 60) - totalSeconds;
+            let m = Math.floor(timeTakenSec / 60);
+            let s = timeTakenSec % 60;
+            let avgTime = Math.round(timeTakenSec / TOTAL_Q);
+            let accuracy = (correct + wrong) > 0 ? Math.round((correct / (correct + wrong)) * 100) : 0;
+
+            document.getElementById('final-score').innerHTML = marks.toFixed(2) + '<span style="font-size: 16px; color: var(--text-muted);"> / ' + (TOTAL_Q * MARKS_PER_CORRECT).toFixed(2) + '</span>';
+            
+            document.getElementById('stat-correct').innerText = correct;
+            document.getElementById('stat-wrong').innerText = wrong;
+            document.getElementById('stat-skipped').innerText = skipped;
+            document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+            document.getElementById('stat-time').innerText = `${m}m ${s}s`;
+            document.getElementById('stat-avg-time').innerText = `${avgTime}s`;
+
+            document.getElementById('p-score').innerText = marks.toFixed(2);
+            document.getElementById('p-correct').innerText = correct;
+            document.getElementById('p-wrong').innerText = wrong;
+            document.getElementById('p-skipped').innerText = skipped;
+            
+            window.scrollTo(0,0);
+        }
+    </script>
 </body>
 </html>
