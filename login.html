@@ -56,6 +56,11 @@
   }
   .auth-input:focus { border-color: var(--gold); }
   
+  .masked-mobile {
+    -webkit-text-security: disc;
+    letter-spacing: 2px;
+  }
+
   .toggle-mask-btn {
     position: absolute; right: 12px; top: 12px; background: transparent;
     border: none; color: #94a3b8; font-size: 16px; cursor: pointer;
@@ -81,48 +86,36 @@
   <h2>UPSC ASPIRANT PORTAL</h2>
   <div class="brand-sub">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
 
-  <!-- NOTICE BOX -->
   <div class="notice-banner" id="noticeBox"></div>
 
-  <div class="auth-box">
+  <form id="authForm" class="auth-box" onsubmit="event.preventDefault(); processAuth();">
     <div id="registerOnlyFields">
       <label class="input-label">पूरा नाम (Candidate Full Name):</label>
-      <input type="text" id="candName" class="auth-input" placeholder="उदा. सचिन शर्मा">
+      <input type="text" id="candName" class="auth-input" placeholder="उदा. सचिन शर्मा" autocomplete="off">
 
       <label class="input-label">लक्ष्य / संस्थान (Dream / Academy):</label>
-      <input type="text" id="candDistrict" class="auth-input" placeholder="उदा. LBSNAA, Mussoorie">
+      <input type="text" id="candDistrict" class="auth-input" placeholder="उदा. LBSNAA, Mussoorie" autocomplete="off">
     </div>
 
     <label class="input-label">मोबाइल नंबर (10-Digit Indian Mobile):</label>
     <div class="input-wrapper">
-      <input type="password" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10" inputmode="numeric" style="padding-right: 40px;">
+      <input type="tel" id="candMobile" class="auth-input" placeholder="उदा. 98XXXXXXXX" maxlength="10" inputmode="numeric" autocomplete="off" style="padding-right: 42px;">
       <button type="button" class="toggle-mask-btn" onclick="toggleMobileMask()" id="maskIcon">👁️</button>
     </div>
 
     <label class="input-label">4-अंकों का गुप्त PIN (4-Digit PIN):</label>
-    <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" inputmode="numeric" style="letter-spacing: 4px; font-size: 18px;">
+    <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="off" style="letter-spacing: 4px; font-size: 18px;">
 
-    <button type="button" class="btn-submit" id="authBtn" onclick="processAuth()">सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔</button>
+    <button type="submit" class="btn-submit" id="authBtn">सुरक्षित कार्ड बनाएँ एवं प्रवेश करें ➔</button>
 
     <div class="toggle-text">
       <span id="toggleQuestion">पहले से रजिस्टर्ड हैं?</span> 
       <a onclick="toggleAuthMode()" id="toggleBtn">यहाँ लॉगिन करें</a>
     </div>
-  </div>
+  </form>
 </div>
 
 <script>
-  // AUTO REDIRECT IF ALREADY LOGGED IN
-  const savedUser = localStorage.getItem('upsc_logged_user');
-  if (savedUser) {
-    try {
-      const u = JSON.parse(savedUser);
-      if (u && u.full_name && u.mobile) {
-        window.location.replace("index.html");
-      }
-    } catch(e) {}
-  }
-
   const SB_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
   const SB_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
 
@@ -131,12 +124,12 @@
   function toggleMobileMask() {
     const mobInput = document.getElementById('candMobile');
     const maskIcon = document.getElementById('maskIcon');
-    if (mobInput.type === "password") {
-      mobInput.type = "tel";
-      maskIcon.innerText = "🙈";
-    } else {
-      mobInput.type = "password";
+    if (mobInput.classList.contains('masked-mobile')) {
+      mobInput.classList.remove('masked-mobile');
       maskIcon.innerText = "👁️";
+    } else {
+      mobInput.classList.add('masked-mobile');
+      maskIcon.innerText = "🙈";
     }
   }
 
@@ -188,7 +181,7 @@
         "Prefer": "return=minimal"
       },
       body: JSON.stringify(userObj)
-    }).catch(err => console.log("Sync logged"));
+    }).catch(err => console.log("DB background sync queued"));
   }
 
   async function checkUserInSupabase(mobile) {
@@ -223,7 +216,7 @@
     }
 
     if (!pin) {
-      showNotice("<b>PIN अनिवार्य है!</b> कृपया 4-अंकों का गुप्त PIN दर्ज करें।");
+      showNotice("<b>PIN अनिवार्य है!</b> कृपया अपना 4-अंकों का गुप्त PIN दर्ज करें।");
       return;
     }
     if (pin.length !== 4 || isNaN(pin)) {
@@ -251,10 +244,9 @@
 
       setTimeout(() => {
         window.location.replace("index.html");
-      }, 300);
+      }, 250);
 
     } else {
-      // Login Mode
       authBtn.innerText = "सत्यापन हो रहा है...";
       authBtn.disabled = true;
 
