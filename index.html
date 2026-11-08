@@ -40,7 +40,12 @@
   #splashScreen {
     position: fixed; inset: 0; background: #030712; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    color: white; transition: opacity 0.5s ease;
+    color: white; transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+  #splashScreen.hide-splash {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
   #splashScreen img {
     width: 120px; height: auto; object-fit: contain;
@@ -164,14 +169,13 @@
     border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px;
   }
 
-  /* AUTH FORM STYLES */
   .auth-input {
     width: 100%; padding: 11px 14px; border-radius: 8px; border: 1.5px solid var(--border);
     margin-bottom: 10px; font-size: 13.5px; background: var(--bg); color: var(--text); outline: none;
   }
   .auth-input:focus { border-color: var(--gold); }
 
-  /* DIGITAL ASPIRANT CARD */
+  /* DIGITAL CARD */
   .aspirant-card {
     width: 100%;
     background: linear-gradient(145deg, #0b1120 0%, #030712 100%);
@@ -246,6 +250,7 @@
   </a>
 </div>
 
+<!-- SPLASH SCREEN -->
 <div id="splashScreen">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
   <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#fef3c7;">SACHIN SHARMA PORTAL</h2>
@@ -390,21 +395,40 @@
 </footer>
 
 <script>
-  // SUPABASE CONFIGURATION
+  // FAILSAFE SPLASH REMOVER: अधिकतम 800ms में स्प्लैश स्क्रीन स्वतः हट जाएगी
+  function dismissSplash() {
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+      splash.classList.add('hide-splash');
+      setTimeout(() => { splash.style.display = 'none'; }, 400);
+    }
+  }
+  setTimeout(dismissSplash, 800);
+
+  // SUPABASE CLIENT (Safe Initializer)
   const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let supabase = null;
+
+  function getSupabase() {
+    if (!supabase && window.supabase && window.supabase.createClient) {
+      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+    return supabase;
+  }
 
   let isRegisterMode = true;
 
-  // AUTH STATE LOGIC
   function checkExistingSession() {
-    const saved = localStorage.getItem('upsc_logged_user');
-    if (saved) {
-      const user = JSON.parse(saved);
-      document.getElementById('userBtnLabel').innerText = user.full_name.split(' ')[0] + " (Card 🪪)";
-      return user;
-    }
+    try {
+      const saved = localStorage.getItem('upsc_logged_user');
+      if (saved) {
+        const user = JSON.parse(saved);
+        const namePart = (user.full_name || 'Aspirant').split(' ')[0];
+        document.getElementById('userBtnLabel').innerText = namePart + " (Card 🪪)";
+        return user;
+      }
+    } catch(e) {}
     document.getElementById('userBtnLabel').innerText = "लॉगिन / डिजिटल कार्ड";
     return null;
   }
@@ -445,6 +469,7 @@
   async function submitAuthForm() {
     const mobile = document.getElementById('authMobile').value.trim();
     const pin = document.getElementById('authPin').value.trim();
+    const client = getSupabase();
 
     if (mobile.length !== 10 || isNaN(mobile)) {
       alert("कृपया सही 10-अंकों का मोबाइल नंबर दर्ज करें!");
@@ -452,6 +477,11 @@
     }
     if (pin.length !== 4 || isNaN(pin)) {
       alert("कृपया 4-अंकों का गुप्त PIN दर्ज करें!");
+      return;
+    }
+
+    if (!client) {
+      alert("डेटाबेस से संपर्क हो रहा है, कृपया 2 सेकंड बाद पुनः क्लिक करें!");
       return;
     }
 
@@ -464,12 +494,11 @@
         return;
       }
 
-      // 1. Check if user already exists
-      const { data: existing } = await supabase
+      const { data: existing } = await client
         .from('aspirants')
         .select('*')
         .eq('mobile', mobile)
-        .single();
+        .maybeSingle();
 
       if (existing) {
         alert("यह मोबाइल नंबर पहले से रजिस्टर्ड है! कृपया लॉगिन करें।");
@@ -486,7 +515,7 @@
         roll_id: rollId
       };
 
-      const { data, error } = await supabase
+      const { data, error } = await client
         .from('aspirants')
         .insert([newUser])
         .select()
@@ -502,15 +531,14 @@
       }
 
     } else {
-      // Login Mode
-      const { data: user, error } = await supabase
+      const { data: user, error } = await client
         .from('aspirants')
         .select('*')
         .eq('mobile', mobile)
-        .single();
+        .maybeSingle();
 
       if (error || !user) {
-        alert("यह मोबाइल नंबर नहीं मिला! कृपया पहले रजिस्ट्रेशन करें।");
+        alert("यह मोबाइल नंबर नहीं मिला! कृपया पहले नया कार्ड बनाएँ।");
         toggleAuthMode();
         return;
       }
@@ -530,7 +558,7 @@
   function showDigitalCard(user) {
     document.getElementById('cardName').innerText = user.full_name;
     document.getElementById('cardRollId').innerText = user.roll_id;
-    document.getElementById('cardDistrict').innerText = user.district;
+    document.getElementById('cardDistrict').innerText = user.district || "Rajasthan";
     document.getElementById('cardModal').classList.add('active');
   }
 
@@ -546,7 +574,7 @@
     }
   }
 
-  // PORTAL YEARS & AUTO-DETECTION
+  // YEARS RANGE (2026 to 2013)
   const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
 
   function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
@@ -561,12 +589,16 @@
     }
   }
 
-  async function buildPortal() {
+  function buildPortal() {
     const gsList = document.getElementById('gs-list');
     const csatList = document.getElementById('csat-list');
 
+    if (!gsList || !csatList) return;
+    gsList.innerHTML = '';
+    csatList.innerHTML = '';
+
     for (let yr of years) {
-      // GS Paper 1
+      // 1. GS Paper 1
       const gsUrl = `prelims/gs1_${yr}.html`;
       const gsItem = document.createElement('div');
       gsItem.className = 'year-item';
@@ -584,7 +616,7 @@
         });
       }
 
-      // CSAT Paper 2
+      // 2. CSAT Paper 2
       const csatUrl = `prelims/csat_${yr}.html`;
       const csatItem = document.createElement('div');
       csatItem.className = 'year-item';
@@ -604,14 +636,13 @@
     }
   }
 
-  window.addEventListener('load', () => {
+  window.addEventListener('DOMContentLoaded', () => {
     buildPortal();
     checkExistingSession();
-    setTimeout(() => {
-      const splash = document.getElementById('splashScreen');
-      splash.style.opacity = '0';
-      setTimeout(() => splash.classList.add('hidden'), 500);
-    }, 1200);
+  });
+
+  window.addEventListener('load', () => {
+    dismissSplash();
   });
 
   function toggleDark() {
