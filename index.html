@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="https://files.catbox.moe/84df9j.jpg">
 <meta name="theme-color" content="#0d192b">
 
-<!-- Supabase CDN Client -->
+<!-- Supabase Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -37,19 +37,18 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
   body { background: var(--bg); color: var(--text); padding-bottom: 70px; transition: background 0.3s, color 0.3s; position: relative; }
   
-  /* SPLASH SCREEN: PURE CSS AUTO-HIDE (NEVER GETS STUCK) */
+  /* SPLASH SCREEN: PURE CSS + FAILSAFE TIMEOUT */
   #splashScreen {
     position: fixed; inset: 0; background: #030712 !important; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     color: white; text-align: center; padding: 20px;
-    animation: fadeOutSplash 0.4s ease 1.2s forwards;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
-  @keyframes fadeOutSplash {
-    0% { opacity: 1; visibility: visible; }
-    99% { opacity: 0; visibility: visible; }
-    100% { opacity: 0; visibility: hidden; display: none; pointer-events: none; }
+  #splashScreen.hide-splash {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
-
   #splashScreen img {
     width: 140px; height: auto; object-fit: contain;
     border-radius: 14px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
@@ -59,13 +58,14 @@
   
   .splash-title {
     font-size: 19px; font-family: Georgia, serif; letter-spacing: 1.5px;
-    color: #fef3c7; margin-bottom: 8px; text-transform: uppercase; font-weight: 800;
+    color: #fef3c7; margin-bottom: 6px; text-transform: uppercase; font-weight: 800;
   }
   
+  /* RED BRANDING CREDIT */
   .splash-credit {
-    font-size: 13px; font-weight: 900; letter-spacing: 2px;
+    font-size: 12.5px; font-weight: 900; letter-spacing: 1.5px;
     color: #ef4444 !important; text-transform: uppercase; margin-bottom: 18px;
-    text-shadow: 0 0 12px rgba(239, 68, 68, 0.5);
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
   }
 
   .loader-bar { width: 140px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
@@ -132,7 +132,7 @@
   .year-item span { font-size: 11px; color: #64748b; font-weight: normal; }
   body.dark-mode .year-item span { color: #94a3b8; }
 
-  /* BUTTON STYLES */
+  /* BUTTON STATES */
   .btn-test { 
     display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); 
     color: white !important; padding: 7px 14px; border-radius: 6px; 
@@ -142,11 +142,11 @@
   .btn-test:active { transform: scale(0.96); }
 
   .btn-locked {
-    display: inline-block; background: #475569; color: #fef08a !important; 
+    display: inline-block; background: #334155; color: #fde047 !important; 
     padding: 7px 12px; border-radius: 6px; text-decoration: none; font-size: 11.5px; 
-    font-weight: bold; border: none; cursor: pointer; text-align: center; transition: 0.2s;
+    font-weight: bold; border: 1px solid rgba(253, 224, 71, 0.3); cursor: pointer; text-align: center; transition: 0.2s;
   }
-  .btn-locked:hover { background: #334155; }
+  .btn-locked:hover { background: #1e293b; }
 
   .btn-soon { 
     display: inline-block; background: #64748b; color: white !important; 
@@ -274,7 +274,7 @@
 </div>
 
 <!-- SPLASH SCREEN -->
-<div id="splashScreen" onclick="this.style.display='none'">
+<div id="splashScreen" onclick="dismissSplash()">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
   <div class="splash-title">SACHIN SHARMA PORTAL</div>
   <div class="splash-credit">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
@@ -432,6 +432,16 @@
 </footer>
 
 <script>
+  // FAILSAFE SPLASH SCREEN DISMISSAL
+  function dismissSplash() {
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+      splash.classList.add('hide-splash');
+      setTimeout(() => { splash.style.display = 'none'; }, 400);
+    }
+  }
+  setTimeout(dismissSplash, 1200);
+
   // SUPABASE CONFIGURATION
   const SUPABASE_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
@@ -443,14 +453,14 @@
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       }
     } catch(err) {
-      console.warn("Supabase Init:", err);
+      console.warn("Supabase init note:", err);
     }
     return supabase;
   }
 
   let isRegisterMode = true;
 
-  // SESSION CHECK
+  // SESSION MANAGEMENT
   function getLoggedInUser() {
     try {
       const saved = localStorage.getItem('upsc_logged_user');
@@ -503,7 +513,6 @@
     }
   }
 
-  // LOCK & NOTICES
   function showLoginRequired() {
     document.getElementById('loginRequiredModal').classList.add('active');
   }
@@ -518,14 +527,14 @@
   function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
   function closeNotice() { document.getElementById('noticeModal').classList.remove('active'); }
 
-  // AUTH SUBMISSION (ONLINE + OFFLINE FALLBACK)
+  // AUTH SUBMISSION (ONLINE DB + OFFLINE SECURE SESSION)
   async function submitAuthForm() {
     const mobile = document.getElementById('authMobile').value.trim();
     const pin = document.getElementById('authPin').value.trim();
     const client = initSupabase();
 
     if (mobile.length !== 10 || isNaN(mobile)) {
-      alert("कृपया सही 10-अंकों का मोबाइल नंबर दर्ज करें!");
+      alert("कृपया 10-अंकों का सही मोबाइल नंबर दर्ज करें!");
       return;
     }
     if (pin.length !== 4 || isNaN(pin)) {
@@ -585,7 +594,7 @@
         } catch(e) {}
       }
 
-      // Check local session matching
+      // Local storage matching fallback
       const local = getLoggedInUser();
       if (local && local.mobile === mobile && local.pin === pin) {
         closeAuthModal();
@@ -595,7 +604,7 @@
         return;
       }
 
-      alert("उपयोगकर्ता नहीं मिला! कृपया पहले नया कार्ड बनाएँ।");
+      alert("यह मोबाइल नंबर नहीं मिला! कृपया पहले नया कार्ड बनाएँ।");
       toggleAuthMode();
     }
   }
@@ -620,7 +629,7 @@
     }
   }
 
-  // STATIC TEST YEARS & BUTTON RENDERING
+  // ALL YEARS (2026 to 2013) RENDERING (IMMEDIATE & DEPENDABLE)
   const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
 
   function renderAllButtons() {
@@ -677,10 +686,16 @@
     }
   }
 
-  // INITIAL RUN
+  // EXECUTE IMMEDIATELY ON DOM LOAD
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAllButtons();
+    updateProfileButtonUI();
+    initSupabase();
+  });
+
+  // FALLBACK INSTANT RENDER
   renderAllButtons();
   updateProfileButtonUI();
-  initSupabase();
 
   function toggleDark() {
     document.body.classList.toggle('dark-mode');
