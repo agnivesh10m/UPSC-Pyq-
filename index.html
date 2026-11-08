@@ -14,9 +14,10 @@
 <!-- Html2Canvas for ID Card Download -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-<!-- GATEKEEPER CHECK: बिना लॉगिन के अंदर नहीं जा सकते -->
+<!-- GATEKEEPER CHECK: लॉगिन हमेशा याद रहेगा -->
 <script>
-  if (!localStorage.getItem('upsc_logged_user')) {
+  const logged = localStorage.getItem('upsc_logged_user');
+  if (!logged) {
     window.location.replace("login.html");
   }
 </script>
@@ -44,7 +45,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
   body { background: var(--bg); color: var(--text); padding-bottom: 70px; transition: background 0.3s, color 0.3s; position: relative; }
   
-  /* SPLASH SCREEN */
   #splashScreen {
     position: fixed; inset: 0; background: #030712; z-index: 999999;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -66,16 +66,6 @@
   .loader-bar { width: 130px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
   .loader-bar::after { content: ''; display: block; width: 40%; height: 100%; background: var(--gold); animation: loadAnim 1s infinite alternate; }
   @keyframes loadAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
-
-  /* UPDATE BANNER NOTIFICATION */
-  .update-notification-bar {
-    background: linear-gradient(90deg, #ea580c, #c2410c); color: white;
-    padding: 8px 14px; font-size: 11.5px; font-weight: bold; text-align: center;
-    position: relative; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .update-notification-bar button {
-    background: transparent; border: none; color: white; font-size: 14px; cursor: pointer; margin-left: 10px;
-  }
 
   header { 
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
@@ -137,7 +127,6 @@
   .year-item span { font-size: 11px; color: #64748b; font-weight: normal; }
   body.dark-mode .year-item span { color: #94a3b8; }
 
-  /* BUTTON STATES */
   .btn-test { 
     display: inline-block; background: linear-gradient(135deg, #d97706, #b45309); 
     color: white !important; padding: 7px 14px; border-radius: 6px; 
@@ -190,7 +179,7 @@
     border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px;
   }
 
-  /* DIGITAL ASPIRANT CARD (GOLDEN LOOK) */
+  /* DIGITAL CARD */
   .aspirant-card {
     width: 100%;
     background: linear-gradient(145deg, #0b1120 0%, #030712 100%);
@@ -265,13 +254,7 @@
   </a>
 </div>
 
-<!-- LATEST UPDATE NOTIFICATION -->
-<div class="update-notification-bar" id="updateBar">
-  <span>📢 <b>नया अपडेट (2026):</b> UPSC Prelims 2025 GS-1 एवं CSAT Paper-2 आधिकारिक उत्तर कुंजी सहित लाइव कर दिए गए हैं!</span>
-  <button onclick="document.getElementById('updateBar').style.display='none'">✕</button>
-</div>
-
-<!-- SPLASH SCREEN WITH RED BRANDING -->
+<!-- SPLASH SCREEN -->
 <div id="splashScreen">
   <img src="https://files.catbox.moe/84df9j.jpg" alt="SACHIN SHARMA LOGO">
   <h2 style="font-size:18px; font-family:Georgia,serif; letter-spacing:1px; color:#fef3c7; margin-bottom: 6px;">SACHIN SHARMA PORTAL</h2>
@@ -279,7 +262,7 @@
   <div class="loader-bar"></div>
 </div>
 
-<!-- COMING SOON NOTICE MODAL -->
+<!-- NOTICE MODAL -->
 <div class="modal-overlay" id="noticeModal" onclick="closeNotice()">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div style="font-size:32px; margin-bottom:6px;">⏳</div>
@@ -317,7 +300,7 @@
             <div><label>माध्यम:</label> <b>हिन्दी</b></div>
           </div>
           <div class="meta-row">
-            <div><label>स्थान:</label> <b id="cardDistrict">Rajasthan</b></div>
+            <div><label>स्थान:</label> <b id="cardDistrict">LBSNAA, Mussoorie</b></div>
           </div>
         </div>
       </div>
@@ -398,7 +381,28 @@
 </footer>
 
 <script>
-  // USER SESSION SETUP
+  // PUSH NOTIFICATION (WHATSAPP STYLE BROWSER NOTIFICATION)
+  function triggerSystemNotification() {
+    if ("Notification" in window) {
+      if (Notification.permission === "granted") {
+        new Notification("UPSC Master Portal · Sachin Sharma", {
+          body: "📢 नया टेस्ट लाइव: UPSC CSAT 2025 Paper-2 हल सहित उपलब्ध है!",
+          icon: "https://files.catbox.moe/84df9j.jpg"
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            new Notification("UPSC Master Portal · Sachin Sharma", {
+              body: "📢 स्वागत है! UPSC 2013-2026 टेस्ट सीरीज़ में आपका कार्ड सक्रिय है।",
+              icon: "https://files.catbox.moe/84df9j.jpg"
+            });
+          }
+        });
+      }
+    }
+  }
+
+  // GET SAVED SESSION
   function getUserData() {
     try {
       const saved = localStorage.getItem('upsc_logged_user');
@@ -415,7 +419,7 @@
     if (currentUser) {
       document.getElementById('cardName').innerText = currentUser.full_name;
       document.getElementById('cardRollId').innerText = currentUser.roll_id;
-      document.getElementById('cardDistrict').innerText = currentUser.district || "Rajasthan";
+      document.getElementById('cardDistrict').innerText = currentUser.district || "LBSNAA, Mussoorie";
       document.getElementById('cardModal').classList.add('active');
     }
   }
@@ -433,8 +437,6 @@
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
-    } else {
-      alert("कार्ड डाउनलोड हो रहा है, कृपया स्क्रीनशॉट लें!");
     }
   }
 
@@ -445,7 +447,7 @@
     }
   }
 
-  // YEARS RANGE: 2026 to 2013
+  // YEARS RANGE (2026 to 2013)
   const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013];
 
   function showNotice() { document.getElementById('noticeModal').classList.add('active'); }
@@ -503,9 +505,9 @@
     }
   }
 
-  // AUTO DISMISS SPLASH SCREEN IN EXACTLY 1.2 SECONDS
   window.addEventListener('load', () => {
     buildPortal();
+    triggerSystemNotification();
     setTimeout(() => {
       const splash = document.getElementById('splashScreen');
       if (splash) {
