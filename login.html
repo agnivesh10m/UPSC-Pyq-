@@ -93,7 +93,7 @@
   <div class="brand-sub">DEVELOPED BY SACHIN SHARMA · 𝚾 𝚫 𝚬 𝚸 · ༎🥀</div>
 
   <div class="notice-banner">
-    📱 <b>महत्वपूर्ण सूचना:</b> कृपया वही मोबाइल नंबर दर्ज करें जो आपके <b>Telegram</b> अकाउंट से जुड़ा हुआ है, ताकि आपके टेलीग्राम पर OTP भेजा जा सके।
+    🔒 <b>सुरक्षित पोर्टल:</b> यह पोर्टल केवल अधिकृत अभ्यर्थियों के लिए है। कृपया अपना वैध मोबाइल नंबर और 4-अंकों का गुप्त PIN दर्ज करें।
   </div>
 
   <div class="error-banner" id="noticeBox"></div>
@@ -117,26 +117,20 @@
     <label class="input-label">4-अंकों का गुप्त PIN (4-Digit PIN):</label>
     <input type="password" id="candPin" class="auth-input" placeholder="••••" maxlength="4" inputmode="numeric" autocomplete="current-password" style="letter-spacing: 4px; font-size: 18px;">
 
-    <!-- OTP Field (Hidden Initially) -->
-    <div id="otpFieldContainer" class="hidden">
-      <label class="input-label" style="color: var(--primary);">Telegram पर भेजा गया 4-अंकों का OTP दर्ज करें:</label>
-      <input type="text" id="otpInput" class="auth-input" placeholder="उदा. 4829" maxlength="4" inputmode="numeric" autocomplete="one-time-code" style="letter-spacing: 4px; font-size: 18px; border-color: var(--gold);">
-    </div>
-
-    <button type="submit" class="btn-submit" id="authBtn">Telegram पर OTP भेजें ➔</button>
+    <button type="submit" class="btn-submit" id="authBtn">पोर्टल में प्रवेश करें ➔</button>
 
     <div class="toggle-text" id="toggleContainer">
-      <span id="toggleQuestion">पहले से रजिस्टर्ड हैं?</span> 
-      <a onclick="toggleAuthMode()" id="toggleBtn">यहाँ लॉगिन करें</a>
+      <span id="toggleQuestion">नया कार्ड बनाना चाहते हैं?</span> 
+      <a onclick="toggleAuthMode()" id="toggleBtn">यहाँ रजिस्ट्रेशन करें</a>
     </div>
   </form>
 </div>
 
 <script>
-  const RENDER_API_URL = "https://otp-07dc.onrender.com"; // Render Telegram Microservice URL
+  const SB_URL = "https://prghkjmjbfqrzntpftct.supabase.co";
+  const SB_KEY = "sb_publishable_0QygXoWgf2ixbz0AfEZy9g_F6Rcbuy7";
 
-  let isRegisterMode = true;
-  let isOtpSentState = false;
+  let isRegisterMode = false; // बाय डिफॉल्ट लॉगिन मोड रहेगा
 
   function toggleMobileMask() {
     const mobInput = document.getElementById('candMobile');
@@ -170,30 +164,56 @@
   function toggleAuthMode() {
     hideNotice();
     isRegisterMode = !isRegisterMode;
-    isOtpSentState = false;
     
     const regFields = document.getElementById('registerOnlyFields');
     const authBtn = document.getElementById('authBtn');
     const toggleQ = document.getElementById('toggleQuestion');
     const toggleBtn = document.getElementById('toggleBtn');
-    const otpContainer = document.getElementById('otpFieldContainer');
-    const mobileInput = document.getElementById('candMobile');
-    const pinInput = document.getElementById('candPin');
-
-    otpContainer.classList.add('hidden');
-    mobileInput.disabled = false;
-    pinInput.disabled = false;
 
     if (isRegisterMode) {
       regFields.classList.remove('hidden');
-      authBtn.innerText = "Telegram पर OTP भेजें ➔";
+      authBtn.innerText = "नया कार्ड बनाएँ एवं प्रवेश करें ➔";
       toggleQ.innerText = "पहले से रजिस्टर्ड हैं?";
       toggleBtn.innerText = "यहाँ लॉगिन करें";
     } else {
       regFields.classList.add('hidden');
-      authBtn.innerText = "Telegram पर OTP भेजें ➔";
+      authBtn.innerText = "पोर्टल में प्रवेश करें ➔";
       toggleQ.innerText = "नया कार्ड बनाना चाहते हैं?";
-      toggleBtn.innerText = "नया रजिस्ट्रेशन करें";
+      toggleBtn.innerText = "यहाँ रजिस्ट्रेशन करें";
+    }
+  }
+
+  async function checkUserInSupabase(mobile) {
+    try {
+      const res = await fetch(`${SB_URL}/rest/v1/aspirants?mobile=eq.${mobile}&select=*`, {
+        headers: {
+          "apikey": SB_KEY,
+          "Authorization": `Bearer ${SB_KEY}`
+        }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return (data && data.length > 0) ? data[0] : null;
+      }
+    } catch(e) {}
+    return null;
+  }
+
+  async function saveUserToSupabase(userObj) {
+    try {
+      const res = await fetch(`${SB_URL}/rest/v1/aspirants`, {
+        method: "POST",
+        headers: {
+          "apikey": SB_KEY,
+          "Authorization": `Bearer ${SB_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(userObj)
+      });
+      return res.ok;
+    } catch(e) {
+      return false;
     }
   }
 
@@ -203,115 +223,87 @@
     const pin = document.getElementById('candPin').value.trim();
     const authBtn = document.getElementById('authBtn');
 
+    // सख्त सुरक्षा जांच (Validation)
     if (!mobile) {
-      showNotice("<b>मोबाइल नंबर अनिवार्य है!</b> कृपया 10-अंकों का नंबर दर्ज करें।");
+      showNotice("<b>मोबाइल नंबर अनिवार्य है!</b> कृपया 10-अंकों का वैध नंबर दर्ज करें।");
       return;
     }
     if (!isValidIndianMobile(mobile)) {
-      showNotice("<b>अमान्य मोबाइल नंबर!</b> कृपया वैध 10-अंकों का भारतीय नंबर दर्ज करें।");
+      showNotice("<b>अमान्य मोबाइल नंबर!</b> कृपया सही भारतीय मोबाइल नंबर दर्ज करें (शुरुआत 6, 7, 8 या 9 से होनी चाहिए)।");
       return;
     }
 
-    if (!pin || pin.length !== 4 || isNaN(pin)) {
-      showNotice("<b>PIN अमान्य है!</b> कृपया अपना 4-अंकों का गुप्त PIN दर्ज करें।");
+    if (!pin) {
+      showNotice("<b>PIN अनिवार्य है!</b> कृपया अपना 4-अंकों का गुप्त PIN दर्ज करें।");
+      return;
+    }
+    if (pin.length !== 4 || isNaN(pin)) {
+      showNotice("<b>PIN अमान्य है!</b> PIN केवल 4 अंकों की संख्या होनी चाहिए (उदा. 1234)।");
       return;
     }
 
-    // चरण 1: Telegram पर OTP भेजने का अनुरोध
-    if (!isOtpSentState) {
-      const name = isRegisterMode ? document.getElementById('candName').value.trim() : "";
-      if (isRegisterMode && !name) {
-        showNotice("<b>पूरा नाम अनिवार्य है!</b> कृपया अपना नाम दर्ज करें।");
-        return;
-      }
-
-      authBtn.innerText = "Telegram पर OTP भेजा जा रहा है...";
-      authBtn.disabled = true;
-
-      try {
-        const response = await fetch(`${RENDER_API_URL}/send-otp`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            phone: mobile, 
-            mode: isRegisterMode ? 'register' : 'login',
-            pin: pin
-          })
-        });
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-          isOtpSentState = true;
-          authBtn.innerText = "OTP वेरीफाई करें एवं प्रवेश करें ➔";
-          authBtn.disabled = false;
-          
-          document.getElementById('otpFieldContainer').classList.remove('hidden');
-          document.getElementById('candMobile').disabled = true;
-          document.getElementById('candPin').disabled = true;
-          document.getElementById('registerOnlyFields').classList.add('hidden');
-          document.getElementById('toggleContainer').classList.add('hidden');
-          
-          showNotice("<b>सफलता!</b> आपके Telegram इनबॉक्स में 4-अंकों का OTP भेज दिया गया है। कृपया देखकर नीचे दर्ज करें।");
-          document.getElementById('noticeBox').style.background = "rgba(16, 185, 129, 0.2)";
-          document.getElementById('noticeBox').style.borderColor = "#10b981";
-          document.getElementById('noticeBox').style.color = "#6ee7b7";
-        } else {
-          showNotice(result.message || "Telegram पर OTP भेजने में विफल।");
-          authBtn.innerText = "Telegram पर OTP भेजें ➔";
-          authBtn.disabled = false;
-        }
-      } catch (err) {
-        showNotice("<b>सर्वर एरर!</b> Render माइक्रोसर्विस से कनेक्ट नहीं हो पा रहा है।");
-        authBtn.innerText = "Telegram पर OTP भेजें ➔";
-        authBtn.disabled = false;
-      }
-      return;
-    }
-
-    // चरण 2: OTP वेरीफाई करना
-    const otp = document.getElementById('otpInput').value.trim();
-    if (!otp || otp.length !== 4) {
-      showNotice("<b>OTP अनिवार्य है!</b> कृपया Telegram पर प्राप्त 4-अंकों का OTP दर्ज करें।");
-      return;
-    }
-
-    authBtn.innerText = "OTP सत्यापन हो रहा है...";
+    authBtn.innerText = "सत्यापन हो रहा है...";
     authBtn.disabled = true;
 
     try {
-      const name = isRegisterMode ? document.getElementById('candName').value.trim() : "";
-      const district = isRegisterMode ? (document.getElementById('candDistrict').value.trim() || "LBSNAA, Mussoorie") : "";
+      const existingUser = await checkUserInSupabase(mobile);
 
-      const verifyRes = await fetch(`${RENDER_API_URL}/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          phone: mobile, 
-          otp: otp, 
-          mode: isRegisterMode ? 'register' : 'login',
-          pin: pin,
-          full_name: name,
-          district: district
-        })
-      });
-      const verifyResult = await verifyRes.json();
+      if (isRegisterMode) {
+        // रजिस्ट्रेशन मोड
+        const name = document.getElementById('candName').value.trim();
+        const district = document.getElementById('candDistrict').value.trim() || "LBSNAA, Mussoorie";
 
-      if (!verifyRes.ok || !verifyResult.success) {
-        showNotice("<b>गलत OTP!</b> कृपया सही 4-अंकों का OTP दर्ज करें।");
-        authBtn.innerText = "OTP वेरीफाई करें एवं प्रवेश करें ➔";
-        authBtn.disabled = false;
-        return;
+        if (!name) {
+          showNotice("<b>पूरा नाम अनिवार्य है!</b> कृपया अपना नाम दर्ज करें।");
+          authBtn.innerText = "नया कार्ड बनाएँ एवं प्रवेश करें ➔";
+          authBtn.disabled = false;
+          return;
+        }
+
+        if (existingUser) {
+          showNotice("<b>यह नंबर पहले से रजिस्टर्ड है!</b> कृपया 'यहाँ लॉगिन करें' पर क्लिक करके प्रवेश करें।");
+          authBtn.innerText = "नया कार्ड बनाएँ एवं प्रवेश करें ➔";
+          authBtn.disabled = false;
+          return;
+        }
+
+        const rollId = "UPSC-2027-" + Math.floor(1000 + Math.random() * 9000);
+        const newUser = { mobile, pin, full_name: name, district, roll_id: rollId };
+
+        const saved = await saveUserToSupabase(newUser);
+        if (saved) {
+          localStorage.setItem('upsc_logged_user', JSON.stringify(newUser));
+          window.location.replace("index.html");
+        } else {
+          showNotice("<b>डेटाबेस एरर!</b> जानकारी सहेजने में विफल। कृपया पुनः प्रयास करें।");
+          authBtn.innerText = "नया कार्ड बनाएँ एवं प्रवेश करें ➔";
+          authBtn.disabled = false;
+        }
+
+      } else {
+        // लॉगिन मोड
+        if (!existingUser) {
+          showNotice("<b>खाता नहीं मिला!</b> यह मोबाइल नंबर रजिस्टर्ड नहीं है। कृपया पहले 'यहाँ रजिस्ट्रेशन करें' पर क्लिक करें।");
+          authBtn.innerText = "पोर्टल में प्रवेश करें ➔";
+          authBtn.disabled = false;
+          return;
+        }
+
+        if (existingUser.pin !== pin) {
+          showNotice("<b>गलत PIN!</b> दर्ज किया गया 4-अंकों का PIN सही नहीं है।");
+          authBtn.innerText = "पोर्टल में प्रवेश करें ➔";
+          authBtn.disabled = false;
+          return;
+        }
+
+        // लॉगिन सफल
+        localStorage.setItem('upsc_logged_user', JSON.stringify(existingUser));
+        window.location.replace("index.html");
       }
 
-      // सफलता पर यूजर को लोकल स्टोरेज में सेव करके पोर्टल पर भेजें
-      localStorage.setItem('upsc_logged_user', JSON.stringify(verifyResult.user));
-      setTimeout(() => {
-        window.location.replace("index.html");
-      }, 300);
-
     } catch (err) {
-      showNotice("<b>एरर!</b> सत्यापन के दौरान तकनीकी समस्या आ गई।");
-      authBtn.innerText = "OTP वेरीफाई करें एवं प्रवेश करें ➔";
+      showNotice("<b>कनेक्शन एरर!</b> Supabase से कनेक्ट करने में समस्या आई। कृपया इंटरनेट चेक करें।");
+      authBtn.innerText = isRegisterMode ? "नया कार्ड बनाएँ एवं प्रवेश करें ➔" : "पोर्टल में प्रवेश करें ➔";
       authBtn.disabled = false;
     }
   }
